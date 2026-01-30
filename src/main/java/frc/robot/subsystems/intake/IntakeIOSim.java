@@ -42,4 +42,8 @@ public class IntakeIOSim implements IntakeIO {
   public void setDeploymentMotorVoltage(double volts) {
     deployAppliedVolts = MathUtil.clamp(volts, -12.0, 12.0);
   }
+  
+  @Override
+  public void close() {
+  }
 }

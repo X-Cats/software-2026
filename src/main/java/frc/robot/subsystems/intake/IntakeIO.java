@@ -15,4 +15,6 @@ public interface IntakeIO {
   public default void setDeploymentMotorVoltage(double volts) {}
 
   public default void setRollerMotorVoltage(double volts) {}
+  
+  public void close();
 }

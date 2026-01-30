@@ -28,4 +28,18 @@ public class IntakeIOTalonFX implements IntakeIO {
     deploy.getConfigurator().apply(deployConfig, 0.25);
     //        tryUntilOk(5, ()->  deploy.getConfigurator().apply(deployConfig, 0.25));
   }
+  
+  @Override
+  public void close() {
+    roller.close();
+    deploy.close();
+  }
+  
+  public TalonFX getRollerMotor() {
+    return roller;
+  }
+  
+  public TalonFX getDeployMotor() {
+    return deploy;
+  }
 }

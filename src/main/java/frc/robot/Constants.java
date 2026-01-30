@@ -28,4 +28,9 @@ public final class Constants {
     /** Replaying from a log file. */
     REPLAY
   }
+  
+  public class IntakeConstants {
+    public static final double ROLLER_GEAR_RATIO = 0.5;
+    public static final double DEPLOY_GEAR_RATIO = 0.001;
+  }
 }

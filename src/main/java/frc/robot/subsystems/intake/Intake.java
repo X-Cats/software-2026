@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
-public class Intake extends SubsystemBase {
+public class Intake extends SubsystemBase implements AutoCloseable{
   private final IntakeIO io;
   private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
 
@@ -47,4 +47,9 @@ public class Intake extends SubsystemBase {
           io.setDeploymentMotorVoltage(0.0);
         });
   }
+    
+    @Override
+    public void close() throws Exception {
+        io.close();
+    }
 }
