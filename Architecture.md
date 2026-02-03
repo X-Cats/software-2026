@@ -12,18 +12,18 @@ Living document linking the physical design with software design.
 - Motor that extends and retracts the intake
 - Motor the runs the rollers
 
-### Sensors 
+### Sensors
 
 ### Commands
-- `STOW` and `DEPLOY` intake 
-- Stop and run intake 
+- `STOW` and `DEPLOY` intake
+- Stop and run intake
 
 ## Hopper
 
 ### Functionality
 - Moves fuel around, pushing it into the shooter
-- Moves at one set speed 
-- Rotates in both directions 
+- Moves at one set speed
+- Rotates in both directions
 
 ### Actuators
 - Motor that spins hopper to agitate the fuel
@@ -37,15 +37,15 @@ Living document linking the physical design with software design.
 
 ### Functionality
 - Point the shooter towards the goal
-- Limited rotation 
-- PID controller for turret position 
+- Limited rotation
+- PID controller for turret position
 - The turret is `PRIMED` when its at the right position for firing
 
 ### Actuators
 - Motor that spins the turret around
 
 ### Sensors
-- Limit switch 
+- Limit switch
 - Limelight
 
 ### Commands
@@ -57,10 +57,10 @@ Living document linking the physical design with software design.
 
 ### Functionality
 - Send balls into the goal
-- Shooter will run at different speed for range control 
-- Hood will be at different positions for range control 
+- Shooter will run at different speed for range control
+- Hood will be at different positions for range control
 - Velocity PID controller for flywheel
-- The hood is `PRIMED` when its at the right position for firing 
+- The hood is `PRIMED` when its at the right position for firing
 
 ### Actuators
 - 2 motors that spin the flywheel for shooting
