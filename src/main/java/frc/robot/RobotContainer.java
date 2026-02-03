@@ -168,6 +168,7 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
+    //TODO bindings are not final
     controller.leftTrigger().whileTrue(hopper.runHopperMotor());
     controller.button(0).whileTrue(hopper.runHopperMotor());
   }
