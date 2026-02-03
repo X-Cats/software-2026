@@ -167,6 +167,8 @@ public class RobotContainer {
                             new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
                     drive)
                 .ignoringDisable(true));
+
+    //TODO: these are not final
     controller.leftTrigger().whileTrue(conveyor.runConveyorMotor());
   }
 

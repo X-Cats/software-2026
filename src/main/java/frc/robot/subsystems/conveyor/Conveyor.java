@@ -18,6 +18,10 @@ public class Conveyor extends SubsystemBase {
     Logger.processInputs("Conveyor", inputs);
   }
 
+  /**
+   * Command that sets the conveyor motor voltage
+   * @return a command that sets the conveyor motor voltage until interrupted, then sets motor to 0
+   */
   public Command runConveyorMotor() {
     return runEnd(
         () -> {
@@ -27,4 +31,6 @@ public class Conveyor extends SubsystemBase {
           io.setConveyorMotorVoltage(0.0);
         });
   }
+
+  // TODO: Write command that encapsulates state machine functionality
 }
