@@ -27,6 +27,9 @@ import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.subsystems.hopper.Hopper;
 import frc.robot.subsystems.hopper.HopperIOSim;
 import frc.robot.subsystems.hopper.HopperIOTalonFX;
+import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterIOSim;
+import frc.robot.subsystems.shooter.ShooterIOTalonFX;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -39,6 +42,7 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private final Hopper hopper;
+  private final Shooter shooter;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -61,6 +65,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.BackLeft),
                 new ModuleIOTalonFX(TunerConstants.BackRight));
         hopper = new Hopper(new HopperIOTalonFX());
+        shooter = new Shooter(new ShooterIOTalonFX());
 
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
@@ -91,6 +96,7 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.BackLeft),
                 new ModuleIOSim(TunerConstants.BackRight));
         hopper = new Hopper(new HopperIOSim());
+        shooter = new Shooter(new ShooterIOSim());
         break;
 
       default:
@@ -103,6 +109,7 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {});
         hopper = new Hopper(new HopperIOSim());
+        shooter = new Shooter(new ShooterIOSim());
         break;
     }
 
@@ -168,9 +175,10 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-    //TODO bindings are not final
+    // TODO bindings are not final
     controller.leftTrigger().whileTrue(hopper.runHopperMotor());
     controller.button(0).whileTrue(hopper.runHopperMotor());
+    controller.rightTrigger().whileTrue(shooter.runShooterMotor());
   }
 
   /**
