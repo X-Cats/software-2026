@@ -12,7 +12,14 @@ public interface IntakeIO {
 
   public default void updateInputs(IntakeIOInputs inputs) {}
 
+  /**
+   * sets the deployment motor's voltage
+   * @param volts voltage value from -12 to 12
+   */
   public default void setDeploymentMotorVoltage(double volts) {}
-
+  /**
+   * sets the roller motor's voltage
+   * @param volts voltage value from -12 to 12
+   */
   public default void setRollerMotorVoltage(double volts) {}
 }
