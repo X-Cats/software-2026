@@ -33,25 +33,6 @@ Living document linking the physical design with software design.
 ### Commands
 - Run and stop the hopper motor (left or right)
 
-## Turret
-
-### Functionality
-- Point the shooter towards the goal
-- Limited rotation
-- PID controller for turret position
-- The turret is `PRIMED` when its at the right position for firing
-
-### Actuators
-- Motor that spins the turret around
-
-### Sensors
-- Limit switch
-- Limelight
-
-### Commands
-- `PRIME` the turret
-  - Use feild localization to get robot position to set the shooter position for scoring
-- Rotate the turret
 
 ## Shooter
 

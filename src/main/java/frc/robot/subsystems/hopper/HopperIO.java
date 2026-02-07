@@ -12,6 +12,7 @@ public interface HopperIO {
 
   /**
    * setting the hopper motor voltage
+   *
    * @param volts voltage to set frm -12 to 12
    */
   public default void setHopperMotorVoltage(double volts) {}
