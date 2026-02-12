@@ -27,6 +27,9 @@ import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.subsystems.hopper.Hopper;
 import frc.robot.subsystems.hopper.HopperIOSim;
 import frc.robot.subsystems.hopper.HopperIOTalonFX;
+import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.IntakeIOSim;
+import frc.robot.subsystems.intake.IntakeIOTalonFX;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -39,12 +42,16 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private final Hopper hopper;
+  private final Intake intake;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
+
+  // Robot State
+  RobotState robotState = new RobotState();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -61,6 +68,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.BackLeft),
                 new ModuleIOTalonFX(TunerConstants.BackRight));
         hopper = new Hopper(new HopperIOTalonFX());
+        intake = new Intake(new IntakeIOTalonFX(), robotState);
 
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
@@ -91,6 +99,7 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.BackLeft),
                 new ModuleIOSim(TunerConstants.BackRight));
         hopper = new Hopper(new HopperIOSim());
+        intake = new Intake(new IntakeIOSim(), robotState);
         break;
 
       default:
@@ -103,6 +112,7 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {});
         hopper = new Hopper(new HopperIOSim());
+        intake = new Intake(new IntakeIOSim(), robotState);
         break;
     }
 
@@ -125,8 +135,22 @@ public class RobotContainer {
     autoChooser.addOption(
         "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
+    // default bindings
+    configureDefaultCommands();
     // Configure the button bindings
     configureButtonBindings();
+  }
+
+  /** */
+  private void configureDefaultCommands() {
+    drive.setDefaultCommand(
+        DriveCommands.joystickDrive(
+            drive,
+            () -> -controller.getLeftY(),
+            () -> -controller.getLeftX(),
+            () -> -controller.getRightX()));
+
+    intake.setDefaultCommand(intake.runStateful());
   }
 
   /**
@@ -137,13 +161,6 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Default command, normal field-relative drive
-    drive.setDefaultCommand(
-        DriveCommands.joystickDrive(
-            drive,
-            () -> -controller.getLeftY(),
-            () -> -controller.getLeftX(),
-            () -> -controller.getRightX()));
-
     // Lock to 0° when A button is held
     controller
         .a()
@@ -168,9 +185,11 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-    //TODO bindings are not final
+    // TODO bindings are not final
     controller.leftTrigger().whileTrue(hopper.runHopperMotor());
     controller.button(0).whileTrue(hopper.runHopperMotor());
+
+    controller.rightTrigger().whileTrue(robotState.runIntake());
   }
 
   /**
