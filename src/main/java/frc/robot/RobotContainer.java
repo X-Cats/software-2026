@@ -30,6 +30,9 @@ import frc.robot.subsystems.hopper.HopperIOTalonFX;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeIOSim;
 import frc.robot.subsystems.intake.IntakeIOTalonFX;
+import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterIOSim;
+import frc.robot.subsystems.shooter.ShooterIOTalonFX;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -43,6 +46,7 @@ public class RobotContainer {
   private final Drive drive;
   private final Hopper hopper;
   private final Intake intake;
+  private final Shooter shooter;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -69,6 +73,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.BackRight));
         hopper = new Hopper(new HopperIOTalonFX());
         intake = new Intake(new IntakeIOTalonFX(), robotState);
+        shooter = new Shooter(new ShooterIOTalonFX());
 
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
@@ -100,6 +105,7 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.BackRight));
         hopper = new Hopper(new HopperIOSim());
         intake = new Intake(new IntakeIOSim(), robotState);
+        shooter = new Shooter(new ShooterIOSim());
         break;
 
       default:
@@ -112,6 +118,7 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {});
         hopper = new Hopper(new HopperIOSim());
+        shooter = new Shooter(new ShooterIOSim());
         intake = new Intake(new IntakeIOSim(), robotState);
         break;
     }
@@ -185,11 +192,12 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-    // TODO bindings are not final
+    //TODO bindings are not final
     controller.leftTrigger().whileTrue(hopper.runHopperMotor());
     controller.button(0).whileTrue(hopper.runHopperMotor());
 
-    controller.rightTrigger().whileTrue(robotState.runIntake());
+    controller.button(1).whileTrue(robotState.runIntake());
+    controller.rightTrigger().whileTrue(shooter.runShooterMotor());
   }
 
   /**
