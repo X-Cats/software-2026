@@ -73,7 +73,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.BackRight));
         hopper = new Hopper(new HopperIOTalonFX());
         intake = new Intake(new IntakeIOTalonFX(), robotState);
-        shooter = new Shooter(new ShooterIOTalonFX());
+        shooter = new Shooter(new ShooterIOTalonFX(), robotState);
 
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
@@ -105,7 +105,7 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.BackRight));
         hopper = new Hopper(new HopperIOSim());
         intake = new Intake(new IntakeIOSim(), robotState);
-        shooter = new Shooter(new ShooterIOSim());
+        shooter = new Shooter(new ShooterIOSim(), robotState);
         break;
 
       default:
@@ -118,7 +118,7 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {});
         hopper = new Hopper(new HopperIOSim());
-        shooter = new Shooter(new ShooterIOSim());
+        shooter = new Shooter(new ShooterIOSim(), robotState);
         intake = new Intake(new IntakeIOSim(), robotState);
         break;
     }
@@ -158,6 +158,7 @@ public class RobotContainer {
             () -> -controller.getRightX()));
 
     intake.setDefaultCommand(intake.runStateful());
+    shooter.setDefaultCommand(shooter.runStateful());
   }
 
   /**
@@ -192,12 +193,12 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-    //TODO bindings are not final
+    // TODO bindings are not final
     controller.leftTrigger().whileTrue(hopper.runHopperMotor());
     controller.button(0).whileTrue(hopper.runHopperMotor());
 
     controller.button(1).whileTrue(robotState.runIntake());
-    controller.rightTrigger().whileTrue(shooter.runShooterMotor());
+    controller.rightTrigger().whileTrue(robotState.runShooter());
   }
 
   /**

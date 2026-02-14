@@ -9,6 +9,7 @@ import org.littletonrobotics.junction.AutoLog;
 public class RobotState {
 
   private final DesiredIntakeState dis = new DesiredIntakeState();
+  private final DesiredShooterState dss = new DesiredShooterState();
 
   public RobotState() {}
 
@@ -26,8 +27,22 @@ public class RobotState {
         });
   }
 
+  public Command runShooter() {
+    return runEnd(
+        () -> {
+          dss.setShooterMode(DesiredShooterState.ShooterModeState.SUPPRESSED);
+        },
+        () -> {
+          dss.setShooterMode(DesiredShooterState.ShooterModeState.ON);
+        });
+  }
+
   public DesiredIntakeState getDesiredIntakeState() {
     return dis;
+  }
+
+  public DesiredShooterState getDesiredShooterState() {
+    return dss;
   }
 
   @AutoLog
@@ -57,6 +72,27 @@ public class RobotState {
 
     private void setRunRoller(boolean runRoller) {
       this.runRoller = runRoller;
+    }
+  }
+
+  public static class DesiredShooterState {
+
+    public enum ShooterModeState {
+      ON, // Shooter Motor is On - Kicker Motor is On
+      SUPPRESSED, // Shooter Motor is On - Kicker Motor is Off
+      OFF // Shooter Motor is Off - Kicker Motor is Off
+    }
+
+    public DesiredShooterState() {}
+
+    public ShooterModeState shooterMode = ShooterModeState.ON;
+
+    public ShooterModeState getShooterMode() {
+      return shooterMode;
+    }
+
+    public void setShooterMode(ShooterModeState shooterMode) {
+      this.shooterMode = shooterMode;
     }
   }
 }
