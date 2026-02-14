@@ -25,13 +25,16 @@ public class Shooter extends SubsystemBase {
   public Command runStateful() {
     return new RunCommand(
         () -> {
-
           switch (robotState.getDesiredShooterState().getShooterMode()) {
-              case ON -> io.setShooterMotorVoltage(ShooterConstants.SHOOTER_MOTOR_VOLTAGE);
-              case SUPPRESSED -> io.setShooterMotorVoltage(ShooterConstants.SHOOTER_MOTOR_VOLTAGE / 2); // NOT REAL, JUST HALF VOLTAGE
-              case OFF -> io.setShooterMotorVoltage(0);
-              default ->
-                      throw new IllegalStateException("Unexpected value: " + robotState.getDesiredShooterState().getShooterMode());
+            case ON -> io.setShooterMotorVoltage(ShooterConstants.SHOOTER_MOTOR_VOLTAGE);
+            case SUPPRESSED -> io.setShooterMotorVoltage(
+                ShooterConstants.SHOOTER_MOTOR_VOLTAGE / 2); // NOT REAL, JUST HALF VOLTAGE
+            case OFF -> io.setShooterMotorVoltage(0);
+            default -> {
+              System.out.println(
+                  "Illegal Shooter mode : " + robotState.getDesiredShooterState().getShooterMode());
+              io.setShooterMotorVoltage(0);
+            }
           }
         },
         this);
