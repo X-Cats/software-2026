@@ -24,9 +24,9 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
-import frc.robot.subsystems.hood.Hood;
-import frc.robot.subsystems.hood.HoodIOSim;
-import frc.robot.subsystems.hood.HoodIOTalonFX;
+import frc.robot.subsystems.HoodKicker.HoodKicker;
+import frc.robot.subsystems.HoodKicker.HoodKickerIOSim;
+import frc.robot.subsystems.HoodKicker.HoodKickerIOTalonFX;
 import frc.robot.subsystems.hopper.Hopper;
 import frc.robot.subsystems.hopper.HopperIOSim;
 import frc.robot.subsystems.hopper.HopperIOTalonFX;
@@ -42,7 +42,7 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private final Hopper hopper;
-  private final Hood hood;
+  private final HoodKicker hoodKicker;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -65,7 +65,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.BackLeft),
                 new ModuleIOTalonFX(TunerConstants.BackRight));
         hopper = new Hopper(new HopperIOTalonFX());
-        hood = new Hood(new HoodIOTalonFX());
+        hoodKicker = new HoodKicker(new HoodKickerIOTalonFX());
 
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
@@ -96,7 +96,7 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.BackLeft),
                 new ModuleIOSim(TunerConstants.BackRight));
         hopper = new Hopper(new HopperIOSim());
-        hood = new Hood(new HoodIOSim());
+        hoodKicker = new HoodKicker(new HoodKickerIOSim());
         break;
 
       default:
@@ -109,7 +109,7 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {});
         hopper = new Hopper(new HopperIOSim());
-        hood = new Hood(new HoodIOSim());
+        hoodKicker = new HoodKicker(new HoodKickerIOSim());
         break;
     }
 
@@ -178,7 +178,7 @@ public class RobotContainer {
     // TODO bindings are not final
     controller.leftTrigger().whileTrue(hopper.runHopperMotor());
     controller.button(0).whileTrue(hopper.runHopperMotor());
-    controller.rightTrigger().whileTrue(hood.runHoodMotor());
+    controller.rightTrigger().whileTrue(hoodKicker.runHoodMotor());
   }
 
   /**
