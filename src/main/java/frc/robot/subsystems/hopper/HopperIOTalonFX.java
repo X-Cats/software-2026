@@ -12,7 +12,7 @@ public class HopperIOTalonFX implements HopperIO {
 
   public HopperIOTalonFX() {
     var hopperConfig = new TalonFXConfiguration();
-    hopperConfig.CurrentLimits.SupplyCurrentLimit = HopperConstants.HOPPER_MOTOR_ID;
+    hopperConfig.CurrentLimits.SupplyCurrentLimit = HopperConstants.HOPPER_MOTOR_CURRENT_LIMIT;
     hopperConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     hopperConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     hopper.getConfigurator().apply(hopperConfig, 0.25);
