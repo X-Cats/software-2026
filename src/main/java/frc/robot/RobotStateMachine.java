@@ -10,7 +10,7 @@ public class RobotStateMachine {
 
   private final DesiredIntakeState dIntakeState = new DesiredIntakeState();
   private final DesiredShooterState dShooterState = new DesiredShooterState();
-  private final DesiredHopperState dHopperState = new DesiredHopperState();
+  private final DesiredConveyorState dConveyorState = new DesiredConveyorState();
   private final DesiredHoodState dHoodState = new DesiredHoodState();
 
   public RobotStateMachine() {}
@@ -42,10 +42,10 @@ public class RobotStateMachine {
   public Command runHopper() {
     return runEnd(
         () -> {
-          dHopperState.setHopperState(DesiredHopperState.HopperState.FEEDING);
+          dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.FEEDING);
         },
         () -> {
-          dHopperState.setHopperState(DesiredHopperState.HopperState.OFF);
+          dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.OFF);
         });
   }
 
@@ -67,8 +67,8 @@ public class RobotStateMachine {
     return dShooterState;
   }
 
-  public DesiredHopperState getDesiredHopperState() {
-    return dHopperState;
+  public DesiredConveyorState getDesiredConveyorState() {
+    return dConveyorState;
   }
 
   public DesiredHoodState getDesiredHoodState() {
@@ -131,26 +131,26 @@ public class RobotStateMachine {
   }
 
   @AutoLog
-  public static class DesiredHopperState {
+  public static class DesiredConveyorState {
 
-    public HopperState getHopperState() {
-      return hopperState;
+    public ConveyorState getConveyorState() {
+      return conveyorState;
     }
 
-    public void setHopperState(HopperState hopperState) {
-      this.hopperState = hopperState;
+    public void setConveyorState(ConveyorState conveyorState) {
+      this.conveyorState = conveyorState;
     }
 
-    public enum HopperState {
+    public enum ConveyorState {
       FEEDING,
       SHUFFLING,
       EJECTING,
       OFF
     }
 
-    public DesiredHopperState() {}
+    public DesiredConveyorState() {}
 
-    public HopperState hopperState = HopperState.OFF;
+    public ConveyorState conveyorState = ConveyorState.OFF;
   }
 
   @AutoLog
