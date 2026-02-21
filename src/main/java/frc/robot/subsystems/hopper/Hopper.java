@@ -3,15 +3,15 @@ package frc.robot.subsystems.hopper;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotState;
+import frc.robot.RobotStateMachine;
 import org.littletonrobotics.junction.Logger;
 
 public class Hopper extends SubsystemBase {
   private final HopperIO io;
   private final HopperIOInputsAutoLogged inputs = new HopperIOInputsAutoLogged();
-  private final RobotState robotState;
+  private final RobotStateMachine robotState;
 
-  public Hopper(HopperIO io, RobotState rs) {
+  public Hopper(HopperIO io, RobotStateMachine rs) {
     this.io = io;
     robotState = rs;
   }

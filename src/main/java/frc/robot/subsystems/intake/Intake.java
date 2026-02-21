@@ -3,15 +3,15 @@ package frc.robot.subsystems.intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotState;
+import frc.robot.RobotStateMachine;
 import org.littletonrobotics.junction.Logger;
 
 public class Intake extends SubsystemBase {
   private final IntakeIO io;
   private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
-  private final RobotState robotState;
+  private final RobotStateMachine robotState;
 
-  public Intake(IntakeIO io, RobotState rs) {
+  public Intake(IntakeIO io, RobotStateMachine rs) {
     this.io = io;
     this.robotState = rs;
   }
@@ -26,10 +26,10 @@ public class Intake extends SubsystemBase {
     return new RunCommand(
         () -> {
           if (robotState.getDesiredIntakeState().getExtension()
-              == RobotState.DesiredIntakeState.IntakeExtensionState.EXTENDED) {
+              == RobotStateMachine.DesiredIntakeState.IntakeExtensionState.EXTENDED) {
             io.setDeploymentMotorVoltage(IntakeConstants.DEPLOYMENT_MOTOR_VOLTAGE);
           } else if (robotState.getDesiredIntakeState().getExtension()
-              == RobotState.DesiredIntakeState.IntakeExtensionState.RETRACTED) {
+              == RobotStateMachine.DesiredIntakeState.IntakeExtensionState.RETRACTED) {
             io.setDeploymentMotorVoltage(-IntakeConstants.DEPLOYMENT_MOTOR_VOLTAGE);
           } else {
             System.out.println("Unknown Intake Extension State");

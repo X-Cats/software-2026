@@ -3,15 +3,15 @@ package frc.robot.subsystems.HoodKicker;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotState;
+import frc.robot.RobotStateMachine;
 import org.littletonrobotics.junction.Logger;
 
 public class HoodKicker extends SubsystemBase {
   private final HoodKickerIO io;
   private final HoodIOInputsAutoLogged inputs = new HoodIOInputsAutoLogged();
-  private final RobotState robotState;
+  private final RobotStateMachine robotState;
 
-  public HoodKicker(HoodKickerIO io, RobotState rs) {
+  public HoodKicker(HoodKickerIO io, RobotStateMachine rs) {
     this.io = io;
     robotState = rs;
   }
@@ -50,11 +50,11 @@ public class HoodKicker extends SubsystemBase {
 
   public Command runKickerMotor() {
     return runEnd(
-            () -> {
-              io.setKickerMotorVoltage(HoodKickerConstants.KICKER_MOTOR_VOLTAGE);
-            },
-            () -> {
-              io.setKickerMotorVoltage(0.0);
-            });
+        () -> {
+          io.setKickerMotorVoltage(HoodKickerConstants.KICKER_MOTOR_VOLTAGE);
+        },
+        () -> {
+          io.setKickerMotorVoltage(0.0);
+        });
   }
 }
