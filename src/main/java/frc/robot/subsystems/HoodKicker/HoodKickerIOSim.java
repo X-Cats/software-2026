@@ -13,9 +13,9 @@ public class HoodKickerIOSim implements HoodKickerIO {
           DCMotor.getKrakenX44Foc(1));
   private DCMotorSim kickerSim =
       new DCMotorSim(
-              LinearSystemId.createDCMotorSystem(
-                  DCMotor.getKrakenX44Foc(1), 0.004, HoodKickerConstants.KICKER_MOTOR_REDUCTION),
-              DCMotor.getKrakenX44Foc(1));
+          LinearSystemId.createDCMotorSystem(
+              DCMotor.getKrakenX44Foc(1), 0.004, HoodKickerConstants.KICKER_MOTOR_REDUCTION),
+          DCMotor.getKrakenX44Foc(1));
 
   private double hoodAppliedVolts = 0.0;
   private double kickerAppliedVolts = 0.0;

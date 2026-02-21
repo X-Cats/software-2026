@@ -27,9 +27,6 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
-import frc.robot.subsystems.HoodKicker.HoodKicker;
-import frc.robot.subsystems.HoodKicker.HoodKickerIOSim;
-import frc.robot.subsystems.HoodKicker.HoodKickerIOTalonFX;
 import frc.robot.subsystems.hopper.Hopper;
 import frc.robot.subsystems.hopper.HopperIOSim;
 import frc.robot.subsystems.hopper.HopperIOTalonFX;
@@ -62,7 +59,7 @@ public class RobotContainer {
   private final LoggedDashboardChooser<Command> autoChooser;
 
   // Robot State
-  RobotState robotState = new RobotState();
+  RobotStateMachine robotState = new RobotStateMachine();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {

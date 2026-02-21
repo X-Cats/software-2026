@@ -6,16 +6,16 @@ import edu.wpi.first.wpilibj2.command.Command;
 import org.littletonrobotics.junction.AutoLog;
 
 // author Daniel Rabess
-public class RobotState {
+public class RobotStateMachine {
 
   private final DesiredIntakeState dIntakeState = new DesiredIntakeState();
   private final DesiredShooterState dShooterState = new DesiredShooterState();
   private final DesiredHopperState dHopperState = new DesiredHopperState();
   private final DesiredHoodState dHoodState = new DesiredHoodState();
 
-  public RobotState() {}
+  public RobotStateMachine() {}
 
-  public RobotState(String probablyLater) {}
+  public RobotStateMachine(String probablyLater) {}
 
   public Command runIntake() {
     return runEnd(

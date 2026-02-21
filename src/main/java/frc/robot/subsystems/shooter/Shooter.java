@@ -3,15 +3,15 @@ package frc.robot.subsystems.shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotState;
+import frc.robot.RobotStateMachine;
 import org.littletonrobotics.junction.Logger;
 
 public class Shooter extends SubsystemBase {
   private final ShooterIO io;
   private final ShooterIOInputsAutoLogged inputs = new ShooterIOInputsAutoLogged();
-  private final RobotState robotState;
+  private final RobotStateMachine robotState;
 
-  public Shooter(ShooterIO io, RobotState rs) {
+  public Shooter(ShooterIO io, RobotStateMachine rs) {
     this.io = io;
     robotState = rs;
   }
