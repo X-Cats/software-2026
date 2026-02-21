@@ -13,9 +13,101 @@ public class RobotStateMachine {
   private final DesiredConveyorState dConveyorState = new DesiredConveyorState();
   private final DesiredHoodState dHoodState = new DesiredHoodState();
 
-  public RobotStateMachine() {}
+  // State we want to transition too
+  private RobotStateConfig.SuperState desiredSuperState;
+  // State the robot is currently configured for
+  private RobotStateConfig.SuperState currentSuperState;
+
+  public RobotStateMachine() {
+    currentSuperState = RobotStateConfig.SuperState.IDLE;
+    desiredSuperState = RobotStateConfig.SuperState.ZERO; // Do nothing to for now...
+  }
 
   public RobotStateMachine(String probablyLater) {}
+
+  public void setDesiredSuperState(RobotStateConfig.SuperState dss) {
+    this.desiredSuperState = dss;
+  }
+
+  public void setCurrentSuperState(RobotStateConfig.SuperState css) {
+    this.currentSuperState = css;
+  }
+
+  public RobotStateConfig.SuperState getDesiredSuperState() {
+    return this.desiredSuperState;
+  }
+
+  public RobotStateConfig.SuperState getCurrentSuperState() {
+    return this.currentSuperState;
+  }
+
+  // Returns False if State Cannot be updated
+  public boolean updateSuperState() {
+    boolean retval = false;
+
+    switch (getDesiredSuperState()) {
+      case IDLE:
+        retval = transitionIDLE();
+        break;
+      case INTAKING:
+        retval = transitionINTAKING();
+        break;
+      case SHOOTING:
+        retval = transitionSHOOTING();
+        break;
+      case AGITATING:
+        retval = transitionAGITATING();
+        break;
+
+      default:
+        retval = transitionIDLE();
+        break;
+    }
+
+    return retval;
+  }
+
+  // State Transition Helper Functions
+  public boolean transitionIDLE() {
+    return true;
+  }
+
+  public boolean transitionINTAKING() {
+    dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.OFF);
+    dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.INTAKING);
+    dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.DEPLOYED);
+    dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.CONVEYING);
+    dHoodState.setHoodState(DesiredHoodState.HoodState.STOWED);
+    dHoodState.setKickerState(DesiredHoodState.KickerState.INDEXING);
+    return true;
+  }
+
+  public boolean transitionSHOOTING() {
+    dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.OFF);
+    dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.INTAKING);
+    dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.DEPLOYED);
+    dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.CONVEYING);
+    dHoodState.setHoodState(DesiredHoodState.HoodState.STOWED);
+    dHoodState.setKickerState(DesiredHoodState.KickerState.FEEDING);
+
+    return true;
+  }
+
+  public boolean transitionAGITATING() {
+    dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.OFF);
+    dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.INTAKING);
+    dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.DEPLOYED);
+    dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.CONVEYING);
+    dHoodState.setHoodState(DesiredHoodState.HoodState.STOWED);
+    dHoodState.setKickerState(DesiredHoodState.KickerState.INDEXING);
+
+    return true;
+  }
+
+  public boolean transitionZERO() {
+
+    return true;
+  }
 
   public Command runIntake() {
     return runEnd(
@@ -42,7 +134,7 @@ public class RobotStateMachine {
   public Command runHopper() {
     return runEnd(
         () -> {
-          dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.FEEDING);
+          dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.CONVEYING);
         },
         () -> {
           dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.OFF);
@@ -90,6 +182,38 @@ public class RobotStateMachine {
 
     public IntakeExtensionState extension = IntakeExtensionState.RETRACTED;
     public boolean runRoller = false;
+
+    public enum IntakeRollerState {
+      INTAKING,
+      EJECTING,
+      OFF
+    }
+
+    public IntakeRollerState intakeRollerState = IntakeRollerState.INTAKING;
+
+    public enum IntakeDeployState {
+      DEPLOYED,
+      STOWED,
+      OFF
+    }
+
+    public IntakeDeployState intakeDeployState = IntakeDeployState.DEPLOYED;
+
+    public void setDesiredIntakeRollerState(IntakeRollerState irs) {
+      this.intakeRollerState = irs;
+    }
+
+    public IntakeRollerState getDesiredIntakeRollerState() {
+      return this.intakeRollerState;
+    }
+
+    public void setDesiredIntakeDeployState(IntakeDeployState ids) {
+      this.intakeDeployState = ids;
+    }
+
+    public IntakeDeployState getDesiredIntakeDeployState() {
+      return this.intakeDeployState;
+    }
 
     public IntakeExtensionState getExtension() {
       return extension;
@@ -142,7 +266,7 @@ public class RobotStateMachine {
     }
 
     public enum ConveyorState {
-      FEEDING,
+      CONVEYING,
       SHUFFLING,
       EJECTING,
       OFF
@@ -166,7 +290,24 @@ public class RobotStateMachine {
 
     public enum HoodState {
       AIMING,
-      STOWED
+      STOWED,
+      ZERO
+    }
+
+    public enum KickerState {
+      FEEDING,
+      INDEXING,
+      OFF
+    }
+
+    public KickerState kickerState = KickerState.FEEDING;
+
+    public KickerState getKickerState() {
+      return kickerState;
+    }
+
+    public void setKickerState(KickerState ks) {
+      this.kickerState = ks;
     }
 
     public DesiredHoodState() {}

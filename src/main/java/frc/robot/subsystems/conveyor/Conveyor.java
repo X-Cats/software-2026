@@ -26,7 +26,7 @@ public class Conveyor extends SubsystemBase {
     return new RunCommand(
         () -> {
           switch (robotState.getDesiredConveyorState().getConveyorState()) {
-            case FEEDING -> io.setConveyorMotorVoltage(ConveyorConstants.CONVEYOR_MOTOR_VOLTAGE);
+            case CONVEYING -> io.setConveyorMotorVoltage(ConveyorConstants.CONVEYOR_MOTOR_VOLTAGE);
               //        case SHUFFLING -> io.
             case EJECTING -> io.setConveyorMotorVoltage(-ConveyorConstants.CONVEYOR_MOTOR_VOLTAGE);
             case OFF -> io.setConveyorMotorVoltage(0);
