@@ -50,11 +50,11 @@ public class HoodKicker extends SubsystemBase {
 
   public Command runKickerMotor() {
     return runEnd(
-        () -> {
-          io.setKickerMotorVoltage(HoodKickerConstants.KICKER_MOTOR_VOLTAGE);
-        },
-        () -> {
-          io.setKickerMotorVoltage(0.0);
-        });
+            () -> {
+              io.setKickerMotorVoltage(HoodKickerConstants.KICKER_MOTOR_VOLTAGE);
+            },
+            () -> {
+              io.setKickerMotorVoltage(0.0);
+            });
   }
 }

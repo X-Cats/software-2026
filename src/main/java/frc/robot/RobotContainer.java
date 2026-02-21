@@ -27,6 +27,9 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
+import frc.robot.subsystems.HoodKicker.HoodKicker;
+import frc.robot.subsystems.HoodKicker.HoodKickerIOSim;
+import frc.robot.subsystems.HoodKicker.HoodKickerIOTalonFX;
 import frc.robot.subsystems.hopper.Hopper;
 import frc.robot.subsystems.hopper.HopperIOSim;
 import frc.robot.subsystems.hopper.HopperIOTalonFX;
@@ -205,13 +208,6 @@ public class RobotContainer {
     // TODO bindings are not final
     controller.leftTrigger().whileTrue(hopper.runHopperMotor());
     controller.button(0).whileTrue(hopper.runHopperMotor());
-
-    controller.button(1).whileTrue(robotState.runIntake());
-    controller.rightTrigger().whileTrue(robotState.runShooter());
-
-    controller.rightTrigger().whileTrue(robotState.runHopper());
-
-    controller.rightBumper().whileTrue(robotState.runHood());
   }
 
   /**
