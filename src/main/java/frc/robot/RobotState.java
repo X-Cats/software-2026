@@ -8,8 +8,10 @@ import org.littletonrobotics.junction.AutoLog;
 // author Daniel Rabess
 public class RobotState {
 
-  private final DesiredIntakeState dis = new DesiredIntakeState();
-  private final DesiredShooterState dss = new DesiredShooterState();
+  private final DesiredIntakeState dIntakeState = new DesiredIntakeState();
+  private final DesiredShooterState dShooterState = new DesiredShooterState();
+  private final DesiredHopperState dHopperState = new DesiredHopperState();
+  private final DesiredHoodState dHoodState = new DesiredHoodState();
 
   public RobotState() {}
 
@@ -18,32 +20,63 @@ public class RobotState {
   public Command runIntake() {
     return runEnd(
         () -> {
-          dis.setExtension(DesiredIntakeState.IntakeExtensionState.EXTENDED);
-          dis.setRunRoller(true);
+          dIntakeState.setExtension(DesiredIntakeState.IntakeExtensionState.EXTENDED);
+          dIntakeState.setRunRoller(true);
         },
         () -> {
-          dis.setExtension(DesiredIntakeState.IntakeExtensionState.RETRACTED);
-          dis.setRunRoller(false);
+          dIntakeState.setExtension(DesiredIntakeState.IntakeExtensionState.RETRACTED);
+          dIntakeState.setRunRoller(false);
         });
   }
 
   public Command runShooter() {
     return runEnd(
         () -> {
-          dss.setShooterMode(DesiredShooterState.ShooterModeState.SUPPRESSED);
+          dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.SUPPRESSED);
         },
         () -> {
-          dss.setShooterMode(DesiredShooterState.ShooterModeState.ON);
+          dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.ON);
+        });
+  }
+
+  public Command runHopper() {
+    return runEnd(
+        () -> {
+          dHopperState.setHopperState(DesiredHopperState.HopperState.FEEDING);
+        },
+        () -> {
+          dHopperState.setHopperState(DesiredHopperState.HopperState.OFF);
+        });
+  }
+
+  public Command runHood() {
+    return runEnd(
+        () -> {
+          dHoodState.setHoodState(DesiredHoodState.HoodState.AIMING);
+        },
+        () -> {
+          dHoodState.setHoodState(DesiredHoodState.HoodState.STOWED);
         });
   }
 
   public DesiredIntakeState getDesiredIntakeState() {
-    return dis;
+    return dIntakeState;
   }
 
   public DesiredShooterState getDesiredShooterState() {
-    return dss;
+    return dShooterState;
   }
+
+  public DesiredHopperState getDesiredHopperState() {
+    return dHopperState;
+  }
+
+  public DesiredHoodState getDesiredHoodState() {
+    return dHoodState;
+  }
+
+  // Desired states
+  // ============================================================================================
 
   @AutoLog
   public static class DesiredIntakeState {
@@ -75,6 +108,7 @@ public class RobotState {
     }
   }
 
+  @AutoLog
   public static class DesiredShooterState {
 
     public enum ShooterModeState {
@@ -94,5 +128,49 @@ public class RobotState {
     public void setShooterMode(ShooterModeState shooterMode) {
       this.shooterMode = shooterMode;
     }
+  }
+
+  @AutoLog
+  public static class DesiredHopperState {
+
+    public HopperState getHopperState() {
+      return hopperState;
+    }
+
+    public void setHopperState(HopperState hopperState) {
+      this.hopperState = hopperState;
+    }
+
+    public enum HopperState {
+      FEEDING,
+      SHUFFLING,
+      EJECTING,
+      OFF
+    }
+
+    public DesiredHopperState() {}
+
+    public HopperState hopperState = HopperState.OFF;
+  }
+
+  @AutoLog
+  public static class DesiredHoodState {
+
+    public HoodState getHoodState() {
+      return hoodState;
+    }
+
+    public void setHoodState(HoodState hoodState) {
+      this.hoodState = hoodState;
+    }
+
+    public enum HoodState {
+      AIMING,
+      STOWED
+    }
+
+    public DesiredHoodState() {}
+
+    public HoodState hoodState = HoodState.STOWED;
   }
 }
