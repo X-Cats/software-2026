@@ -18,12 +18,18 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.HoodKicker.HoodKicker;
+import frc.robot.subsystems.HoodKicker.HoodKickerIOSim;
+import frc.robot.subsystems.HoodKicker.HoodKickerIOTalonFX;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
+import frc.robot.subsystems.HoodKicker.HoodKicker;
+import frc.robot.subsystems.HoodKicker.HoodKickerIOSim;
+import frc.robot.subsystems.HoodKicker.HoodKickerIOTalonFX;
 import frc.robot.subsystems.hopper.Hopper;
 import frc.robot.subsystems.hopper.HopperIOSim;
 import frc.robot.subsystems.hopper.HopperIOTalonFX;
@@ -47,6 +53,7 @@ public class RobotContainer {
   private final Hopper hopper;
   private final Intake intake;
   private final Shooter shooter;
+  private final HoodKicker hood;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -71,9 +78,10 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.FrontRight),
                 new ModuleIOTalonFX(TunerConstants.BackLeft),
                 new ModuleIOTalonFX(TunerConstants.BackRight));
-        hopper = new Hopper(new HopperIOTalonFX());
+        hopper = new Hopper(new HopperIOTalonFX(), robotState);
         intake = new Intake(new IntakeIOTalonFX(), robotState);
         shooter = new Shooter(new ShooterIOTalonFX(), robotState);
+        hood = new HoodKicker(new HoodKickerIOTalonFX(), robotState);
 
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
@@ -103,9 +111,10 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.FrontRight),
                 new ModuleIOSim(TunerConstants.BackLeft),
                 new ModuleIOSim(TunerConstants.BackRight));
-        hopper = new Hopper(new HopperIOSim());
+        hopper = new Hopper(new HopperIOSim(), robotState);
         intake = new Intake(new IntakeIOSim(), robotState);
         shooter = new Shooter(new ShooterIOSim(), robotState);
+        hood = new HoodKicker(new HoodKickerIOSim(), robotState);
         break;
 
       default:
@@ -117,9 +126,10 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {});
-        hopper = new Hopper(new HopperIOSim());
+        hopper = new Hopper(new HopperIOSim(), robotState);
         shooter = new Shooter(new ShooterIOSim(), robotState);
         intake = new Intake(new IntakeIOSim(), robotState);
+        hood = new HoodKicker(new HoodKickerIOSim(), robotState);
         break;
     }
 
@@ -159,6 +169,8 @@ public class RobotContainer {
 
     intake.setDefaultCommand(intake.runStateful());
     shooter.setDefaultCommand(shooter.runStateful());
+    hopper.setDefaultCommand(hopper.runStateful());
+    hood.setDefaultCommand(hood.runStateful());
   }
 
   /**
@@ -196,9 +208,6 @@ public class RobotContainer {
     // TODO bindings are not final
     controller.leftTrigger().whileTrue(hopper.runHopperMotor());
     controller.button(0).whileTrue(hopper.runHopperMotor());
-
-    controller.button(1).whileTrue(robotState.runIntake());
-    controller.rightTrigger().whileTrue(robotState.runShooter());
   }
 
   /**
