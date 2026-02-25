@@ -1,8 +1,5 @@
 package frc.robot;
 
-import static edu.wpi.first.wpilibj2.command.Commands.runEnd;
-
-import edu.wpi.first.wpilibj2.command.Command;
 import org.littletonrobotics.junction.AutoLog;
 
 // author Daniel Rabess
@@ -73,11 +70,15 @@ public class RobotStateMachine {
   }
 
   public boolean transitionINTAKING() {
+
+    // Call safety functions
+    ensureHoodIsStowed();
+
     dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.OFF);
     dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.INTAKING);
     dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.DEPLOYED);
     dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.CONVEYING);
-    dHoodState.setHoodState(DesiredHoodState.HoodState.STOWED);
+    // dHoodState.setHoodState(DesiredHoodState.HoodState.STOWED);
     dHoodState.setKickerState(DesiredHoodState.KickerState.INDEXING);
     return true;
   }
@@ -87,18 +88,21 @@ public class RobotStateMachine {
     dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.INTAKING);
     dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.DEPLOYED);
     dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.CONVEYING);
-    dHoodState.setHoodState(DesiredHoodState.HoodState.STOWED);
+    dHoodState.setHoodState(DesiredHoodState.HoodState.AIMING);
     dHoodState.setKickerState(DesiredHoodState.KickerState.FEEDING);
 
     return true;
   }
 
   public boolean transitionAGITATING() {
+
+    ensureHoodIsStowed();
+
     dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.OFF);
     dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.INTAKING);
     dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.DEPLOYED);
     dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.CONVEYING);
-    dHoodState.setHoodState(DesiredHoodState.HoodState.STOWED);
+    // dHoodState.setHoodState(DesiredHoodState.HoodState.STOWED);
     dHoodState.setKickerState(DesiredHoodState.KickerState.INDEXING);
 
     return true;
@@ -109,46 +113,22 @@ public class RobotStateMachine {
     return true;
   }
 
-  public Command runIntake() {
-    return runEnd(
-        () -> {
-          dIntakeState.setExtension(DesiredIntakeState.IntakeExtensionState.EXTENDED);
-          dIntakeState.setRunRoller(true);
-        },
-        () -> {
-          dIntakeState.setExtension(DesiredIntakeState.IntakeExtensionState.RETRACTED);
-          dIntakeState.setRunRoller(false);
-        });
-  }
+  // ** SAFETY HELPER FUNCTIONS - Make Functions here for state safety **//
 
-  public Command runShooter() {
-    return runEnd(
-        () -> {
-          dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.SUPPRESSED);
-        },
-        () -> {
-          dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.ON);
-        });
-  }
+  // This function will check that the hood is stowed
+  // and if its NOT stowed, will change state to be STOWED.
+  // returns true if Hood State was changed to STOWED
+  public boolean ensureHoodIsStowed() {
+    boolean retval = false;
 
-  public Command runHopper() {
-    return runEnd(
-        () -> {
-          dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.CONVEYING);
-        },
-        () -> {
-          dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.OFF);
-        });
-  }
+    if (dHoodState.getHoodState() != DesiredHoodState.HoodState.STOWED) {
+      dHoodState.setHoodState(DesiredHoodState.HoodState.STOWED);
+      retval = true;
+    } else {
+      retval = true;
+    }
 
-  public Command runHood() {
-    return runEnd(
-        () -> {
-          dHoodState.setHoodState(DesiredHoodState.HoodState.AIMING);
-        },
-        () -> {
-          dHoodState.setHoodState(DesiredHoodState.HoodState.STOWED);
-        });
+    return retval;
   }
 
   public DesiredIntakeState getDesiredIntakeState() {
