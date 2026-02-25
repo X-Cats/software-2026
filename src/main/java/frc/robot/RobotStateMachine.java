@@ -267,6 +267,7 @@ public class RobotStateMachine {
 
     public enum ConveyorState {
       CONVEYING,
+      FEEDING,
       SHUFFLING,
       EJECTING,
       OFF
