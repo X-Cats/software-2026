@@ -1,9 +1,10 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.AutoLog;
 
 // author Daniel Rabess
-public class RobotStateMachine {
+public class RobotStateMachine extends SubsystemBase {
 
   private final DesiredIntakeState dIntakeState = new DesiredIntakeState();
   private final DesiredShooterState dShooterState = new DesiredShooterState();
@@ -21,6 +22,14 @@ public class RobotStateMachine {
   }
 
   public RobotStateMachine(String probablyLater) {}
+
+  @Override
+  public void periodic() {
+    // io.updateInputs(inputs);
+    // Logger.processInputs("Robot State Machine", inputs);
+
+    updateSuperState();
+  }
 
   public void setDesiredSuperState(RobotStateConfig.SuperState dss) {
     this.desiredSuperState = dss;

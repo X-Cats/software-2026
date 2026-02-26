@@ -1,7 +1,7 @@
 package frc.robot.subsystems.shooter;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotStateMachine;
 import org.littletonrobotics.junction.Logger;
@@ -20,24 +20,22 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Shooter", inputs);
+
+    switch (robotState.getDesiredShooterState().getShooterMode()) {
+      case ON -> io.setShooterMotorVoltage(ShooterConstants.SHOOTER_MOTOR_VOLTAGE);
+      case SUPPRESSED -> io.setShooterMotorVoltage(
+          ShooterConstants.SHOOTER_MOTOR_VOLTAGE / 2); // NOT REAL, JUST HALF VOLTAGE
+      case OFF -> io.setShooterMotorVoltage(0);
+      default -> {
+        System.out.println(
+            "Illegal Shooter mode : " + robotState.getDesiredShooterState().getShooterMode());
+        io.setShooterMotorVoltage(0);
+      }
+    }
   }
 
   public Command runStateful() {
-    return new RunCommand(
-        () -> {
-          switch (robotState.getDesiredShooterState().getShooterMode()) {
-            case ON -> io.setShooterMotorVoltage(ShooterConstants.SHOOTER_MOTOR_VOLTAGE);
-            case SUPPRESSED -> io.setShooterMotorVoltage(
-                ShooterConstants.SHOOTER_MOTOR_VOLTAGE / 2); // NOT REAL, JUST HALF VOLTAGE
-            case OFF -> io.setShooterMotorVoltage(0);
-            default -> {
-              System.out.println(
-                  "Illegal Shooter mode : " + robotState.getDesiredShooterState().getShooterMode());
-              io.setShooterMotorVoltage(0);
-            }
-          }
-        },
-        this);
+    return Commands.none();
   }
 
   public Command runShooterMotor() {
