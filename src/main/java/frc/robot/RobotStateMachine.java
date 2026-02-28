@@ -98,7 +98,7 @@ public class RobotStateMachine extends SubsystemBase {
   }
 
   public boolean transitionSHOOTING() {
-    dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.OFF);
+    dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.ON);
     dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.INTAKING);
     dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.DEPLOYED);
     dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.CONVEYING);

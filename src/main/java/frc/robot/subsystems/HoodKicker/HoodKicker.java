@@ -22,8 +22,10 @@ public class HoodKicker extends SubsystemBase {
     Logger.processInputs("Hood", inputs);
 
     switch (robotState.getDesiredHoodState().getHoodState()) {
-      case AIMING -> io.setHoodMotorVoltage(HoodKickerConstants.HOOD_MOTOR_VOLTAGE);
-      case STOWED -> io.setHoodMotorVoltage(0);
+        // case AIMING -> io.setHoodMotorVoltage(HoodKickerConstants.HOOD_MOTOR_VOLTAGE);
+        // case STOWED -> io.setHoodMotorVoltage(0);
+      case AIMING -> io.setHoodPosition(10);
+      case STOWED -> io.setHoodPosition(0);
       default -> {
         System.out.println(
             "Illegal Hood State : " + robotState.getDesiredHoodState().getHoodState());

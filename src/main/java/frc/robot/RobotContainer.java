@@ -65,6 +65,8 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    System.out.println(Constants.currentMode);
+    System.out.println(Constants.simMode);
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
@@ -213,10 +215,10 @@ public class RobotContainer {
         .whileTrue(
             Commands.runEnd(
                     () -> {
-                      robotState.setCurrentSuperState(RobotStateConfig.SuperState.SHOOTING);
+                      robotState.setDesiredSuperState(RobotStateConfig.SuperState.SHOOTING);
                     },
                     () -> {
-                      robotState.setCurrentSuperState(RobotStateConfig.SuperState.IDLE);
+                      robotState.setDesiredSuperState(RobotStateConfig.SuperState.IDLE);
                     })
                 .ignoringDisable(true));
 
@@ -225,10 +227,10 @@ public class RobotContainer {
         .whileTrue(
             Commands.runEnd(
                     () -> {
-                      robotState.setCurrentSuperState(RobotStateConfig.SuperState.AGITATING);
+                      robotState.setDesiredSuperState(RobotStateConfig.SuperState.AGITATING);
                     },
                     () -> {
-                      robotState.setCurrentSuperState(RobotStateConfig.SuperState.IDLE);
+                      robotState.setDesiredSuperState(RobotStateConfig.SuperState.IDLE);
                     })
                 .ignoringDisable(true));
   }

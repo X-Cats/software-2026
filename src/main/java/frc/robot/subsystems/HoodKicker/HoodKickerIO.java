@@ -18,6 +18,8 @@ public interface HoodKickerIO {
    */
   public default void setHoodMotorVoltage(double volts) {}
 
+  public default void setHoodPosition(double ticks) {}
+
   /**
    * setting the kicker motor voltage
    *

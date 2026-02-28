@@ -9,6 +9,7 @@ import org.littletonrobotics.junction.Logger;
 public class Shooter extends SubsystemBase {
   private final ShooterIO io;
   private final ShooterIOInputsAutoLogged inputs = new ShooterIOInputsAutoLogged();
+  private final ShooterIO.ShooterIOOutputs outputs = new ShooterIO.ShooterIOOutputs();
   private final RobotStateMachine robotState;
 
   public Shooter(ShooterIO io, RobotStateMachine rs) {
@@ -21,15 +22,17 @@ public class Shooter extends SubsystemBase {
     io.updateInputs(inputs);
     Logger.processInputs("Shooter", inputs);
 
+    io.applyOutputs(outputs);
+
+    // TODO: not going to look like this, no shooter motor voltages
     switch (robotState.getDesiredShooterState().getShooterMode()) {
-      case ON -> io.setShooterMotorVoltage(ShooterConstants.SHOOTER_MOTOR_VOLTAGE);
-      case SUPPRESSED -> io.setShooterMotorVoltage(
-          ShooterConstants.SHOOTER_MOTOR_VOLTAGE / 2); // NOT REAL, JUST HALF VOLTAGE
-      case OFF -> io.setShooterMotorVoltage(0);
+      case ON -> io.setShooterMotorRPM(4000);
+      case SUPPRESSED -> io.setShooterMotorRPM(2000); // NOT REAL, JUST HALF VOLTAGE
+      case OFF -> io.setShooterMotorRPM(0);
       default -> {
         System.out.println(
             "Illegal Shooter mode : " + robotState.getDesiredShooterState().getShooterMode());
-        io.setShooterMotorVoltage(0);
+        io.setShooterMotorRPM(0);
       }
     }
   }
@@ -41,10 +44,10 @@ public class Shooter extends SubsystemBase {
   public Command runShooterMotor() {
     return runEnd(
         () -> {
-          io.setShooterMotorVoltage(ShooterConstants.SHOOTER_MOTOR_VOLTAGE);
+          io.setShooterMotorRPM(ShooterConstants.SHOOTER_MOTOR_VOLTAGE);
         },
         () -> {
-          io.setShooterMotorVoltage(0.0);
+          io.setShooterMotorRPM(0.0);
         });
   }
 }
