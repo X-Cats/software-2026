@@ -1,7 +1,5 @@
 package frc.robot.subsystems.intake;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotStateMachine;
 import org.littletonrobotics.junction.Logger;
@@ -23,53 +21,20 @@ public class Intake extends SubsystemBase {
 
     if (robotState.getDesiredIntakeState().getExtension()
         == RobotStateMachine.DesiredIntakeState.IntakeExtensionState.EXTENDED) {
-      io.setDeploymentMotorVoltage(IntakeConstants.DEPLOYMENT_MOTOR_VOLTAGE);
+      io.setDeployMotorTorque(IntakeConstants.DEPLOYMENT_MOTOR_CURRENT);
     } else if (robotState.getDesiredIntakeState().getExtension()
         == RobotStateMachine.DesiredIntakeState.IntakeExtensionState.RETRACTED) {
-      io.setDeploymentMotorVoltage(-IntakeConstants.DEPLOYMENT_MOTOR_VOLTAGE);
+      io.setDeployMotorTorque(-IntakeConstants.DEPLOYMENT_MOTOR_CURRENT);
     } else {
       System.out.println("Unknown Intake Extension State");
-      io.setDeploymentMotorVoltage(0);
+      io.setDeployMotorTorque(0);
     }
 
     if (robotState.getDesiredIntakeState().getRunRoller()) {
-      io.setRollerMotorVoltage(IntakeConstants.ROLLER_MOTOR_VOLTAGE);
+      io.setRollerMotorTorque(IntakeConstants.ROLLER_MOTOR_TORQUE);
     } else {
-      io.setRollerMotorVoltage(0);
+      io.setRollerMotorTorque(0);
     }
   }
 
-  public Command runStateful() {
-    return Commands.none();
-  }
-
-  public Command runRollerMotor() {
-    return runEnd(
-        () -> {
-          io.setRollerMotorVoltage(IntakeConstants.ROLLER_MOTOR_VOLTAGE);
-        },
-        () -> {
-          io.setRollerMotorVoltage(0.0);
-        });
-  }
-
-  public Command stow() {
-    return runEnd(
-        () -> {
-          io.setDeploymentMotorVoltage(IntakeConstants.DEPLOYMENT_MOTOR_VOLTAGE);
-        },
-        () -> {
-          io.setDeploymentMotorVoltage(0.0);
-        });
-  }
-
-  public Command deploy() {
-    return runEnd(
-        () -> {
-          io.setDeploymentMotorVoltage(-IntakeConstants.DEPLOYMENT_MOTOR_VOLTAGE);
-        },
-        () -> {
-          io.setDeploymentMotorVoltage(0.0);
-        });
-  }
 }
