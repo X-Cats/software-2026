@@ -237,7 +237,7 @@ public class RobotStateMachine extends SubsystemBase {
 
     public DesiredShooterState() {}
 
-    public ShooterModeState shooterMode = ShooterModeState.ON;
+    public ShooterModeState shooterMode = ShooterModeState.OFF;
 
     public ShooterModeState getShooterMode() {
       return shooterMode;
