@@ -17,13 +17,13 @@ public class ShooterIOTalonFX implements ShooterIO {
   public ShooterIOTalonFX(ShooterConstants.ShooterSide side) {
     shooterLeader =
         new TalonFX(
-            side.compareTo(ShooterConstants.ShooterSide.RIGHT) == 0
+            side.compareTo(ShooterConstants.ShooterSide.LEFT) == 0
                 ? ShooterConstants.LeftShooter.SHOOTER_LEADER_MOTOR_ID
                 : ShooterConstants.RightShooter.SHOOTER_LEADER_MOTOR_ID);
 
     shooterFollower =
         new TalonFX(
-            side.compareTo(ShooterConstants.ShooterSide.RIGHT) == 0
+            side.compareTo(ShooterConstants.ShooterSide.LEFT) == 0
                 ? ShooterConstants.LeftShooter.SHOOTER_FOLLOWER_MOTOR_ID
                 : ShooterConstants.RightShooter.SHOOTER_FOLLOWER_MOTOR_ID);
 
