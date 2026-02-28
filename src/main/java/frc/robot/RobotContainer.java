@@ -34,6 +34,7 @@ import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeIOSim;
 import frc.robot.subsystems.intake.IntakeIOTalonFX;
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterConstants;
 import frc.robot.subsystems.shooter.ShooterIOSim;
 import frc.robot.subsystems.shooter.ShooterIOTalonFX;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
@@ -49,7 +50,8 @@ public class RobotContainer {
   private final Drive drive;
   private final Conveyor conveyor;
   private final Intake intake;
-  private final Shooter shooter;
+  private final Shooter leftShooter;
+  private final Shooter rightShooter;
   private final HoodKicker hood;
 
   // Controller
@@ -77,7 +79,10 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.BackRight));
         conveyor = new Conveyor(new ConveyorIOTalonFX(), robotState);
         intake = new Intake(new IntakeIOTalonFX(), robotState);
-        shooter = new Shooter(new ShooterIOTalonFX(), robotState);
+        leftShooter =
+            new Shooter(new ShooterIOTalonFX(ShooterConstants.ShooterSide.LEFT), robotState);
+        rightShooter =
+            new Shooter(new ShooterIOTalonFX(ShooterConstants.ShooterSide.RIGHT), robotState);
         hood = new HoodKicker(new HoodKickerIOTalonFX(), robotState);
 
         // The ModuleIOTalonFXS implementation provides an example implementation for
@@ -110,7 +115,8 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.BackRight));
         conveyor = new Conveyor(new ConveyorIOSim(), robotState);
         intake = new Intake(new IntakeIOSim(), robotState);
-        shooter = new Shooter(new ShooterIOSim(), robotState);
+        leftShooter = new Shooter(new ShooterIOSim(), robotState);
+        rightShooter = new Shooter(new ShooterIOSim(), robotState);
         hood = new HoodKicker(new HoodKickerIOSim(), robotState);
         break;
 
@@ -125,7 +131,8 @@ public class RobotContainer {
                 new ModuleIO() {});
         conveyor = new Conveyor(new ConveyorIOSim(), robotState);
         intake = new Intake(new IntakeIOSim(), robotState);
-        shooter = new Shooter(new ShooterIOSim(), robotState);
+        leftShooter = new Shooter(new ShooterIOSim(), robotState);
+        rightShooter = new Shooter(new ShooterIOSim(), robotState);
         hood = new HoodKicker(new HoodKickerIOSim(), robotState);
         break;
     }

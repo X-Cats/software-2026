@@ -2,14 +2,16 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.AutoLog;
+import org.littletonrobotics.junction.Logger;
 
 // author Daniel Rabess
 public class RobotStateMachine extends SubsystemBase {
 
-  private final DesiredIntakeState dIntakeState = new DesiredIntakeState();
-  private final DesiredShooterState dShooterState = new DesiredShooterState();
-  private final DesiredConveyorState dConveyorState = new DesiredConveyorState();
-  private final DesiredHoodState dHoodState = new DesiredHoodState();
+  private final DesiredIntakeStateAutoLogged dIntakeState = new DesiredIntakeStateAutoLogged();
+  private final DesiredShooterStateAutoLogged dShooterState = new DesiredShooterStateAutoLogged();
+  private final DesiredConveyorStateAutoLogged dConveyorState =
+      new DesiredConveyorStateAutoLogged();
+  private final DesiredHoodStateAutoLogged dHoodState = new DesiredHoodStateAutoLogged();
 
   // State we want to transition too
   private RobotStateConfig.SuperState desiredSuperState;
@@ -27,7 +29,10 @@ public class RobotStateMachine extends SubsystemBase {
   public void periodic() {
     // io.updateInputs(inputs);
     // Logger.processInputs("Robot State Machine", inputs);
-
+    Logger.processInputs("RobotState", dIntakeState);
+    Logger.processInputs("RobotState", dShooterState);
+    Logger.processInputs("RobotState", dConveyorState);
+    Logger.processInputs("RobotState", dHoodState);
     updateSuperState();
   }
 
