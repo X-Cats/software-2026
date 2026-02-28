@@ -27,4 +27,8 @@ public interface VisionIO {
 
     public MegatagPoseEstimate camera2Megatag2PoseEstimate;
   }
+
+  void readInputs(VisionIOInputs inputs);
+
+  void pollNetworkTables();
 }
