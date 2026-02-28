@@ -10,11 +10,25 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.units.measure.Voltage;
 
 public class ShooterIOTalonFX implements ShooterIO {
-  private final TalonFX shooterLeader = new TalonFX(ShooterConstants.SHOOTER_LEADER_MOTOR_ID);
-  private final TalonFX shooterFollower = new TalonFX(ShooterConstants.SHOOTER_FOLLOWER_MOTOR_ID);
-  private final StatusSignal<Voltage> shooterAppliedVolts = shooterLeader.getMotorVoltage();
+  private final TalonFX shooterLeader;
+  private final TalonFX shooterFollower;
+  private final StatusSignal<Voltage> shooterAppliedVolts;
 
-  public ShooterIOTalonFX() {
+  public ShooterIOTalonFX(ShooterConstants.ShooterSide side) {
+    shooterLeader =
+        new TalonFX(
+            side.compareTo(ShooterConstants.ShooterSide.RIGHT) == 0
+                ? ShooterConstants.LeftShooter.SHOOTER_LEADER_MOTOR_ID
+                : ShooterConstants.RightShooter.SHOOTER_LEADER_MOTOR_ID);
+
+    shooterFollower =
+        new TalonFX(
+            side.compareTo(ShooterConstants.ShooterSide.RIGHT) == 0
+                ? ShooterConstants.LeftShooter.SHOOTER_FOLLOWER_MOTOR_ID
+                : ShooterConstants.RightShooter.SHOOTER_FOLLOWER_MOTOR_ID);
+
+    shooterAppliedVolts = shooterLeader.getMotorVoltage();
+
     var shooterConfig = new TalonFXConfiguration();
     shooterConfig.CurrentLimits.SupplyCurrentLimit = ShooterConstants.SHOOTER_MOTOR_CURRENT_LIMIT;
     shooterConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
