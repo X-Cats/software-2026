@@ -42,7 +42,7 @@ public class MegatagPoseEstimate implements StructSerializable {
     @Override
     public MegatagPoseEstimate unpack(ByteBuffer bb) {
       MegatagPoseEstimate rv = new MegatagPoseEstimate();
-      rv.fieldToCamera = new Pose2d.struct.unpack(bb);
+      rv.fieldToCamera = Pose2d.struct.unpack(bb);
       rv.timestampSeconds = bb.getDouble();
       rv.latency = bb.getDouble();
       rv.avgTagArea = bb.getDouble();
@@ -65,8 +65,9 @@ public class MegatagPoseEstimate implements StructSerializable {
   public double avgTagArea;
   public int[] fiducialIds;
 
-  public MegatagPoseEstimate fromLimelight(LimelightHelpers.PoseEstimate poseEstimate) {
-    MegatagPoseEstimate rv = new MegatagPoseEstimate();    rv.fieldToCamera = poseEstimate.pose;
+  public static MegatagPoseEstimate fromLimelight(LimelightHelpers.PoseEstimate poseEstimate) {
+    MegatagPoseEstimate rv = new MegatagPoseEstimate();
+    rv.fieldToCamera = poseEstimate.pose;
     if (rv.fieldToCamera == null) rv.fieldToCamera = MathHelpers.kPose2dZero;
     rv.timestampSeconds = poseEstimate.timestampSeconds;
     rv.latency = poseEstimate.latency;
