@@ -9,6 +9,7 @@ import com.ctre.phoenix6.controls.TorqueCurrentFOC;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
@@ -28,6 +29,7 @@ public class IntakeIOTalonFX implements IntakeIO {
   // LOGGABLES
   private final StatusSignal<Voltage> deployAppliedVolts = deploy.getMotorVoltage();
   private final StatusSignal<AngularVelocity> deployVelocity = deploy.getVelocity();
+  private final StatusSignal<Angle> deployPosition = deploy.getPosition();
   private final StatusSignal<Current> deployTorqueCurrent = deploy.getTorqueCurrent();
   private final StatusSignal<Current> deploySupplyCurrent = deploy.getSupplyCurrent();
 
@@ -58,6 +60,7 @@ public class IntakeIOTalonFX implements IntakeIO {
         rollerTorqueCurrent,
         rollerSupplyCurrent,
         deployVelocity,
+        deployPosition,
         deployAppliedVolts,
         deployTorqueCurrent,
         deploySupplyCurrent);
@@ -73,6 +76,7 @@ public class IntakeIOTalonFX implements IntakeIO {
         rollerSupplyCurrent,
         deployAppliedVolts,
         deployVelocity,
+        deployPosition,
         deployTorqueCurrent,
         deploySupplyCurrent);
   }
@@ -86,6 +90,7 @@ public class IntakeIOTalonFX implements IntakeIO {
 
     inputs.deployAppliedVolts = deployAppliedVolts.getValueAsDouble();
     inputs.deployVelocity = deployVelocity.getValueAsDouble();
+    inputs.deployPosition = deployPosition.getValueAsDouble();
     inputs.deployTorqueCurrentAmps = deployTorqueCurrent.getValueAsDouble();
     inputs.deploySupplyCurrentAmps = deploySupplyCurrent.getValueAsDouble();
   }
@@ -97,6 +102,10 @@ public class IntakeIOTalonFX implements IntakeIO {
 
   @Override
   public void setDeployMotorTorque(double amps) {
-    // deploy.setControl(deployTorqueCurrentRequest.withOutput(amps));
+    deploy.setControl(deployTorqueCurrentRequest.withOutput(amps));
+  }
+
+  public void zeroDeploy() {
+    deploy.setPosition(0);
   }
 }

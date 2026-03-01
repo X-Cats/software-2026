@@ -94,7 +94,7 @@ public class RobotStateMachine extends SubsystemBase {
     ensureHoodIsStowed();
 
     dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.OFF);
-    // dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.INTAKING);
+    dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.INTAKING);
     dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.DEPLOYED);
     dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.CONVEYING);
     // dHoodState.setHoodState(DesiredHoodState.HoodState.STOWED);

@@ -37,6 +37,6 @@ public class ConveyorIOTalonFX implements ConveyorIO {
 
   @Override
   public void setConveyorTorque(double amps) {
-    conveyorLeader.setControl(conveyorTorqueRequest.withOutput(amps));
+    // conveyorLeader.setControl(conveyorTorqueRequest.withOutput(amps));
   }
 }

@@ -2,6 +2,7 @@ package frc.robot.subsystems.shooter;
 
 import static frc.robot.util.PhoenixUtil.tryUntilOk;
 
+import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -11,12 +12,15 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Voltage;
+import frc.robot.util.PhoenixUtil;
 
 public class ShooterIOTalonFX implements ShooterIO {
   private final TalonFX shooterLeader;
   private final TalonFX shooterFollower;
   private final StatusSignal<Voltage> shooterAppliedVolts;
+  private final StatusSignal<AngularVelocity> shooterRPM;
 
   private final VelocityVoltage velocityControl = new VelocityVoltage(0).withUpdateFreqHz(0.0);
 
@@ -34,6 +38,7 @@ public class ShooterIOTalonFX implements ShooterIO {
                 : ShooterConstants.RightShooter.SHOOTER_FOLLOWER_MOTOR_ID);
 
     shooterAppliedVolts = shooterLeader.getMotorVoltage();
+    shooterRPM = shooterLeader.getVelocity();
 
     var shooterConfig = new TalonFXConfiguration();
     shooterConfig.CurrentLimits.SupplyCurrentLimit = ShooterConstants.SHOOTER_MOTOR_CURRENT_LIMIT;
@@ -61,6 +66,15 @@ public class ShooterIOTalonFX implements ShooterIO {
     slot0Configs.kD = ShooterConstants.kD;
 
     shooterLeader.getConfigurator().apply(slot0Configs);
+
+    BaseStatusSignal.setUpdateFrequencyForAll(50, shooterAppliedVolts, shooterRPM);
+
+    PhoenixUtil.registerSignals(false, shooterAppliedVolts, shooterRPM);
+  }
+
+  public void updateInputs(ShooterIO.ShooterIOInputs inputs) {
+    inputs.shooterAppliedVolts = shooterAppliedVolts.getValueAsDouble();
+    inputs.shooterRPM = shooterRPM.getValueAsDouble();
   }
 
   /**
@@ -74,6 +88,6 @@ public class ShooterIOTalonFX implements ShooterIO {
    */
   @Override
   public void setShooterMotorRPM(double rpm) {
-    shooterLeader.setControl(velocityControl.withVelocity(rpm));
+    // shooterLeader.setControl(velocityControl.withVelocity(rpm));
   }
 }

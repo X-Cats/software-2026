@@ -12,6 +12,7 @@ public interface IntakeIO {
 
     public double deployAppliedVolts = 0.0;
     public double deployVelocity = 0.0;
+    public double deployPosition = 0.0;
     public double deployTorqueCurrentAmps = 0.0;
     public double deploySupplyCurrentAmps = 0.0;
   }
@@ -33,4 +34,6 @@ public interface IntakeIO {
    * <p>TODO: What is the torque unit?
    */
   public default void setRollerMotorTorque(double torque) {}
+
+  public default void zeroDeploy() {}
 }
