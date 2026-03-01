@@ -22,29 +22,19 @@ public class Conveyor extends SubsystemBase {
     Logger.processInputs("Conveyor", inputs);
 
     switch (robotState.getDesiredConveyorState().getConveyorState()) {
-      case CONVEYING -> io.setConveyorMotorVoltage(ConveyorConstants.CONVEYOR_MOTOR_VOLTAGE);
+      case CONVEYING -> io.setConveyorTorque(ConveyorConstants.CONVEYOR_MOTOR_TORQUE);
         //        case SHUFFLING -> io.
-      case EJECTING -> io.setConveyorMotorVoltage(-ConveyorConstants.CONVEYOR_MOTOR_VOLTAGE);
-      case OFF -> io.setConveyorMotorVoltage(0);
+      case EJECTING -> io.setConveyorTorque(-ConveyorConstants.CONVEYOR_MOTOR_TORQUE);
+      case OFF -> io.setConveyorTorque(0);
       default -> {
         System.out.println(
             "Illegal conveyor state : " + robotState.getDesiredConveyorState().getConveyorState());
-        io.setConveyorMotorVoltage(0);
+        io.setConveyorTorque(0);
       }
     }
   }
 
   public Command runStateful() {
     return Commands.none();
-  }
-
-  public Command runConveyorMotor() {
-    return runEnd(
-        () -> {
-          io.setConveyorMotorVoltage(ConveyorConstants.CONVEYOR_MOTOR_VOLTAGE);
-        },
-        () -> {
-          io.setConveyorMotorVoltage(0.0);
-        });
   }
 }

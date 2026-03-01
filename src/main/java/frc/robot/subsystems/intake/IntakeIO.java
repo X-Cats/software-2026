@@ -11,14 +11,14 @@ public interface IntakeIO {
     public double rollerSupplyCurrentAmps = 0.0;
 
     public double deployAppliedVolts = 0.0;
+    public double deployVelocity = 0.0;
+    public double deployTorqueCurrentAmps = 0.0;
+    public double deploySupplyCurrentAmps = 0.0;
   }
 
   public default void updateInputs(IntakeIOInputs inputs) {}
 
-  /**
-   * sets the deployment motor's current
-   *
-   */
+  /** sets the deployment motor's current */
   public default void setDeployMotorTorque(double amps) {}
   /**
    * sets the roller motor's voltage
@@ -30,8 +30,7 @@ public interface IntakeIO {
   /**
    * Sets the roller motor's torque
    *
-   * TODO: What is the torque unit?
+   * <p>TODO: What is the torque unit?
    */
   public default void setRollerMotorTorque(double torque) {}
-
 }

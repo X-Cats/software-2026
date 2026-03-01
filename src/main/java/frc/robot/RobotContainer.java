@@ -211,7 +211,7 @@ public class RobotContainer {
     // controller.button(0).whileTrue(hopper.runConveyorMotor());
 
     controller
-        .rightTrigger()
+        .rightBumper()
         .whileTrue(
             Commands.runEnd(
                     () -> {
@@ -223,11 +223,11 @@ public class RobotContainer {
                 .ignoringDisable(true));
 
     controller
-        .leftTrigger()
+        .leftBumper()
         .whileTrue(
             Commands.runEnd(
                     () -> {
-                      robotState.setDesiredSuperState(RobotStateConfig.SuperState.AGITATING);
+                      robotState.setDesiredSuperState(RobotStateConfig.SuperState.INTAKING);
                     },
                     () -> {
                       robotState.setDesiredSuperState(RobotStateConfig.SuperState.IDLE);

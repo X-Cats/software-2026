@@ -11,7 +11,6 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.units.measure.Voltage;
 
 public class ShooterIOTalonFX implements ShooterIO {
@@ -20,8 +19,6 @@ public class ShooterIOTalonFX implements ShooterIO {
   private final StatusSignal<Voltage> shooterAppliedVolts;
 
   private final VelocityVoltage velocityControl = new VelocityVoltage(0).withUpdateFreqHz(0.0);
-  private final SimpleMotorFeedforward feedforward =
-      new SimpleMotorFeedforward(ShooterConstants.kS, ShooterConstants.kV);
 
   public ShooterIOTalonFX(ShooterConstants.ShooterSide side) {
     shooterLeader =
@@ -49,18 +46,16 @@ public class ShooterIOTalonFX implements ShooterIO {
 
     // TODO: CHange to coast?
     // shooterConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-    shooterLeader.getConfigurator().apply(shooterConfig, 0.25);
-    tryUntilOk(5, () -> shooterFollower.getConfigurator().apply(shooterConfig, 0.25));
+    tryUntilOk(5, () -> shooterLeader.getConfigurator().apply(shooterConfig, 0.25));
 
     var followerConfig = shooterConfig.clone();
     // followerConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-    shooterFollower.getConfigurator().apply(followerConfig, 0.25);
+    tryUntilOk(5, () -> shooterFollower.getConfigurator().apply(followerConfig, 0.25));
+
     shooterFollower.setControl(
         new Follower(shooterLeader.getDeviceID(), MotorAlignmentValue.Aligned));
 
     var slot0Configs = new Slot0Configs();
-    slot0Configs.kS = ShooterConstants.kS;
-    slot0Configs.kV = ShooterConstants.kV;
     slot0Configs.kP = ShooterConstants.kP;
     slot0Configs.kI = ShooterConstants.kI;
     slot0Configs.kD = ShooterConstants.kD;

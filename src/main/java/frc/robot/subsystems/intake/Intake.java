@@ -19,22 +19,22 @@ public class Intake extends SubsystemBase {
     io.updateInputs(inputs);
     Logger.processInputs("Intake", inputs);
 
-    if (robotState.getDesiredIntakeState().getExtension()
-        == RobotStateMachine.DesiredIntakeState.IntakeExtensionState.EXTENDED) {
+    if (robotState.getDesiredIntakeState().getDesiredIntakeDeployState()
+        == RobotStateMachine.DesiredIntakeState.IntakeDeployState.DEPLOYED) {
       io.setDeployMotorTorque(IntakeConstants.DEPLOYMENT_MOTOR_CURRENT);
-    } else if (robotState.getDesiredIntakeState().getExtension()
-        == RobotStateMachine.DesiredIntakeState.IntakeExtensionState.RETRACTED) {
-      io.setDeployMotorTorque(-IntakeConstants.DEPLOYMENT_MOTOR_CURRENT);
+    } else if (robotState.getDesiredIntakeState().getDesiredIntakeDeployState()
+        == RobotStateMachine.DesiredIntakeState.IntakeDeployState.STOWED) {
+      io.setDeployMotorTorque(-IntakeConstants.DEPLOYMENT_MOTOR_STOW_CURRENT);
     } else {
       System.out.println("Unknown Intake Extension State");
       io.setDeployMotorTorque(0);
     }
 
-    if (robotState.getDesiredIntakeState().getRunRoller()) {
+    if (robotState.getDesiredIntakeState().getDesiredIntakeRollerState()
+        == RobotStateMachine.DesiredIntakeState.IntakeRollerState.INTAKING) {
       io.setRollerMotorTorque(IntakeConstants.ROLLER_MOTOR_TORQUE);
     } else {
       io.setRollerMotorTorque(0);
     }
   }
-
 }

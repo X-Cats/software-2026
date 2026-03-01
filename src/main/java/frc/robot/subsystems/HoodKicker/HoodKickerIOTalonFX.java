@@ -6,8 +6,8 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionTorqueCurrentFOC;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Voltage;
 import frc.robot.subsystems.shooter.ShooterConstants;
 
@@ -32,8 +32,6 @@ public class HoodKickerIOTalonFX implements HoodKickerIO {
     hood.getConfigurator().apply(hoodConfig, 0.25);
 
     var slot0Configs = new Slot0Configs();
-    slot0Configs.kS = ShooterConstants.kS;
-    slot0Configs.kV = ShooterConstants.kV;
     slot0Configs.kP = ShooterConstants.kP;
     slot0Configs.kI = ShooterConstants.kI;
     slot0Configs.kD = ShooterConstants.kD;
@@ -44,6 +42,7 @@ public class HoodKickerIOTalonFX implements HoodKickerIO {
     kickerConfig.CurrentLimits.SupplyCurrentLimit = HoodKickerConstants.KICKER_MOTOR_CURRENT_LIMIT;
     kickerConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     kickerConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    kickerConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     kicker.getConfigurator().apply(kickerConfig, 0.25);
 
     // System.out.println(hood.getDescription());
@@ -52,10 +51,15 @@ public class HoodKickerIOTalonFX implements HoodKickerIO {
 
   public void updateInputs(HoodKickerIO.HoodIOInputs inputs) {
     inputs.hoodAppliedVolts = hoodAppliedVolts.getValueAsDouble();
+    inputs.hoodPosition = hood.getPosition().getValueAsDouble();
     inputs.kickerAppliedVolts = kicker.getMotorVoltage().getValueAsDouble();
   }
 
   public void setHoodPosition(double ticks) {
-    hood.setControl(positionControl.withPosition(Units.radiansToRotations(ticks)));
+    hood.setControl(positionControl.withPosition(ticks));
+  }
+
+  public void setKickerMotorVoltage(double volts) {
+    kicker.setVoltage(volts);
   }
 }

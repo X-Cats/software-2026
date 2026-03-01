@@ -6,6 +6,7 @@ public interface HoodKickerIO {
   @AutoLog
   public static class HoodIOInputs {
     public double hoodAppliedVolts = 0.0;
+    public double hoodPosition = 0.0;
     public double kickerAppliedVolts = 0.0;
   }
 
