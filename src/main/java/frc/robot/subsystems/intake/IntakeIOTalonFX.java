@@ -15,22 +15,26 @@ import edu.wpi.first.units.measure.Voltage;
 import frc.robot.util.PhoenixUtil;
 
 public class IntakeIOTalonFX implements IntakeIO {
+  // Motors
   private final TalonFX roller = new TalonFX(IntakeConstants.ROLLER_MOTOR_ID);
-  private final StatusSignal<Voltage> rollerAppliedVolts;
-  private final StatusSignal<AngularVelocity> rollerVelocity;
-  private final StatusSignal<Current> rollerTorqueCurrent;
-  private final StatusSignal<Current> rollerSupplyCurrent;
+  private final TalonFX deploy = new TalonFX(IntakeConstants.DEPLOYMENT_MOTOR_ID);
 
+  // Control Requests
   private final TorqueCurrentFOC rollerTorqueCurrentRequest =
       new TorqueCurrentFOC(0.0).withUpdateFreqHz(0.0);
   private final TorqueCurrentFOC deployTorqueCurrentRequest =
       new TorqueCurrentFOC(0.0).withUpdateFreqHz(0.0);
 
-  private final TalonFX deploy = new TalonFX(IntakeConstants.DEPLOYMENT_MOTOR_ID);
+  // LOGGABLES
   private final StatusSignal<Voltage> deployAppliedVolts = deploy.getMotorVoltage();
   private final StatusSignal<AngularVelocity> deployVelocity = deploy.getVelocity();
   private final StatusSignal<Current> deployTorqueCurrent = deploy.getTorqueCurrent();
   private final StatusSignal<Current> deploySupplyCurrent = deploy.getSupplyCurrent();
+
+  private final StatusSignal<Voltage> rollerAppliedVolts = roller.getMotorVoltage();
+  private final StatusSignal<AngularVelocity> rollerVelocity = roller.getVelocity();
+  private final StatusSignal<Current> rollerTorqueCurrent = roller.getTorqueCurrent();
+  private final StatusSignal<Current> rollerSupplyCurrent = roller.getSupplyCurrent();
 
   public IntakeIOTalonFX() {
     var rollerConfig = new TalonFXConfiguration();
@@ -39,10 +43,6 @@ public class IntakeIOTalonFX implements IntakeIO {
     rollerConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     rollerConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     tryUntilOk(5, () -> roller.getConfigurator().apply(rollerConfig, 0.25));
-    rollerAppliedVolts = roller.getMotorVoltage();
-    rollerVelocity = roller.getVelocity();
-    rollerTorqueCurrent = roller.getTorqueCurrent();
-    rollerSupplyCurrent = roller.getSupplyCurrent();
 
     var deployConfig = new TalonFXConfiguration();
     deployConfig.CurrentLimits.SupplyCurrentLimit = IntakeConstants.DEPLOYMENT_MOTOR_CURRENT_LIMIT;
@@ -61,6 +61,9 @@ public class IntakeIOTalonFX implements IntakeIO {
         deployAppliedVolts,
         deployTorqueCurrent,
         deploySupplyCurrent);
+
+    roller.optimizeBusUtilization();
+    deploy.optimizeBusUtilization();
 
     PhoenixUtil.registerSignals(
         false,
