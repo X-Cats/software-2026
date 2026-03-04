@@ -80,6 +80,11 @@ public class RobotStateMachine extends SubsystemBase {
 
   // State Transition Helper Functions
   public boolean transitionIDLE() {
+    dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.OFF);
+    dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.STOWED);
+    dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.OFF);
+    dHoodState.setKickerState(DesiredHoodState.KickerState.OFF);
+    dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.OFF);
     return true;
   }
 
@@ -98,11 +103,11 @@ public class RobotStateMachine extends SubsystemBase {
   }
 
   public boolean transitionSHOOTING() {
-    dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.OFF);
-    dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.INTAKING);
-    dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.DEPLOYED);
+    dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.ON);
+    dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.OFF);
+    // dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.STOWED);
     dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.CONVEYING);
-    dHoodState.setHoodState(DesiredHoodState.HoodState.AIMING);
+    //    dHoodState.setHoodState(DesiredHoodState.HoodState.AIMING);
     dHoodState.setKickerState(DesiredHoodState.KickerState.FEEDING);
 
     return true;
@@ -237,7 +242,7 @@ public class RobotStateMachine extends SubsystemBase {
 
     public DesiredShooterState() {}
 
-    public ShooterModeState shooterMode = ShooterModeState.ON;
+    public ShooterModeState shooterMode = ShooterModeState.OFF;
 
     public ShooterModeState getShooterMode() {
       return shooterMode;
