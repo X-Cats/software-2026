@@ -22,6 +22,8 @@ public class ShooterIOTalonFX implements ShooterIO {
   private final StatusSignal<Voltage> shooterAppliedVolts;
   private final StatusSignal<AngularVelocity> shooterRPM;
 
+  private final boolean;
+
   private final VelocityVoltage velocityControl = new VelocityVoltage(0).withUpdateFreqHz(0.0);
 
   public ShooterIOTalonFX(ShooterConstants.ShooterSide side) {
@@ -43,6 +45,7 @@ public class ShooterIOTalonFX implements ShooterIO {
     var shooterConfig = new TalonFXConfiguration();
     shooterConfig.CurrentLimits.SupplyCurrentLimit = ShooterConstants.SHOOTER_MOTOR_CURRENT_LIMIT;
     shooterConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+    shooterConfig.OpenLoopRamps.VoltageOpenLoopRampPeriod = 10;
     shooterConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
     if (side.compareTo(ShooterConstants.ShooterSide.LEFT) == 0)
@@ -88,6 +91,6 @@ public class ShooterIOTalonFX implements ShooterIO {
    */
   @Override
   public void setShooterMotorRPM(double rpm) {
-    // shooterLeader.setControl(velocityControl.withVelocity(rpm));
+    shooterLeader.setControl(velocityControl.withVelocity(rpm));
   }
 }

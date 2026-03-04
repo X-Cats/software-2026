@@ -8,7 +8,7 @@ import com.ctre.phoenix6.configs.CANdiConfiguration;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionTorqueCurrentFOC;
-import com.ctre.phoenix6.controls.TorqueCurrentFOC;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.CANdi;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.*;
@@ -17,7 +17,6 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 import frc.robot.Constants;
-import frc.robot.subsystems.shooter.ShooterConstants;
 import frc.robot.util.PhoenixUtil;
 
 public class HoodKickerIOTalonFX implements HoodKickerIO {
@@ -30,7 +29,9 @@ public class HoodKickerIOTalonFX implements HoodKickerIO {
   private final PositionTorqueCurrentFOC positionControl =
       new PositionTorqueCurrentFOC(0.0).withUpdateFreqHz(0.0);
 
-  private final TorqueCurrentFOC zeroControl = new TorqueCurrentFOC(-5).withUpdateFreqHz(0.0);
+  private final Slot0Configs hoodSlot0 = new Slot0Configs();
+
+  private final VoltageOut zeroControl = new VoltageOut(-2).withUpdateFreqHz(0.0);
 
   // Loggables
   private final StatusSignal<Voltage> hoodAppliedVolts = hood.getMotorVoltage();
@@ -69,11 +70,12 @@ public class HoodKickerIOTalonFX implements HoodKickerIO {
     hoodConfig.HardwareLimitSwitch.ReverseLimitRemoteSensorID = HoodKickerConstants.CANDI_CAN_ID;
     tryUntilOk(5, () -> hood.getConfigurator().apply(hoodConfig, 0.25));
 
-    var slot0Configs = new Slot0Configs();
-    slot0Configs.kP = ShooterConstants.kP;
-    slot0Configs.kI = ShooterConstants.kI;
-    slot0Configs.kD = ShooterConstants.kD;
-    hood.getConfigurator().apply(slot0Configs);
+    hoodSlot0.kP = HoodKickerConstants.kP;
+    hoodSlot0.kI = HoodKickerConstants.kI;
+    hoodSlot0.kD = HoodKickerConstants.kD;
+    hoodSlot0.kS = HoodKickerConstants.kS;
+    hoodSlot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
+    hood.getConfigurator().apply(hoodSlot0);
 
     var kickerConfig = new TalonFXConfiguration();
     kickerConfig.CurrentLimits.SupplyCurrentLimit = HoodKickerConstants.KICKER_MOTOR_CURRENT_LIMIT;
@@ -146,11 +148,13 @@ public class HoodKickerIOTalonFX implements HoodKickerIO {
   @Override
   public void applyOutputs(HoodIOOutputs outputs) {
     if (Constants.tuningMode) {
-      var configs = new Slot0Configs();
+      var configs = hoodSlot0;
       configs.kP = outputs.kP;
       configs.kD = outputs.kD;
+      configs.kS = outputs.kS;
       tryUntilOk(5, () -> hood.getConfigurator().apply(configs));
     }
-    hood.setControl(positionControl.withPosition(outputs.positionRad));
+    hood.setControl(
+        positionControl.withPosition(outputs.positionRad).withSlot(0).withFeedForward(outputs.kS));
   }
 }

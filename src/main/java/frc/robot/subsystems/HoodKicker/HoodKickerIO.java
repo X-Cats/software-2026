@@ -25,7 +25,7 @@ public interface HoodKickerIO {
     public double velocityRadPerSecond = 0.0;
     public double kP = 0.0;
     public double kD = 0.0;
-
+    public double kS = 0.0;
   }
 
   public default void updateInputs(HoodIOInputs inputs) {}

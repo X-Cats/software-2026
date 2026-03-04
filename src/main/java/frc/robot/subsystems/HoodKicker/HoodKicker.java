@@ -13,16 +13,22 @@ public class HoodKicker extends SubsystemBase {
   private final HoodKickerIO.HoodIOOutputs outputs = new HoodKickerIO.HoodIOOutputs();
   private final RobotStateMachine robotState;
 
-  private static final LoggedTunableNumber goalPosition = new LoggedTunableNumber("Hood/Position", 500);
-  private static final LoggedTunableNumber kP = new LoggedTunableNumber("Hood/kP", HoodKickerConstants.kP);
-  private static final LoggedTunableNumber kD = new LoggedTunableNumber("Hood/kD", HoodKickerConstants.kD);
+  private static final LoggedTunableNumber goalPosition =
+      new LoggedTunableNumber("Hood/Position", 500);
+  private static final LoggedTunableNumber kP =
+      new LoggedTunableNumber("Hood/kP", HoodKickerConstants.kP);
+  private static final LoggedTunableNumber kD =
+      new LoggedTunableNumber("Hood/kD", HoodKickerConstants.kD);
+  private static final LoggedTunableNumber kS =
+      new LoggedTunableNumber("Hood/kS", HoodKickerConstants.kS);
+
   private static final LoggedTunableNumber toleranceDeg =
-          new LoggedTunableNumber("Hood/ToleranceDeg");
+      new LoggedTunableNumber("Hood/ToleranceDeg");
 
   private static final LoggedTunableNumber homingVolts =
-          new LoggedTunableNumber("Hood/Homing/Volts", -2);
+      new LoggedTunableNumber("Hood/Homing/Volts", -2);
   private static final LoggedTunableNumber homingVelocityThreshold =
-          new LoggedTunableNumber("Hood/Homing/VelocityThreshold", 0.05);
+      new LoggedTunableNumber("Hood/Homing/VelocityThreshold", 0.05);
 
   private boolean hasBeenZeroed = false;
 
@@ -39,6 +45,7 @@ public class HoodKicker extends SubsystemBase {
 
     outputs.kP = kP.getAsDouble();
     outputs.kD = kD.getAsDouble();
+    outputs.kS = kS.getAsDouble();
 
     if (this.hasBeenZeroed) {
       switch (robotState.getDesiredHoodState().getHoodState()) {
