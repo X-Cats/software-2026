@@ -11,6 +11,8 @@ public class HoodKicker extends SubsystemBase {
   private final HoodIOInputsAutoLogged inputs = new HoodIOInputsAutoLogged();
   private final RobotStateMachine robotState;
 
+  private boolean hasBeenZeroed = false;
+
   public HoodKicker(HoodKickerIO io, RobotStateMachine rs) {
     this.io = io;
     robotState = rs;
@@ -19,16 +21,21 @@ public class HoodKicker extends SubsystemBase {
   @Override
   public void periodic() {
     io.updateInputs(inputs);
+    hasBeenZeroed = hasBeenZeroed || -0.5 < inputs.hoodPosition && inputs.hoodPosition < 0.5;
     Logger.processInputs("Hood", inputs);
 
-    switch (robotState.getDesiredHoodState().getHoodState()) {
-      case AIMING -> io.setHoodPosition(5);
-      case STOWED -> io.setHoodPosition(0);
-      default -> {
-        System.out.println(
-            "Illegal Hood State : " + robotState.getDesiredHoodState().getHoodState());
-        io.setHoodMotorVoltage(0);
+    if (this.hasBeenZeroed) {
+      switch (robotState.getDesiredHoodState().getHoodState()) {
+        case AIMING -> io.setHoodPosition(700);
+        case STOWED -> io.setHoodPosition(0);
+        default -> {
+          System.out.println(
+              "Illegal Hood State : " + robotState.getDesiredHoodState().getHoodState());
+          io.setHoodMotorVoltage(0);
+        }
       }
+    } else {
+      io.zero();
     }
 
     switch (robotState.getDesiredHoodState().getKickerState()) {

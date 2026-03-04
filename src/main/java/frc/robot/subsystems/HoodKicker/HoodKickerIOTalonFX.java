@@ -8,6 +8,7 @@ import com.ctre.phoenix6.configs.CANdiConfiguration;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionTorqueCurrentFOC;
+import com.ctre.phoenix6.controls.TorqueCurrentFOC;
 import com.ctre.phoenix6.hardware.CANdi;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.*;
@@ -27,6 +28,8 @@ public class HoodKickerIOTalonFX implements HoodKickerIO {
   // Control Requests
   private final PositionTorqueCurrentFOC positionControl =
       new PositionTorqueCurrentFOC(0.0).withUpdateFreqHz(0.0);
+
+  private final TorqueCurrentFOC zeroControl = new TorqueCurrentFOC(-5).withUpdateFreqHz(0.0);
 
   // Loggables
   private final StatusSignal<Voltage> hoodAppliedVolts = hood.getMotorVoltage();
@@ -133,5 +136,9 @@ public class HoodKickerIOTalonFX implements HoodKickerIO {
 
   public void setKickerMotorVoltage(double volts) {
     kicker.setVoltage(volts);
+  }
+
+  public void zero() {
+    hood.setControl(zeroControl);
   }
 }

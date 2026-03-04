@@ -36,4 +36,6 @@ public interface HoodKickerIO {
    * @param volts voltage to set from
    */
   public default void setKickerMotorVoltage(double volts) {}
+
+  public default void zero() {}
 }
