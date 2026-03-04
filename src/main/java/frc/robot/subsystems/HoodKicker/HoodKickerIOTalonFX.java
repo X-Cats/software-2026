@@ -16,6 +16,7 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
+import frc.robot.Constants;
 import frc.robot.subsystems.shooter.ShooterConstants;
 import frc.robot.util.PhoenixUtil;
 
@@ -140,5 +141,16 @@ public class HoodKickerIOTalonFX implements HoodKickerIO {
 
   public void zero() {
     hood.setControl(zeroControl);
+  }
+
+  @Override
+  public void applyOutputs(HoodIOOutputs outputs) {
+    if (Constants.tuningMode) {
+      var configs = new Slot0Configs();
+      configs.kP = outputs.kP;
+      configs.kD = outputs.kD;
+      tryUntilOk(5, () -> hood.getConfigurator().apply(configs));
+    }
+    hood.setControl(positionControl.withPosition(outputs.positionRad));
   }
 }

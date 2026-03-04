@@ -4,12 +4,25 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotStateMachine;
+import frc.robot.util.LoggedTunableNumber;
 import org.littletonrobotics.junction.Logger;
 
 public class HoodKicker extends SubsystemBase {
   private final HoodKickerIO io;
   private final HoodIOInputsAutoLogged inputs = new HoodIOInputsAutoLogged();
+  private final HoodKickerIO.HoodIOOutputs outputs = new HoodKickerIO.HoodIOOutputs();
   private final RobotStateMachine robotState;
+
+  private static final LoggedTunableNumber goalPosition = new LoggedTunableNumber("Hood/Position", 500);
+  private static final LoggedTunableNumber kP = new LoggedTunableNumber("Hood/kP", HoodKickerConstants.kP);
+  private static final LoggedTunableNumber kD = new LoggedTunableNumber("Hood/kD", HoodKickerConstants.kD);
+  private static final LoggedTunableNumber toleranceDeg =
+          new LoggedTunableNumber("Hood/ToleranceDeg");
+
+  private static final LoggedTunableNumber homingVolts =
+          new LoggedTunableNumber("Hood/Homing/Volts", -2);
+  private static final LoggedTunableNumber homingVelocityThreshold =
+          new LoggedTunableNumber("Hood/Homing/VelocityThreshold", 0.05);
 
   private boolean hasBeenZeroed = false;
 
@@ -24,16 +37,20 @@ public class HoodKicker extends SubsystemBase {
     hasBeenZeroed = hasBeenZeroed || -0.5 < inputs.hoodPosition && inputs.hoodPosition < 0.5;
     Logger.processInputs("Hood", inputs);
 
+    outputs.kP = kP.getAsDouble();
+    outputs.kD = kD.getAsDouble();
+
     if (this.hasBeenZeroed) {
       switch (robotState.getDesiredHoodState().getHoodState()) {
-        case AIMING -> io.setHoodPosition(700);
-        case STOWED -> io.setHoodPosition(0);
+        case AIMING -> outputs.positionRad = goalPosition.getAsDouble();
+        case STOWED -> outputs.positionRad = 0;
         default -> {
           System.out.println(
               "Illegal Hood State : " + robotState.getDesiredHoodState().getHoodState());
           io.setHoodMotorVoltage(0);
         }
       }
+      io.applyOutputs(outputs);
     } else {
       io.zero();
     }

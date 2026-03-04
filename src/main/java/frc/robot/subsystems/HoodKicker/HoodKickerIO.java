@@ -19,7 +19,18 @@ public interface HoodKickerIO {
     public double kickerSupplyCurrent = 0.0;
   }
 
+  public static class HoodIOOutputs {
+    public boolean hasBeenZeroed = false;
+    public double positionRad = 0.0;
+    public double velocityRadPerSecond = 0.0;
+    public double kP = 0.0;
+    public double kD = 0.0;
+
+  }
+
   public default void updateInputs(HoodIOInputs inputs) {}
+
+  public default void applyOutputs(HoodIOOutputs outputs) {}
 
   /**
    * setting the hood motor voltage
