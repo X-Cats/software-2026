@@ -53,11 +53,14 @@ public class HoodKickerIOTalonFX implements HoodKickerIO {
     var hoodConfig = new TalonFXConfiguration();
     hoodConfig.CurrentLimits.SupplyCurrentLimit = HoodKickerConstants.HOOD_MOTOR_CURRENT_LIMIT;
     hoodConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+    hoodConfig.Feedback.SensorToMechanismRatio = HoodKickerConstants.HOOD_MOTOR_REDUCTION;
     hoodConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     hoodConfig.HardwareLimitSwitch.ForwardLimitSource = ForwardLimitSourceValue.RemoteCANdiS1;
     hoodConfig.HardwareLimitSwitch.ReverseLimitSource = ReverseLimitSourceValue.RemoteCANdiS2;
     hoodConfig.HardwareLimitSwitch.ForwardLimitEnable = true;
     hoodConfig.HardwareLimitSwitch.ReverseLimitEnable = true;
+    hoodConfig.HardwareLimitSwitch.ReverseLimitAutosetPositionEnable = true;
+    hoodConfig.HardwareLimitSwitch.ReverseLimitAutosetPositionValue = 0.0;
     hoodConfig.HardwareLimitSwitch.ForwardLimitRemoteSensorID = HoodKickerConstants.CANDI_CAN_ID;
     hoodConfig.HardwareLimitSwitch.ReverseLimitRemoteSensorID = HoodKickerConstants.CANDI_CAN_ID;
     tryUntilOk(5, () -> hood.getConfigurator().apply(hoodConfig, 0.25));
