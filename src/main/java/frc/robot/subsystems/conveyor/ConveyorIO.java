@@ -13,7 +13,7 @@ public interface ConveyorIO {
   /**
    * setting the hopper motor voltage
    *
-   * @param volts voltage to set frm -12 to 12
+   * @param amps amperage to set
    */
-  public default void setConveyorMotorVoltage(double volts) {}
+  public default void setConveyorTorque(double amps) {}
 }

@@ -1,17 +1,17 @@
 package frc.robot;
 
-import static edu.wpi.first.wpilibj2.command.Commands.runEnd;
-
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.AutoLog;
+import org.littletonrobotics.junction.Logger;
 
 // author Daniel Rabess
-public class RobotStateMachine {
+public class RobotStateMachine extends SubsystemBase {
 
-  private final DesiredIntakeState dIntakeState = new DesiredIntakeState();
-  private final DesiredShooterState dShooterState = new DesiredShooterState();
-  private final DesiredConveyorState dConveyorState = new DesiredConveyorState();
-  private final DesiredHoodState dHoodState = new DesiredHoodState();
+  private final DesiredIntakeStateAutoLogged dIntakeState = new DesiredIntakeStateAutoLogged();
+  private final DesiredShooterStateAutoLogged dShooterState = new DesiredShooterStateAutoLogged();
+  private final DesiredConveyorStateAutoLogged dConveyorState =
+      new DesiredConveyorStateAutoLogged();
+  private final DesiredHoodStateAutoLogged dHoodState = new DesiredHoodStateAutoLogged();
 
   // State we want to transition too
   private RobotStateConfig.SuperState desiredSuperState;
@@ -24,6 +24,17 @@ public class RobotStateMachine {
   }
 
   public RobotStateMachine(String probablyLater) {}
+
+  @Override
+  public void periodic() {
+    // io.updateInputs(inputs);
+    // Logger.processInputs("Robot State Machine", inputs);
+    Logger.processInputs("RobotState", dIntakeState);
+    Logger.processInputs("RobotState", dShooterState);
+    Logger.processInputs("RobotState", dConveyorState);
+    Logger.processInputs("RobotState", dHoodState);
+    updateSuperState();
+  }
 
   public void setDesiredSuperState(RobotStateConfig.SuperState dss) {
     this.desiredSuperState = dss;
@@ -69,36 +80,48 @@ public class RobotStateMachine {
 
   // State Transition Helper Functions
   public boolean transitionIDLE() {
+    dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.OFF);
+    dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.STOWED);
+    dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.OFF);
+    dHoodState.setKickerState(DesiredHoodState.KickerState.OFF);
+    dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.OFF);
     return true;
   }
 
   public boolean transitionINTAKING() {
+
+    // Call safety functions
+    ensureHoodIsStowed();
+
     dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.OFF);
     dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.INTAKING);
     dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.DEPLOYED);
     dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.CONVEYING);
-    dHoodState.setHoodState(DesiredHoodState.HoodState.STOWED);
+    // dHoodState.setHoodState(DesiredHoodState.HoodState.STOWED);
     dHoodState.setKickerState(DesiredHoodState.KickerState.INDEXING);
     return true;
   }
 
   public boolean transitionSHOOTING() {
-    dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.OFF);
-    dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.INTAKING);
-    dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.DEPLOYED);
+    dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.ON);
+    dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.OFF);
+    // dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.STOWED);
     dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.CONVEYING);
-    dHoodState.setHoodState(DesiredHoodState.HoodState.STOWED);
+    //    dHoodState.setHoodState(DesiredHoodState.HoodState.AIMING);
     dHoodState.setKickerState(DesiredHoodState.KickerState.FEEDING);
 
     return true;
   }
 
   public boolean transitionAGITATING() {
+
+    ensureHoodIsStowed();
+
     dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.OFF);
     dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.INTAKING);
     dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.DEPLOYED);
     dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.CONVEYING);
-    dHoodState.setHoodState(DesiredHoodState.HoodState.STOWED);
+    // dHoodState.setHoodState(DesiredHoodState.HoodState.STOWED);
     dHoodState.setKickerState(DesiredHoodState.KickerState.INDEXING);
 
     return true;
@@ -109,46 +132,22 @@ public class RobotStateMachine {
     return true;
   }
 
-  public Command runIntake() {
-    return runEnd(
-        () -> {
-          dIntakeState.setExtension(DesiredIntakeState.IntakeExtensionState.EXTENDED);
-          dIntakeState.setRunRoller(true);
-        },
-        () -> {
-          dIntakeState.setExtension(DesiredIntakeState.IntakeExtensionState.RETRACTED);
-          dIntakeState.setRunRoller(false);
-        });
-  }
+  // ** SAFETY HELPER FUNCTIONS - Make Functions here for state safety **//
 
-  public Command runShooter() {
-    return runEnd(
-        () -> {
-          dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.SUPPRESSED);
-        },
-        () -> {
-          dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.ON);
-        });
-  }
+  // This function will check that the hood is stowed
+  // and if its NOT stowed, will change state to be STOWED.
+  // returns true if Hood State was changed to STOWED
+  public boolean ensureHoodIsStowed() {
+    boolean retval = false;
 
-  public Command runHopper() {
-    return runEnd(
-        () -> {
-          dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.CONVEYING);
-        },
-        () -> {
-          dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.OFF);
-        });
-  }
+    if (dHoodState.getHoodState() != DesiredHoodState.HoodState.STOWED) {
+      dHoodState.setHoodState(DesiredHoodState.HoodState.STOWED);
+      retval = true;
+    } else {
+      retval = true;
+    }
 
-  public Command runHood() {
-    return runEnd(
-        () -> {
-          dHoodState.setHoodState(DesiredHoodState.HoodState.AIMING);
-        },
-        () -> {
-          dHoodState.setHoodState(DesiredHoodState.HoodState.STOWED);
-        });
+    return retval;
   }
 
   public DesiredIntakeState getDesiredIntakeState() {
@@ -243,7 +242,7 @@ public class RobotStateMachine {
 
     public DesiredShooterState() {}
 
-    public ShooterModeState shooterMode = ShooterModeState.ON;
+    public ShooterModeState shooterMode = ShooterModeState.OFF;
 
     public ShooterModeState getShooterMode() {
       return shooterMode;

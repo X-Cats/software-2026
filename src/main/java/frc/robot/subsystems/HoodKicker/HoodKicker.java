@@ -1,7 +1,7 @@
 package frc.robot.subsystems.HoodKicker;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotStateMachine;
 import org.littletonrobotics.junction.Logger;
@@ -20,22 +20,27 @@ public class HoodKicker extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Hood", inputs);
+
+    switch (robotState.getDesiredHoodState().getHoodState()) {
+        // case AIMING -> io.setHoodMotorVoltage(HoodKickerConstants.HOOD_MOTOR_VOLTAGE);
+        // case STOWED -> io.setHoodMotorVoltage(0);
+      case AIMING -> io.setHoodPosition(5);
+      case STOWED -> io.setHoodPosition(0);
+      default -> {
+        System.out.println(
+            "Illegal Hood State : " + robotState.getDesiredHoodState().getHoodState());
+        io.setHoodMotorVoltage(0);
+      }
+    }
+
+    switch (robotState.getDesiredHoodState().getKickerState()) {
+      case FEEDING -> io.setKickerMotorVoltage(HoodKickerConstants.KICKER_MOTOR_VOLTAGE);
+      case OFF -> io.setKickerMotorVoltage(0);
+    }
   }
 
   public Command runStateful() {
-    return new RunCommand(
-        () -> {
-          switch (robotState.getDesiredHoodState().getHoodState()) {
-            case AIMING -> io.setHoodMotorVoltage(HoodKickerConstants.HOOD_MOTOR_VOLTAGE);
-            case STOWED -> io.setHoodMotorVoltage(0);
-            default -> {
-              System.out.println(
-                  "Illegal Hood State : " + robotState.getDesiredHoodState().getHoodState());
-              io.setHoodMotorVoltage(0);
-            }
-          }
-        },
-        this);
+    return Commands.none();
   }
 
   public Command runHoodMotor() {

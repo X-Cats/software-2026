@@ -1,7 +1,7 @@
 package frc.robot.subsystems.conveyor;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotStateMachine;
 import org.littletonrobotics.junction.Logger;
@@ -20,34 +20,21 @@ public class Conveyor extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Conveyor", inputs);
+
+    switch (robotState.getDesiredConveyorState().getConveyorState()) {
+      case CONVEYING -> io.setConveyorTorque(ConveyorConstants.CONVEYOR_MOTOR_TORQUE);
+        //        case SHUFFLING -> io.
+      case EJECTING -> io.setConveyorTorque(-ConveyorConstants.CONVEYOR_MOTOR_TORQUE);
+      case OFF -> io.setConveyorTorque(0);
+      default -> {
+        System.out.println(
+            "Illegal conveyor state : " + robotState.getDesiredConveyorState().getConveyorState());
+        io.setConveyorTorque(0);
+      }
+    }
   }
 
   public Command runStateful() {
-    return new RunCommand(
-        () -> {
-          switch (robotState.getDesiredConveyorState().getConveyorState()) {
-            case CONVEYING -> io.setConveyorMotorVoltage(ConveyorConstants.CONVEYOR_MOTOR_VOLTAGE);
-              //        case SHUFFLING -> io.
-            case EJECTING -> io.setConveyorMotorVoltage(-ConveyorConstants.CONVEYOR_MOTOR_VOLTAGE);
-            case OFF -> io.setConveyorMotorVoltage(0);
-            default -> {
-              System.out.println(
-                  "Illegal conveyor state : "
-                      + robotState.getDesiredConveyorState().getConveyorState());
-              io.setConveyorMotorVoltage(0);
-            }
-          }
-        },
-        this);
-  }
-
-  public Command runConveyorMotor() {
-    return runEnd(
-        () -> {
-          io.setConveyorMotorVoltage(ConveyorConstants.CONVEYOR_MOTOR_VOLTAGE);
-        },
-        () -> {
-          io.setConveyorMotorVoltage(0.0);
-        });
+    return Commands.none();
   }
 }

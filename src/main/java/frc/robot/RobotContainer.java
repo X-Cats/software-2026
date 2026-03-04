@@ -30,13 +30,11 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
-import frc.robot.subsystems.HoodKicker.HoodKicker;
-import frc.robot.subsystems.HoodKicker.HoodKickerIOSim;
-import frc.robot.subsystems.HoodKicker.HoodKickerIOTalonFX;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeIOSim;
 import frc.robot.subsystems.intake.IntakeIOTalonFX;
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterConstants;
 import frc.robot.subsystems.shooter.ShooterIOSim;
 import frc.robot.subsystems.shooter.ShooterIOTalonFX;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
@@ -50,9 +48,10 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
-  private final Conveyor hopper;
+  private final Conveyor conveyor;
   private final Intake intake;
-  private final Shooter shooter;
+  private final Shooter leftShooter;
+  private final Shooter rightShooter;
   private final HoodKicker hood;
 
   // Controller
@@ -66,6 +65,8 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    System.out.println(Constants.currentMode);
+    System.out.println(Constants.simMode);
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
@@ -78,9 +79,12 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.FrontRight),
                 new ModuleIOTalonFX(TunerConstants.BackLeft),
                 new ModuleIOTalonFX(TunerConstants.BackRight));
-        hopper = new Conveyor(new ConveyorIOTalonFX(), robotState);
+        conveyor = new Conveyor(new ConveyorIOTalonFX(), robotState);
         intake = new Intake(new IntakeIOTalonFX(), robotState);
-        shooter = new Shooter(new ShooterIOTalonFX(), robotState);
+        leftShooter =
+            new Shooter(new ShooterIOTalonFX(ShooterConstants.ShooterSide.LEFT), robotState);
+        rightShooter =
+            new Shooter(new ShooterIOTalonFX(ShooterConstants.ShooterSide.RIGHT), robotState);
         hood = new HoodKicker(new HoodKickerIOTalonFX(), robotState);
 
         // The ModuleIOTalonFXS implementation provides an example implementation for
@@ -111,9 +115,10 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.FrontRight),
                 new ModuleIOSim(TunerConstants.BackLeft),
                 new ModuleIOSim(TunerConstants.BackRight));
-        hopper = new Conveyor(new ConveyorIOSim(), robotState);
+        conveyor = new Conveyor(new ConveyorIOSim(), robotState);
         intake = new Intake(new IntakeIOSim(), robotState);
-        shooter = new Shooter(new ShooterIOSim(), robotState);
+        leftShooter = new Shooter(new ShooterIOSim(), robotState);
+        rightShooter = new Shooter(new ShooterIOSim(), robotState);
         hood = new HoodKicker(new HoodKickerIOSim(), robotState);
         break;
 
@@ -126,9 +131,10 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {});
-        hopper = new Conveyor(new ConveyorIOSim(), robotState);
-        shooter = new Shooter(new ShooterIOSim(), robotState);
+        conveyor = new Conveyor(new ConveyorIOSim(), robotState);
         intake = new Intake(new IntakeIOSim(), robotState);
+        leftShooter = new Shooter(new ShooterIOSim(), robotState);
+        rightShooter = new Shooter(new ShooterIOSim(), robotState);
         hood = new HoodKicker(new HoodKickerIOSim(), robotState);
         break;
     }
@@ -166,11 +172,6 @@ public class RobotContainer {
             () -> -controller.getLeftY(),
             () -> -controller.getLeftX(),
             () -> -controller.getRightX()));
-
-    intake.setDefaultCommand(intake.runStateful());
-    shooter.setDefaultCommand(shooter.runStateful());
-    hopper.setDefaultCommand(hopper.runStateful());
-    hood.setDefaultCommand(hood.runStateful());
   }
 
   /**
@@ -206,8 +207,32 @@ public class RobotContainer {
                 .ignoringDisable(true));
 
     // TODO bindings are not final
-    controller.leftTrigger().whileTrue(hopper.runConveyorMotor());
-    controller.button(0).whileTrue(hopper.runConveyorMotor());
+    // controller.leftTrigger().whileTrue(hopper.runConveyorMotor());
+    // controller.button(0).whileTrue(hopper.runConveyorMotor());
+
+    controller
+        .rightBumper()
+        .whileTrue(
+            Commands.runEnd(
+                    () -> {
+                      robotState.setDesiredSuperState(RobotStateConfig.SuperState.SHOOTING);
+                    },
+                    () -> {
+                      robotState.setDesiredSuperState(RobotStateConfig.SuperState.IDLE);
+                    })
+                .ignoringDisable(true));
+
+    controller
+        .leftBumper()
+        .whileTrue(
+            Commands.runEnd(
+                    () -> {
+                      robotState.setDesiredSuperState(RobotStateConfig.SuperState.INTAKING);
+                    },
+                    () -> {
+                      robotState.setDesiredSuperState(RobotStateConfig.SuperState.IDLE);
+                    })
+                .ignoringDisable(true));
   }
 
   /**

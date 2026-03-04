@@ -19,6 +19,7 @@ public class IntakeIOSim implements IntakeIO {
           DCMotor.getKrakenX44Foc(1));
 
   private double rollerAppliedVolts = 0.0;
+  private double rollerMotorTorque = 0.0;
   private double deployAppliedVolts = 0.0;
 
   @Override
@@ -39,7 +40,7 @@ public class IntakeIOSim implements IntakeIO {
   }
 
   @Override
-  public void setDeploymentMotorVoltage(double volts) {
-    deployAppliedVolts = MathUtil.clamp(volts, -12.0, 12.0);
+  public void setRollerMotorTorque(double torque) {
+    this.rollerMotorTorque = torque;
   }
 }
