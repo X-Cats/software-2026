@@ -11,7 +11,7 @@ public class RobotStateMachine extends SubsystemBase {
   private final DesiredShooterStateAutoLogged dShooterState = new DesiredShooterStateAutoLogged();
   private final DesiredConveyorStateAutoLogged dConveyorState =
       new DesiredConveyorStateAutoLogged();
-  private final DesiredHoodStateAutoLogged dHoodState = new DesiredHoodStateAutoLogged();
+  private final DesiredHoodStateAutoLogged dHoodKickerState = new DesiredHoodStateAutoLogged();
 
   // State we want to transition too
   private RobotStateConfig.SuperState desiredSuperState;
@@ -32,7 +32,7 @@ public class RobotStateMachine extends SubsystemBase {
     Logger.processInputs("RobotState", dIntakeState);
     Logger.processInputs("RobotState", dShooterState);
     Logger.processInputs("RobotState", dConveyorState);
-    Logger.processInputs("RobotState", dHoodState);
+    Logger.processInputs("RobotState", dHoodKickerState);
     updateSuperState();
   }
 
@@ -58,20 +58,20 @@ public class RobotStateMachine extends SubsystemBase {
 
     switch (getDesiredSuperState()) {
       case IDLE:
-        retval = transitionIDLE();
+        retval = transitionIdle();
         break;
       case INTAKING:
-        retval = transitionINTAKING();
+        retval = transitionIntaking();
         break;
       case SHOOTING:
-        retval = transitionSHOOTING();
+        retval = transitionShooting();
         break;
       case AGITATING:
-        retval = transitionAGITATING();
+        retval = transitionAgitating();
         break;
 
       default:
-        retval = transitionIDLE();
+        retval = transitionIdle();
         break;
     }
 
@@ -79,50 +79,57 @@ public class RobotStateMachine extends SubsystemBase {
   }
 
   // State Transition Helper Functions
-  public boolean transitionIDLE() {
+  public boolean transitionIdle() {
     dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.OFF);
     dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.STOWED);
+
     dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.OFF);
-    dHoodState.setKickerState(DesiredHoodState.KickerState.OFF);
-    dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.OFF);
+
+    dHoodKickerState.setKickerState(DesiredHoodState.KickerState.OFF);
+    dHoodKickerState.setHoodState(DesiredHoodState.HoodState.STOWED);
+
+    dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.IDLE);
     return true;
   }
 
-  public boolean transitionINTAKING() {
-
-    // Call safety functions
-    ensureHoodIsStowed();
-
-    dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.OFF);
+  public boolean transitionIntaking() {
     dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.INTAKING);
     dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.DEPLOYED);
+
     dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.CONVEYING);
-    // dHoodState.setHoodState(DesiredHoodState.HoodState.STOWED);
-    dHoodState.setKickerState(DesiredHoodState.KickerState.INDEXING);
+
+    dHoodKickerState.setKickerState(DesiredHoodState.KickerState.INDEXING);
+    dHoodKickerState.setHoodState(DesiredHoodState.HoodState.STOWED);
+
+    dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.IDLE);
+
     return true;
   }
 
-  public boolean transitionSHOOTING() {
-    dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.ON);
+  public boolean transitionShooting() {
     dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.OFF);
-    // dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.STOWED);
+    dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.STOWED);
+
+    dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.ON);
+
+    dHoodKickerState.setHoodState(DesiredHoodState.HoodState.AIMING);
+    dHoodKickerState.setKickerState(DesiredHoodState.KickerState.FEEDING);
+
     dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.CONVEYING);
-    //    dHoodState.setHoodState(DesiredHoodState.HoodState.AIMING);
-    dHoodState.setKickerState(DesiredHoodState.KickerState.FEEDING);
 
     return true;
   }
 
-  public boolean transitionAGITATING() {
-
-    ensureHoodIsStowed();
-
-    dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.OFF);
+  public boolean transitionAgitating() {
     dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.INTAKING);
     dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.DEPLOYED);
+
+    dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.OFF);
+
+    dHoodKickerState.setHoodState(DesiredHoodState.HoodState.STOWED);
+    dHoodKickerState.setKickerState(DesiredHoodState.KickerState.INDEXING);
+
     dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.CONVEYING);
-    // dHoodState.setHoodState(DesiredHoodState.HoodState.STOWED);
-    dHoodState.setKickerState(DesiredHoodState.KickerState.INDEXING);
 
     return true;
   }
@@ -140,8 +147,8 @@ public class RobotStateMachine extends SubsystemBase {
   public boolean ensureHoodIsStowed() {
     boolean retval = false;
 
-    if (dHoodState.getHoodState() != DesiredHoodState.HoodState.STOWED) {
-      dHoodState.setHoodState(DesiredHoodState.HoodState.STOWED);
+    if (dHoodKickerState.getHoodState() != DesiredHoodState.HoodState.STOWED) {
+      dHoodKickerState.setHoodState(DesiredHoodState.HoodState.STOWED);
       retval = true;
     } else {
       retval = true;
@@ -163,7 +170,7 @@ public class RobotStateMachine extends SubsystemBase {
   }
 
   public DesiredHoodState getDesiredHoodState() {
-    return dHoodState;
+    return dHoodKickerState;
   }
 
   // Desired states
@@ -236,7 +243,7 @@ public class RobotStateMachine extends SubsystemBase {
 
     public enum ShooterModeState {
       ON, // Shooter Motor is On - Kicker Motor is On
-      SUPPRESSED, // Shooter Motor is On - Kicker Motor is Off
+      IDLE, // Shooter Motor is On - Kicker Motor is Off
       OFF // Shooter Motor is Off - Kicker Motor is Off
     }
 

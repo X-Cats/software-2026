@@ -27,7 +27,7 @@ public class Shooter extends SubsystemBase {
     // TODO: not going to look like this, no shooter motor voltages
     switch (robotState.getDesiredShooterState().getShooterMode()) {
       case ON -> io.setShooterMotorRPM(2000);
-      case SUPPRESSED -> io.setShooterMotorRPM(1000); // NOT REAL, JUST HALF VOLTAGE
+      case IDLE -> io.setShooterMotorRPM(1000); // NOT REAL, JUST HALF VOLTAGE
       case OFF -> io.setShooterMotorRPM(0);
       default -> {
         System.out.println(
