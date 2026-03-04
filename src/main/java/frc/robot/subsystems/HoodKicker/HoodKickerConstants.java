@@ -5,6 +5,9 @@ public class HoodKickerConstants {
   public static final int HOOD_MOTOR_VOLTAGE = 1;
   public static final double HOOD_MOTOR_REDUCTION = 1;
   public static final double HOOD_MOTOR_CURRENT_LIMIT = 40;
+  public static final int CANDI_CAN_ID = 53;
+  public static final int UPPER_LIMIT_SWITCH = 1;
+  public static final int LOWER_LIMIT_SWITCH = 2;
 
   public static final int KICKER_MOTOR_ID = 55;
   public static final int KICKER_MOTOR_VOLTAGE = 8;

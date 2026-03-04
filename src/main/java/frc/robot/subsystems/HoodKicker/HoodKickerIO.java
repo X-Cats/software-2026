@@ -10,6 +10,8 @@ public interface HoodKickerIO {
     public double hoodPosition = 0.0;
     public double hoodTorqueCurrent = 0.0;
     public double hoodSupplyCurrent = 0.0;
+    public double hoodForwardLimit = 0.0;
+    public double hoodReverseLimit = 0.0;
 
     public double kickerAppliedVolts = 0.0;
     public double kickerVelocity = 0.0;
