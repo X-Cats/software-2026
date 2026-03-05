@@ -1,6 +1,16 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.vision.VisionConstants;
+import frc.robot.subsystems.vision.VisionFieldPoseEstimate;
+import frc.robot.util.ConcurrentTimeInterpolatableBuffer;
+import frc.robot.util.MathHelpers;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import org.littletonrobotics.junction.AutoLog;
 import org.littletonrobotics.junction.Logger;
 
@@ -13,17 +23,68 @@ public class RobotStateMachine extends SubsystemBase {
       new DesiredConveyorStateAutoLogged();
   private final DesiredHoodStateAutoLogged dHoodState = new DesiredHoodStateAutoLogged();
 
+  static double LOOKBACK_TIME = 0.0;
+
+  private final ConcurrentTimeInterpolatableBuffer<Pose2d> fieldToRobot =
+      ConcurrentTimeInterpolatableBuffer.createBuffer(LOOKBACK_TIME);
+  private ConcurrentTimeInterpolatableBuffer<Double> turretAngularVelocity =
+      ConcurrentTimeInterpolatableBuffer.createDoubleBuffer(LOOKBACK_TIME);
+  private ConcurrentTimeInterpolatableBuffer<Double> turretPositionRadians =
+      ConcurrentTimeInterpolatableBuffer.createDoubleBuffer(LOOKBACK_TIME);
+  private ConcurrentTimeInterpolatableBuffer<Double> driveYawAngularVelocity =
+      ConcurrentTimeInterpolatableBuffer.createDoubleBuffer(LOOKBACK_TIME);
+  private ConcurrentTimeInterpolatableBuffer<Double> driveRollAngularVelocity =
+      ConcurrentTimeInterpolatableBuffer.createDoubleBuffer(LOOKBACK_TIME);
+  private ConcurrentTimeInterpolatableBuffer<Double> drivePitchAngularVelocity =
+      ConcurrentTimeInterpolatableBuffer.createDoubleBuffer(LOOKBACK_TIME);
+
+  private final AtomicReference<ChassisSpeeds> measuredRobotRelativeChassisSpeeds =
+      new AtomicReference<>(new ChassisSpeeds());
+
+  private ConcurrentTimeInterpolatableBuffer<Double> drivePitchRads =
+      ConcurrentTimeInterpolatableBuffer.createDoubleBuffer(LOOKBACK_TIME);
+  private ConcurrentTimeInterpolatableBuffer<Double> driveRollRads =
+      ConcurrentTimeInterpolatableBuffer.createDoubleBuffer(LOOKBACK_TIME);
+  private ConcurrentTimeInterpolatableBuffer<Double> accelX =
+      ConcurrentTimeInterpolatableBuffer.createDoubleBuffer(LOOKBACK_TIME);
+  private ConcurrentTimeInterpolatableBuffer<Double> accelY =
+      ConcurrentTimeInterpolatableBuffer.createDoubleBuffer(LOOKBACK_TIME);
+
+  private static final Transform2d ROBOT_TO_CAMERA_B =
+      new Transform2d(
+          VisionConstants.kTurretToCameraBX,
+          VisionConstants.kTurretToCameraBY,
+          MathHelpers.kRotation2dZero);
+
   // State we want to transition too
   private RobotStateConfig.SuperState desiredSuperState;
   // State the robot is currently configured for
   private RobotStateConfig.SuperState currentSuperState;
 
+  private final Consumer<VisionFieldPoseEstimate> visionEstimateConsumer;
+
   public RobotStateMachine() {
     currentSuperState = RobotStateConfig.SuperState.IDLE;
-    desiredSuperState = RobotStateConfig.SuperState.ZERO; // Do nothing to for now...
+    desiredSuperState = RobotStateConfig.SuperState.ZERO;
+    visionEstimateConsumer = null; // Do nothing to for now...
   }
 
-  public RobotStateMachine(String probablyLater) {}
+  public RobotStateMachine(Consumer<VisionFieldPoseEstimate> visionEstimateConsumer) {
+    currentSuperState = RobotStateConfig.SuperState.IDLE;
+    desiredSuperState = RobotStateConfig.SuperState.ZERO; // Do nothing to for now...
+
+    this.visionEstimateConsumer = visionEstimateConsumer;
+    // Make sure to add one sample to these methods to protect callers against null.
+    fieldToRobot.addSample(0.0, MathHelpers.kPose2dZero);
+    // robotToTurret.addSample(0.0, MathHelpers.kRotation2dZero);
+    turretAngularVelocity.addSample(0.0, 0.0);
+    driveYawAngularVelocity.addSample(0.0, 0.0);
+    turretPositionRadians.addSample(0.0, 0.0);
+  }
+
+  public RobotStateMachine(String probablyLater) {
+    visionEstimateConsumer = null;
+  }
 
   @Override
   public void periodic() {
@@ -164,6 +225,53 @@ public class RobotStateMachine extends SubsystemBase {
 
   public DesiredHoodState getDesiredHoodState() {
     return dHoodState;
+  }
+
+  public boolean isRedAlliance() {
+    return true;
+  }
+
+  public void updateMegatagEstimate(VisionFieldPoseEstimate visionFieldPoseEstimate) {}
+
+  private Optional<Double> getMaxAbsValueInRange(
+      ConcurrentTimeInterpolatableBuffer<Double> buffer, double minTime, double maxTime) {
+    var submap = buffer.getInternalBuffer().subMap(minTime, maxTime).values();
+    var max = submap.stream().max(Double::compare);
+    var min = submap.stream().min(Double::compare);
+    if (max.isEmpty() || min.isEmpty()) return Optional.empty();
+    if (Math.abs(max.get()) >= Math.abs(min.get())) return max;
+    else return min;
+  }
+
+  public Optional<Double> getMaxAbsDriveYawAngularVelocityInRange(double minTime, double maxTime) {
+    // Gyro yaw rate not set in sim.
+    if (Robot.isReal()) return getMaxAbsValueInRange(driveYawAngularVelocity, minTime, maxTime);
+    return Optional.of(measuredRobotRelativeChassisSpeeds.get().omegaRadiansPerSecond);
+  }
+
+  public void updatePinholeEstimate(VisionFieldPoseEstimate pinholeEstimate) {
+    visionEstimateConsumer.accept(pinholeEstimate);
+  }
+
+  public Optional<Double> getMaxAbsTurretYawAngularVelocityInRange(double minTime, double maxTime) {
+    return getMaxAbsValueInRange(turretAngularVelocity, minTime, maxTime);
+  }
+
+  public Optional<Double> getMaxAbsDrivePitchAngularVelocityInRange(
+      double minTime, double maxTime) {
+    return getMaxAbsValueInRange(drivePitchAngularVelocity, minTime, maxTime);
+  }
+
+  public Optional<Double> getMaxAbsDriveRollAngularVelocityInRange(double minTime, double maxTime) {
+    return getMaxAbsValueInRange(driveRollAngularVelocity, minTime, maxTime);
+  }
+
+  public Transform2d getCameraTransform() {
+    return ROBOT_TO_CAMERA_B;
+  }
+
+  public Optional<Pose2d> getFieldToRobot(double timestamp) {
+    return fieldToRobot.getSample(timestamp);
   }
 
   // Desired states

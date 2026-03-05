@@ -1,3 +1,9 @@
 package frc.robot.subsystems.vision;
 
-public class VisionIOSimPhoton extends VisionIOHardwareLimelight {}
+import frc.robot.Localization;
+
+public class VisionIOSimPhoton extends VisionIOHardwareLimelight {
+  public VisionIOSimPhoton(Localization localization) {
+    super(localization);
+  }
+}

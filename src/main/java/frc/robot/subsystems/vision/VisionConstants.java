@@ -1,5 +1,7 @@
 package frc.robot.subsystems.vision;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+
 public class VisionConstants {
   public static final String kLimelightTableName = "limelight1";
   public static final String kLimelightBTableName = "limelight2";
@@ -8,4 +10,9 @@ public class VisionConstants {
   public static final double kCameraHeightOffGroundMeters = 0.0;
   public static final double kCameraBHeightOffGroundMeters = 0.0;
   public static final double kCameraRollDegrees = 1;
+  public static AprilTagFieldLayout kAprilTagLayout;
+  public static final double kCameraPitchRads = 0.0;
+  public static final double kCameraBPitchRads = 0.0;
+  public static double kTurretToCameraBX = 0.0;
+  public static double kTurretToCameraBY = 0.0;
 }
