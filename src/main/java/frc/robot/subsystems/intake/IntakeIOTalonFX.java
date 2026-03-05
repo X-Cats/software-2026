@@ -44,7 +44,7 @@ public class IntakeIOTalonFX implements IntakeIO {
     rollerConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     rollerConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     rollerConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-    tryUntilOk(5, () -> roller.getConfigurator().apply(rollerConfig, 0.25));
+    //    tryUntilOk(5, () -> roller.getConfigurator().apply(rollerConfig, 0.25));
 
     var deployConfig = new TalonFXConfiguration();
     deployConfig.CurrentLimits.SupplyCurrentLimit = IntakeConstants.DEPLOYMENT_MOTOR_CURRENT_LIMIT;
@@ -65,7 +65,7 @@ public class IntakeIOTalonFX implements IntakeIO {
         deployTorqueCurrent,
         deploySupplyCurrent);
 
-    roller.optimizeBusUtilization();
+    //    roller.optimizeBusUtilization();
     deploy.optimizeBusUtilization();
 
     PhoenixUtil.registerSignals(
@@ -97,7 +97,7 @@ public class IntakeIOTalonFX implements IntakeIO {
 
   @Override
   public void setRollerMotorTorque(double torque) {
-    roller.setControl(rollerTorqueCurrentRequest.withOutput(torque));
+    //    roller.setControl(rollerTorqueCurrentRequest.withOutput(torque));
   }
 
   @Override

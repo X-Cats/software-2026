@@ -7,6 +7,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.TorqueCurrentFOC;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.units.measure.Voltage;
@@ -25,6 +26,7 @@ public class ConveyorIOTalonFX implements ConveyorIO {
         ConveyorConstants.CONVEYOR_MOTOR_CURRENT_LIMIT;
     conveyorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     conveyorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    conveyorConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     conveyorLeader.getConfigurator().apply(conveyorConfig, 0.25);
 
     var followerConfig = conveyorConfig.clone();
@@ -37,6 +39,6 @@ public class ConveyorIOTalonFX implements ConveyorIO {
 
   @Override
   public void setConveyorTorque(double amps) {
-    // conveyorLeader.setControl(conveyorTorqueRequest.withOutput(amps));
+    conveyorLeader.setControl(conveyorTorqueRequest.withOutput(amps));
   }
 }

@@ -22,8 +22,6 @@ public class ShooterIOTalonFX implements ShooterIO {
   private final StatusSignal<Voltage> shooterAppliedVolts;
   private final StatusSignal<AngularVelocity> shooterRPM;
 
-  private final boolean;
-
   private final VelocityVoltage velocityControl = new VelocityVoltage(0).withUpdateFreqHz(0.0);
 
   public ShooterIOTalonFX(ShooterConstants.ShooterSide side) {
