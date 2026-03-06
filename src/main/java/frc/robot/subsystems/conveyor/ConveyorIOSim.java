@@ -22,7 +22,7 @@ public class ConveyorIOSim implements ConveyorIO {
   }
 
   @Override
-  public void setConveyorTorque(double volts) {
+  public void setConveyorVoltage(double volts) {
     conveyorAppliedVolts = MathUtil.clamp(volts, -12.0, 12.0);
   }
 }

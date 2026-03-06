@@ -15,5 +15,5 @@ public interface ConveyorIO {
    *
    * @param amps amperage to set
    */
-  public default void setConveyorTorque(double amps) {}
+  public default void setConveyorVoltage(double amps) {}
 }
