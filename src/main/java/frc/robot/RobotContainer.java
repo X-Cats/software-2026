@@ -242,7 +242,7 @@ public class RobotContainer {
                   robotState.setDesiredSuperState(RobotStateConfig.SuperState.AGITATING);
                 },
                 () -> {
-                  robotState.setDesiredSuperState(RobotStateConfig.SuperState.IDLE);
+                  robotState.goBack();
                 }));
   }
 

@@ -16,6 +16,7 @@ public class RobotStateMachine extends SubsystemBase {
 
   // State we want to transition too
   private RobotStateConfig.SuperState desiredSuperState;
+  private RobotStateConfig.SuperState lastState;
   // State the robot is currently configured for
   private RobotStateConfig.SuperState currentSuperState;
 
@@ -37,7 +38,18 @@ public class RobotStateMachine extends SubsystemBase {
     updateSuperState();
   }
 
+  public void saveLastState() {
+    this.lastState = this.desiredSuperState;
+  }
+
+  public void goBack() {
+    this.desiredSuperState = this.lastState;
+  }
+
   public void setDesiredSuperState(RobotStateConfig.SuperState dss) {
+    if (this.desiredSuperState != dss) {
+      saveLastState();
+    }
     this.desiredSuperState = dss;
   }
 
@@ -122,10 +134,10 @@ public class RobotStateMachine extends SubsystemBase {
   }
 
   public boolean transitionAgitating() {
-    dHoodKickerState.setKickerState(DesiredHoodState.KickerState.INDEXING);
-    dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.DEPLOYED);
+    dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.AGITATING);
+    dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.INTAKING);
 
-    dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.EJECTING);
+    dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.AGITATING);
 
     return true;
   }
@@ -205,6 +217,7 @@ public class RobotStateMachine extends SubsystemBase {
     public enum IntakeDeployState {
       DEPLOYED,
       STOWED,
+      AGITATING,
       OFF
     }
 
@@ -279,7 +292,7 @@ public class RobotStateMachine extends SubsystemBase {
     public enum ConveyorState {
       CONVEYING,
       FEEDING,
-      SHUFFLING,
+      AGITATING,
       EJECTING,
       OFF
     }

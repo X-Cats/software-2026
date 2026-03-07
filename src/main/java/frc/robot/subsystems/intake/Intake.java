@@ -1,6 +1,7 @@
 package frc.robot.subsystems.intake;
 
 import edu.wpi.first.math.filter.LinearFilter;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotStateMachine;
 import frc.robot.util.LoggedTunableNumber;
@@ -18,6 +19,9 @@ public class Intake extends SubsystemBase {
       new LoggedTunableNumber("Intake/Deploy Amps", IntakeConstants.DEPLOYMENT_MOTOR_CURRENT);
   private LoggedTunableNumber intakeStowTorque =
       new LoggedTunableNumber("Intake/Stow Amps", IntakeConstants.DEPLOYMENT_MOTOR_STOW_CURRENT);
+
+  private LoggedTunableNumber intakeRollerAmps =
+      new LoggedTunableNumber("Intake/Roller Amps", IntakeConstants.ROLLER_MOTOR_TORQUE);
 
   public Intake(IntakeIO io, RobotStateMachine rs) {
     this.io = io;
@@ -42,17 +46,16 @@ public class Intake extends SubsystemBase {
 
     switch (robotState.getDesiredIntakeState().getDesiredIntakeDeployState()) {
       case DEPLOYED -> {
-        if (inputs.deployOut == 0) {
-          io.setDeployMotorTorque(intakeDeployTorque.getAsDouble());
-        } else {
-          io.setDeployMotorTorque(0);
-        }
+        runOut();
       }
       case STOWED -> {
-        if (inputs.deployIn == 0) {
-          io.setDeployMotorTorque(-intakeStowTorque.getAsDouble());
+        runIn();
+      }
+      case AGITATING -> {
+        if (((int) (Timer.getFPGATimestamp() / 10)) % 3 == 0) {
+          runOut();
         } else {
-          io.setDeployMotorTorque(0);
+          runIn();
         }
       }
       default -> {
@@ -67,9 +70,25 @@ public class Intake extends SubsystemBase {
     if (robotState.getDesiredIntakeState().getDesiredIntakeRollerState()
             == RobotStateMachine.DesiredIntakeState.IntakeRollerState.INTAKING
         && shouldRunRoller()) {
-      io.setRollerMotorTorque(IntakeConstants.ROLLER_MOTOR_TORQUE);
+      io.setRollerMotorTorque(intakeRollerAmps.getAsDouble());
     } else {
       io.setRollerMotorTorque(0);
+    }
+  }
+
+  private void runIn() {
+    if (inputs.deployIn == 0) {
+      io.setDeployMotorTorque(-intakeStowTorque.getAsDouble());
+    } else {
+      io.setDeployMotorTorque(0);
+    }
+  }
+
+  private void runOut() {
+    if (inputs.deployOut == 0) {
+      io.setDeployMotorTorque(intakeDeployTorque.getAsDouble());
+    } else {
+      io.setDeployMotorTorque(0);
     }
   }
 }

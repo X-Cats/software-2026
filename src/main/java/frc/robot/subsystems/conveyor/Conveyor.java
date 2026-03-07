@@ -1,5 +1,6 @@
 package frc.robot.subsystems.conveyor;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,6 +21,7 @@ public class Conveyor extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Conveyor", inputs);
+    io.applyOutputs();
 
     switch (robotState.getDesiredConveyorState().getConveyorState()) {
       case CONVEYING -> {
@@ -28,6 +30,13 @@ public class Conveyor extends SubsystemBase {
         }
       }
       case EJECTING -> io.setConveyorVoltage(-ConveyorConstants.CONVEYOR_MOTOR_VOLTAGE);
+      case AGITATING -> {
+        if (((int) (Timer.getFPGATimestamp() * 10)) % 3 == 0) {
+          io.setConveyorVoltage(-ConveyorConstants.CONVEYOR_MOTOR_VOLTAGE);
+        } else {
+          io.setConveyorVoltage(ConveyorConstants.CONVEYOR_MOTOR_VOLTAGE);
+        }
+      }
       case OFF -> io.setConveyorVoltage(0);
       default -> {
         System.out.println(
