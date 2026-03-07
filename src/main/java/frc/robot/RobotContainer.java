@@ -37,6 +37,9 @@ import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterConstants;
 import frc.robot.subsystems.shooter.ShooterIOSim;
 import frc.robot.subsystems.shooter.ShooterIOTalonFX;
+import frc.robot.subsystems.vision.Camera;
+import frc.robot.subsystems.vision.CameraConstants;
+import frc.robot.subsystems.vision.Vision;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -53,6 +56,7 @@ public class RobotContainer {
   private final Shooter leftShooter;
   private final Shooter rightShooter;
   private final HoodKicker hood;
+  private final Vision vision;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -87,6 +91,10 @@ public class RobotContainer {
             new Shooter(new ShooterIOTalonFX(ShooterConstants.ShooterSide.RIGHT), robotState);
         hood = new HoodKicker(new HoodKickerIOTalonFX(), robotState);
 
+        Camera cam = CameraConstants.RobotCameras.SHOOTER;
+
+        vision = new Vision(cam);
+
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
         // implementations
@@ -120,6 +128,8 @@ public class RobotContainer {
         leftShooter = new Shooter(new ShooterIOSim(), robotState);
         rightShooter = new Shooter(new ShooterIOSim(), robotState);
         hood = new HoodKicker(new HoodKickerIOSim(), robotState);
+
+        vision = new Vision();
         break;
 
       default:
@@ -136,6 +146,7 @@ public class RobotContainer {
         leftShooter = new Shooter(new ShooterIOSim(), robotState);
         rightShooter = new Shooter(new ShooterIOSim(), robotState);
         hood = new HoodKicker(new HoodKickerIOSim(), robotState);
+        vision = new Vision();
         break;
     }
 
