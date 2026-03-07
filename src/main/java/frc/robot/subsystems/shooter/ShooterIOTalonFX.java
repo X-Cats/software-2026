@@ -13,6 +13,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 import frc.robot.util.PhoenixUtil;
 
@@ -21,6 +22,7 @@ public class ShooterIOTalonFX implements ShooterIO {
   private final TalonFX shooterFollower;
   private final StatusSignal<Voltage> shooterAppliedVolts;
   private final StatusSignal<AngularVelocity> shooterRPM;
+  private final StatusSignal<Current> shooterAmps;
 
   private final VelocityVoltage velocityControl = new VelocityVoltage(0).withUpdateFreqHz(0.0);
 
@@ -39,6 +41,7 @@ public class ShooterIOTalonFX implements ShooterIO {
 
     shooterAppliedVolts = shooterLeader.getMotorVoltage();
     shooterRPM = shooterLeader.getVelocity();
+    shooterAmps = shooterLeader.getSupplyCurrent();
 
     var shooterConfig = new TalonFXConfiguration();
     shooterConfig.CurrentLimits.SupplyCurrentLimit = ShooterConstants.SHOOTER_MOTOR_CURRENT_LIMIT;
@@ -68,14 +71,15 @@ public class ShooterIOTalonFX implements ShooterIO {
 
     shooterLeader.getConfigurator().apply(slot0Configs);
 
-    BaseStatusSignal.setUpdateFrequencyForAll(50, shooterAppliedVolts, shooterRPM);
+    BaseStatusSignal.setUpdateFrequencyForAll(50, shooterAppliedVolts, shooterRPM, shooterAmps);
 
-    PhoenixUtil.registerSignals(false, shooterAppliedVolts, shooterRPM);
+    PhoenixUtil.registerSignals(false, shooterAppliedVolts, shooterRPM, shooterAmps);
   }
 
   public void updateInputs(ShooterIO.ShooterIOInputs inputs) {
     inputs.shooterAppliedVolts = shooterAppliedVolts.getValueAsDouble();
     inputs.shooterRPM = shooterRPM.getValueAsDouble() * 60;
+    inputs.shooterAppliedAmps = shooterAmps.getValueAsDouble();
   }
 
   public void applyOutputs(ShooterIOOutputs outputs) {
@@ -83,8 +87,10 @@ public class ShooterIOTalonFX implements ShooterIO {
     slot0Configs.kP = outputs.kP;
     slot0Configs.kI = outputs.kI;
     slot0Configs.kD = outputs.kD;
+    slot0Configs.kV = outputs.kV;
 
     shooterLeader.getConfigurator().apply(slot0Configs);
+    shooterLeader.setControl(velocityControl.withVelocity(outputs.velocityRPM / 60));
   }
 
   /**

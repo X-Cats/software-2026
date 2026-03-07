@@ -13,12 +13,19 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.util.PhoenixUtil;
 
 public class IntakeIOTalonFX implements IntakeIO {
   // Motors
   private final TalonFX roller = new TalonFX(IntakeConstants.ROLLER_MOTOR_ID);
   private final TalonFX deploy = new TalonFX(IntakeConstants.DEPLOYMENT_MOTOR_ID);
+
+  // Sensors
+  private final DigitalInput limitIn = new DigitalInput(IntakeConstants.DEPLOYMENT_LIMIT_IN);
+  private final DigitalInput limitOut = new DigitalInput(IntakeConstants.DEPLOYMENT_LIMIT_OUT);
 
   // Control Requests
   private final TorqueCurrentFOC rollerTorqueCurrentRequest =
@@ -52,6 +59,9 @@ public class IntakeIOTalonFX implements IntakeIO {
     deployConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
     deploy.getConfigurator().apply(deployConfig, 0.25);
     tryUntilOk(5, () -> deploy.getConfigurator().apply(deployConfig, 0.25));
+
+    Trigger inTrigger = new Trigger(limitIn::get);
+    inTrigger.onTrue(new InstantCommand(this::zeroDeploy));
 
     BaseStatusSignal.setUpdateFrequencyForAll(
         50.0,
@@ -93,6 +103,9 @@ public class IntakeIOTalonFX implements IntakeIO {
     inputs.deployPosition = deployPosition.getValueAsDouble();
     inputs.deployTorqueCurrentAmps = deployTorqueCurrent.getValueAsDouble();
     inputs.deploySupplyCurrentAmps = deploySupplyCurrent.getValueAsDouble();
+    inputs.deployIn = limitIn.get() ? 0. : 1.;
+    inputs.deployOut = limitOut.get() ? 0. : 1.;
+    ;
   }
 
   @Override

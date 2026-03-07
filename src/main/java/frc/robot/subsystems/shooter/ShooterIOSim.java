@@ -23,7 +23,6 @@ public class ShooterIOSim implements ShooterIO {
     shooterSim.setInputVoltage(shooterAppliedVelocity);
     shooterSim.update(0.02);
 
-    shooterLastVelocity = inputs.radsPerSecond;
     inputs.shooterAppliedVolts = shooterSim.getAngularVelocityRadPerSec();
   }
 
@@ -38,7 +37,7 @@ public class ShooterIOSim implements ShooterIO {
       shooterCurrentOutput = 0.0;
     } else {
       shooterCurrentOutput = controller.calculate(shooterLastVelocity);
-      controller.setSetpoint(outputs.velocityRadsPerSec);
+      controller.setSetpoint(outputs.velocityRPM);
     }
   }
 }

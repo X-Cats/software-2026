@@ -97,9 +97,9 @@ public class RobotStateMachine extends SubsystemBase {
     dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.INTAKING);
     dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.DEPLOYED);
 
-    dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.EJECTING);
+    dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.OFF);
 
-    dHoodKickerState.setKickerState(DesiredHoodState.KickerState.INDEXING);
+    dHoodKickerState.setKickerState(DesiredHoodState.KickerState.OFF);
     dHoodKickerState.setHoodState(DesiredHoodState.HoodState.STOWED);
 
     dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.IDLE);
@@ -108,7 +108,7 @@ public class RobotStateMachine extends SubsystemBase {
   }
 
   public boolean transitionShooting() {
-    dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.OFF);
+    dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.INTAKING);
     dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.STOWED);
 
     dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.ON);
@@ -122,15 +122,10 @@ public class RobotStateMachine extends SubsystemBase {
   }
 
   public boolean transitionAgitating() {
-    dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.INTAKING);
+    dHoodKickerState.setKickerState(DesiredHoodState.KickerState.INDEXING);
     dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.DEPLOYED);
 
-    dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.OFF);
-
-    dHoodKickerState.setHoodState(DesiredHoodState.HoodState.STOWED);
-    dHoodKickerState.setKickerState(DesiredHoodState.KickerState.INDEXING);
-
-    dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.CONVEYING);
+    dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.EJECTING);
 
     return true;
   }

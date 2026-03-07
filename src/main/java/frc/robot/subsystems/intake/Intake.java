@@ -3,6 +3,7 @@ package frc.robot.subsystems.intake;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotStateMachine;
+import frc.robot.util.LoggedTunableNumber;
 import org.littletonrobotics.junction.Logger;
 
 public class Intake extends SubsystemBase {
@@ -13,6 +14,11 @@ public class Intake extends SubsystemBase {
   private LinearFilter deployVelocityFilter = LinearFilter.singlePoleIIR(0.1, 0.02);
   private LinearFilter deployPositionFilter = LinearFilter.singlePoleIIR(0.1, 0.02);
 
+  private LoggedTunableNumber intakeDeployTorque =
+      new LoggedTunableNumber("Intake/Deploy Amps", IntakeConstants.DEPLOYMENT_MOTOR_CURRENT);
+  private LoggedTunableNumber intakeStowTorque =
+      new LoggedTunableNumber("Intake/Stow Amps", IntakeConstants.DEPLOYMENT_MOTOR_STOW_CURRENT);
+
   public Intake(IntakeIO io, RobotStateMachine rs) {
     this.io = io;
     this.robotState = rs;
@@ -20,9 +26,7 @@ public class Intake extends SubsystemBase {
   }
 
   private boolean shouldRunRoller() {
-    return robotState.getDesiredIntakeState().getDesiredIntakeRollerState()
-            == RobotStateMachine.DesiredIntakeState.IntakeRollerState.INTAKING
-        && deployIsStopped();
+    return (inputs.deployIn == 0) && deployPositionFilter.lastValue() > 1;
   }
 
   private boolean deployIsStopped() {
@@ -36,23 +40,33 @@ public class Intake extends SubsystemBase {
     io.updateInputs(inputs);
     Logger.processInputs("Intake", inputs);
 
-    if (robotState.getDesiredIntakeState().getDesiredIntakeDeployState()
-        == RobotStateMachine.DesiredIntakeState.IntakeDeployState.DEPLOYED) {
-      io.setDeployMotorTorque(IntakeConstants.DEPLOYMENT_MOTOR_CURRENT);
-    } else if (robotState.getDesiredIntakeState().getDesiredIntakeDeployState()
-        == RobotStateMachine.DesiredIntakeState.IntakeDeployState.STOWED) {
-      if (!(deployPositionFilter.lastValue() < 1 && deployIsStopped())) {
-        io.setDeployMotorTorque(-IntakeConstants.DEPLOYMENT_MOTOR_STOW_CURRENT);
+    switch (robotState.getDesiredIntakeState().getDesiredIntakeDeployState()) {
+      case DEPLOYED -> {
+        if (inputs.deployOut == 0) {
+          io.setDeployMotorTorque(intakeDeployTorque.getAsDouble());
+        } else {
+          io.setDeployMotorTorque(0);
+        }
       }
-    } else {
-      System.out.println("Unknown Intake Extension State");
-      io.setDeployMotorTorque(0);
+      case STOWED -> {
+        if (inputs.deployIn == 0) {
+          io.setDeployMotorTorque(-intakeStowTorque.getAsDouble());
+        } else {
+          io.setDeployMotorTorque(0);
+        }
+      }
+      default -> {
+        System.out.println("Unknown Intake Extension State");
+        io.setDeployMotorTorque(0);
+      }
     }
 
     /*
     TODO: Only run the roller if we're out and not running
      */
-    if (this.shouldRunRoller()) {
+    if (robotState.getDesiredIntakeState().getDesiredIntakeRollerState()
+            == RobotStateMachine.DesiredIntakeState.IntakeRollerState.INTAKING
+        && shouldRunRoller()) {
       io.setRollerMotorTorque(IntakeConstants.ROLLER_MOTOR_TORQUE);
     } else {
       io.setRollerMotorTorque(0);

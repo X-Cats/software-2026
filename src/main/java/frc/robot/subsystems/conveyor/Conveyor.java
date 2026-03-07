@@ -22,7 +22,11 @@ public class Conveyor extends SubsystemBase {
     Logger.processInputs("Conveyor", inputs);
 
     switch (robotState.getDesiredConveyorState().getConveyorState()) {
-      case CONVEYING -> io.setConveyorVoltage(ConveyorConstants.CONVEYOR_MOTOR_VOLTAGE);
+      case CONVEYING -> {
+        if (robotState.getShooterAssyReady()) {
+          io.setConveyorVoltage(ConveyorConstants.CONVEYOR_MOTOR_VOLTAGE);
+        }
+      }
       case EJECTING -> io.setConveyorVoltage(-ConveyorConstants.CONVEYOR_MOTOR_VOLTAGE);
       case OFF -> io.setConveyorVoltage(0);
       default -> {

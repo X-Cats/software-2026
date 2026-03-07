@@ -68,6 +68,7 @@ public class HoodKicker extends SubsystemBase {
           io.setKickerMotorVoltage(HoodKickerConstants.KICKER_MOTOR_VOLTAGE);
         else io.setKickerMotorVoltage(0);
       }
+      case INDEXING -> io.setKickerMotorVoltage(-HoodKickerConstants.KICKER_MOTOR_VOLTAGE);
       case OFF -> io.setKickerMotorVoltage(0);
     }
   }

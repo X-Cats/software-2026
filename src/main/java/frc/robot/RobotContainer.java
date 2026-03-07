@@ -233,6 +233,17 @@ public class RobotContainer {
                       robotState.setDesiredSuperState(RobotStateConfig.SuperState.IDLE);
                     })
                 .ignoringDisable(true));
+
+    controller
+        .y()
+        .whileTrue(
+            Commands.runEnd(
+                () -> {
+                  robotState.setDesiredSuperState(RobotStateConfig.SuperState.AGITATING);
+                },
+                () -> {
+                  robotState.setDesiredSuperState(RobotStateConfig.SuperState.IDLE);
+                }));
   }
 
   /**

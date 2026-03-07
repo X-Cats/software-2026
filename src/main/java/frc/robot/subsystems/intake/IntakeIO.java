@@ -9,6 +9,8 @@ public interface IntakeIO {
     public double rollerVelocity = 0.0;
     public double rollerTorqueCurrentAmps = 0.0;
     public double rollerSupplyCurrentAmps = 0.0;
+    public double deployIn = 0.0;
+    public double deployOut = 0.0;
 
     public double deployAppliedVolts = 0.0;
     public double deployVelocity = 0.0;

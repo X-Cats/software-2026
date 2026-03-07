@@ -6,8 +6,8 @@ public interface ShooterIO {
   @AutoLog
   public static class ShooterIOInputs {
     public double shooterAppliedVolts = 0.0;
+    public double shooterAppliedAmps = 0.0;
     public double shooterRPM = 0.0;
-    public double radsPerSecond = 0.0;
   }
 
   public static enum ShooterIOOutputMode {
@@ -19,11 +19,12 @@ public interface ShooterIO {
     public ShooterIOOutputMode mode = ShooterIOOutputMode.COAST;
 
     // TODO: Add values for kP, kI, kD, FF, and Velocity here
-    public double velocityRadsPerSec;
+    public double velocityRPM;
     public double feedforward = 0.0;
     public double kP;
     public double kI;
     public double kD;
+    public double kV;
   }
 
   // Dont touch these ******
