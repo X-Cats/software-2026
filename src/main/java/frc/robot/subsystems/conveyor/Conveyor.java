@@ -5,12 +5,16 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotStateMachine;
+import frc.robot.util.LoggedTunableNumber;
 import org.littletonrobotics.junction.Logger;
 
 public class Conveyor extends SubsystemBase {
   private final ConveyorIO io;
   private final ConveyorIOInputsAutoLogged inputs = new ConveyorIOInputsAutoLogged();
   private final RobotStateMachine robotState;
+
+  private LoggedTunableNumber conveyorVoltage =
+      new LoggedTunableNumber("Conveyor/Supply Voltage", ConveyorConstants.CONVEYOR_MOTOR_VOLTAGE);
 
   public Conveyor(ConveyorIO io, RobotStateMachine rs) {
     this.io = io;
@@ -26,15 +30,15 @@ public class Conveyor extends SubsystemBase {
     switch (robotState.getDesiredConveyorState().getConveyorState()) {
       case CONVEYING -> {
         if (robotState.getShooterAssyReady()) {
-          io.setConveyorVoltage(ConveyorConstants.CONVEYOR_MOTOR_VOLTAGE);
+          io.setConveyorVoltage(conveyorVoltage.getAsDouble());
         }
       }
-      case EJECTING -> io.setConveyorVoltage(-ConveyorConstants.CONVEYOR_MOTOR_VOLTAGE);
+      case EJECTING -> io.setConveyorVoltage(-conveyorVoltage.getAsDouble());
       case AGITATING -> {
         if (((int) (Timer.getFPGATimestamp() * 10)) % 3 == 0) {
-          io.setConveyorVoltage(-ConveyorConstants.CONVEYOR_MOTOR_VOLTAGE);
+          io.setConveyorVoltage(-conveyorVoltage.getAsDouble());
         } else {
-          io.setConveyorVoltage(ConveyorConstants.CONVEYOR_MOTOR_VOLTAGE);
+          io.setConveyorVoltage(conveyorVoltage.getAsDouble());
         }
       }
       case OFF -> io.setConveyorVoltage(0);
