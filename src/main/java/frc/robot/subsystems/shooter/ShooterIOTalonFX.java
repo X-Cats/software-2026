@@ -75,7 +75,16 @@ public class ShooterIOTalonFX implements ShooterIO {
 
   public void updateInputs(ShooterIO.ShooterIOInputs inputs) {
     inputs.shooterAppliedVolts = shooterAppliedVolts.getValueAsDouble();
-    inputs.shooterRPM = shooterRPM.getValueAsDouble();
+    inputs.shooterRPM = shooterRPM.getValueAsDouble() * 60;
+  }
+
+  public void applyOutputs(ShooterIOOutputs outputs) {
+    var slot0Configs = new Slot0Configs();
+    slot0Configs.kP = outputs.kP;
+    slot0Configs.kI = outputs.kI;
+    slot0Configs.kD = outputs.kD;
+
+    shooterLeader.getConfigurator().apply(slot0Configs);
   }
 
   /**
@@ -88,7 +97,7 @@ public class ShooterIOTalonFX implements ShooterIO {
    * This doesn't use the latest phoenix API, you'll need to update it
    */
   @Override
-  public void setShooterMotorRPM(double rpm) {
+  public void setShooterMotorRPS(double rpm) {
     shooterLeader.setControl(velocityControl.withVelocity(rpm));
   }
 }

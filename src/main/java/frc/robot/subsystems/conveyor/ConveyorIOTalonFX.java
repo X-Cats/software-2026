@@ -21,6 +21,7 @@ public class ConveyorIOTalonFX implements ConveyorIO {
   private final TorqueCurrentFOC conveyorTorqueRequest =
       new TorqueCurrentFOC(0.0).withUpdateFreqHz(0.0);
   private final VoltageOut conveyorVoltageRequest = new VoltageOut(0.0).withUpdateFreqHz(0.0);
+
   public ConveyorIOTalonFX() {
     var conveyorConfig = new TalonFXConfiguration();
     conveyorConfig.CurrentLimits.SupplyCurrentLimit =
@@ -40,6 +41,6 @@ public class ConveyorIOTalonFX implements ConveyorIO {
 
   @Override
   public void setConveyorVoltage(double volts) {
-     conveyorLeader.setControl(conveyorVoltageRequest.withOutput(volts));
+    conveyorLeader.setControl(conveyorVoltageRequest.withOutput(volts));
   }
 }

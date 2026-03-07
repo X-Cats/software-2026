@@ -97,7 +97,7 @@ public class IntakeIOTalonFX implements IntakeIO {
 
   @Override
   public void setRollerMotorTorque(double torque) {
-    //    roller.setControl(rollerTorqueCurrentRequest.withOutput(torque));
+    roller.setControl(rollerTorqueCurrentRequest.withOutput(torque));
   }
 
   @Override

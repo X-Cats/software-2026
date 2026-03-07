@@ -32,6 +32,6 @@ public interface ShooterIO {
   public default void applyOutputs(ShooterIOOutputs outputs) {}
 
   // Put your hands on these *****
-  public default void setShooterMotorRPM(double RPM) {}
+  public default void setShooterMotorRPS(double RPM) {}
   ;
 }

@@ -9,6 +9,7 @@ public class RobotStateMachine extends SubsystemBase {
 
   private final DesiredIntakeStateAutoLogged dIntakeState = new DesiredIntakeStateAutoLogged();
   private final DesiredShooterStateAutoLogged dShooterState = new DesiredShooterStateAutoLogged();
+  private final ShooterStateAutoLogged aShooterState = new ShooterStateAutoLogged();
   private final DesiredConveyorStateAutoLogged dConveyorState =
       new DesiredConveyorStateAutoLogged();
   private final DesiredHoodStateAutoLogged dHoodKickerState = new DesiredHoodStateAutoLogged();
@@ -96,7 +97,7 @@ public class RobotStateMachine extends SubsystemBase {
     dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.INTAKING);
     dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.DEPLOYED);
 
-    dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.CONVEYING);
+    dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.EJECTING);
 
     dHoodKickerState.setKickerState(DesiredHoodState.KickerState.INDEXING);
     dHoodKickerState.setHoodState(DesiredHoodState.HoodState.STOWED);
@@ -171,6 +172,15 @@ public class RobotStateMachine extends SubsystemBase {
 
   public DesiredHoodState getDesiredHoodState() {
     return dHoodKickerState;
+  }
+
+  public ShooterState getShooterState() {
+    return this.aShooterState;
+  }
+
+  public boolean getShooterAssyReady() {
+    // TODO: Add hood here too
+    return this.aShooterState.shooterAtSpeed;
   }
 
   // Desired states
@@ -320,5 +330,14 @@ public class RobotStateMachine extends SubsystemBase {
     public DesiredHoodState() {}
 
     public HoodState hoodState = HoodState.STOWED;
+  }
+
+  @AutoLog
+  public static class ShooterState {
+    public boolean shooterAtSpeed;
+
+    public void setShooterAtSpeed(boolean atSpeed) {
+      this.shooterAtSpeed = atSpeed;
+    }
   }
 }

@@ -63,7 +63,11 @@ public class HoodKicker extends SubsystemBase {
     }
 
     switch (robotState.getDesiredHoodState().getKickerState()) {
-      case FEEDING -> io.setKickerMotorVoltage(HoodKickerConstants.KICKER_MOTOR_VOLTAGE);
+      case FEEDING -> {
+        if (robotState.getShooterAssyReady())
+          io.setKickerMotorVoltage(HoodKickerConstants.KICKER_MOTOR_VOLTAGE);
+        else io.setKickerMotorVoltage(0);
+      }
       case OFF -> io.setKickerMotorVoltage(0);
     }
   }
