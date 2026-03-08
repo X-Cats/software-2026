@@ -31,10 +31,10 @@ public class RobotStateMachine extends SubsystemBase {
   public void periodic() {
     // io.updateInputs(inputs);
     // Logger.processInputs("Robot State Machine", inputs);
-    Logger.processInputs("RobotState", dIntakeState);
-    Logger.processInputs("RobotState", dShooterState);
-    Logger.processInputs("RobotState", dConveyorState);
-    Logger.processInputs("RobotState", dHoodKickerState);
+    Logger.processInputs("RobotStateMachine", dIntakeState);
+    Logger.processInputs("RobotStateMachine", dShooterState);
+    Logger.processInputs("RobotStateMachine", dConveyorState);
+    Logger.processInputs("RobotStateMachine", dHoodKickerState);
     updateSuperState();
   }
 

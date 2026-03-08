@@ -7,8 +7,11 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.util.HubShiftUtil;
+import frc.robot.util.LaunchCalculator;
 import frc.robot.util.PhoenixUtil;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -86,6 +89,24 @@ public class Robot extends LoggedRobot {
     // the Command-based framework to work.
     CommandScheduler.getInstance().run();
     PhoenixUtil.refreshAll();
+
+    // Log hub state
+    Logger.recordOutput("HubShift/Official", HubShiftUtil.getOfficialShiftInfo());
+    Logger.recordOutput("HubShift/Shifted", HubShiftUtil.getShiftedShiftInfo());
+
+    // Log launching parameters
+    var launchCalculator = LaunchCalculator.getInstance();
+    Logger.recordOutput("LaunchCalculator/Parameters", launchCalculator.getParameters());
+    Logger.recordOutput(
+        "LaunchCalculator/HoodAngleOffsetDeg", launchCalculator.getHoodAngleOffsetDeg());
+    String formattedOffset = String.format("%.1f", launchCalculator.getHoodAngleOffsetDeg());
+    if (formattedOffset.equals("-0.0")) {
+      formattedOffset = "0.0";
+    }
+    SmartDashboard.putString("Hood Angle Offset", formattedOffset);
+
+    // Clear launching parameters
+    launchCalculator.clearLaunchingParameters();
     // Return to non-RT thread priority (do not modify the first argument)
     // Threads.setCurrentThreadPriority(false, 10);
   }

@@ -3,7 +3,9 @@ package frc.robot.subsystems.HoodKicker;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.RobotStateMachine;
+import frc.robot.util.LaunchCalculator;
 import frc.robot.util.LoggedTunableNumber;
 import org.littletonrobotics.junction.Logger;
 
@@ -43,13 +45,17 @@ public class HoodKicker extends SubsystemBase {
     hasBeenZeroed = hasBeenZeroed || -0.5 < inputs.hoodPosition && inputs.hoodPosition < 0.5;
     Logger.processInputs("Hood", inputs);
 
+    LaunchCalculator.getInstance().getParameters().hoodAngle();
     outputs.kP = kP.getAsDouble();
     outputs.kD = kD.getAsDouble();
     outputs.kS = kS.getAsDouble();
 
     if (this.hasBeenZeroed) {
       switch (robotState.getDesiredHoodState().getHoodState()) {
-        case AIMING -> outputs.positionRad = goalPosition.getAsDouble();
+        case AIMING -> outputs.positionRad =
+            Constants.tuningMode
+                ? goalPosition.getAsDouble()
+                : LaunchCalculator.getInstance().getParameters().hoodAngle();
         case STOWED -> outputs.positionRad = 0;
         default -> {
           System.out.println(

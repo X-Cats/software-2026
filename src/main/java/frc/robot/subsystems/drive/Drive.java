@@ -41,8 +41,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Constants.Mode;
+import frc.robot.RobotState;
 import frc.robot.generated.TunerConstants;
 import frc.robot.util.LocalADStarAK;
+import java.util.Optional;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -192,17 +194,27 @@ public class Drive extends SubsystemBase {
 
       // Update gyro angle
       if (gyroInputs.connected) {
+        //        System.out.println("HERE");
         // Use the real gyro angle
         rawGyroRotation = gyroInputs.odometryYawPositions[i];
       } else {
         // Use the angle delta from the kinematics and module deltas
+
         Twist2d twist = kinematics.toTwist2d(moduleDeltas);
         rawGyroRotation = rawGyroRotation.plus(new Rotation2d(twist.dtheta));
       }
 
       // Apply update
-      poseEstimator.updateWithTime(sampleTimestamps[i], rawGyroRotation, modulePositions);
+      RobotState.getInstance()
+          .addOdometryObservation(
+              sampleTimestamps[i], modulePositions, Optional.ofNullable(rawGyroRotation));
     }
+
+    Pose2d robotPose = RobotState.getInstance().getRobotPoseField();
+    //    SmartDashboard.putNumber("RobotPoseRot", robotPose.getRotation().getDegrees());
+    //    SmartDashboard.putNumber("RobotPoseX", robotPose.getX());
+    //    SmartDashboard.putNumber("RobotPoseY", robotPose.getY());
+    //    m_field.setRobotPose(robotPose);
 
     // Update gyro alert
     gyroDisconnectedAlert.set(!gyroInputs.connected && Constants.currentMode != Mode.SIM);
@@ -315,7 +327,7 @@ public class Drive extends SubsystemBase {
   /** Returns the current odometry pose. */
   @AutoLogOutput(key = "Odometry/Robot")
   public Pose2d getPose() {
-    return poseEstimator.getEstimatedPosition();
+    return RobotState.getInstance().getRobotPoseOdometry();
   }
 
   /** Returns the current odometry rotation. */
@@ -325,7 +337,7 @@ public class Drive extends SubsystemBase {
 
   /** Resets the current odometry pose. */
   public void setPose(Pose2d pose) {
-    poseEstimator.resetPosition(rawGyroRotation, getModulePositions(), pose);
+    RobotState.getInstance().resetRobotPose(pose);
   }
 
   /** Adds a new timestamped vision measurement. */
