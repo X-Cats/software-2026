@@ -8,6 +8,7 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -153,6 +154,8 @@ public class RobotContainer {
         break;
     }
 
+    configureNamedCommands();
+
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
@@ -258,6 +261,27 @@ public class RobotContainer {
                 () -> {
                   robotState.goBack();
                 }));
+  }
+
+  public void configureNamedCommands() {
+    NamedCommands.registerCommand(
+        "Activate Intake",
+        Commands.runEnd(
+            () -> {
+              robotState.setDesiredSuperState(RobotStateConfig.SuperState.INTAKING);
+            },
+            () -> {
+              robotState.setDesiredSuperState(RobotStateConfig.SuperState.IDLE);
+            }));
+    NamedCommands.registerCommand(
+        "Activate Shooting",
+        Commands.runEnd(
+            () -> {
+              robotState.setDesiredSuperState(RobotStateConfig.SuperState.SHOOTING);
+            },
+            () -> {
+              robotState.setDesiredSuperState(RobotStateConfig.SuperState.IDLE);
+            }));
   }
 
   private Rotation2d getHubDriveAngle() {
