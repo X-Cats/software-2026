@@ -16,6 +16,10 @@ public class Conveyor extends SubsystemBase {
   private LoggedTunableNumber conveyorVoltage =
       new LoggedTunableNumber("Conveyor/Supply Voltage", ConveyorConstants.CONVEYOR_MOTOR_VOLTAGE);
 
+  private LoggedTunableNumber conveyorAgitatingVoltage =
+      new LoggedTunableNumber(
+          "Conveyor/Agitating Voltage", ConveyorConstants.CONVEYOR_AGITATING_MOTOR_VOLTAGE);
+
   public Conveyor(ConveyorIO io, RobotStateMachine rs) {
     this.io = io;
     robotState = rs;
@@ -35,8 +39,8 @@ public class Conveyor extends SubsystemBase {
       }
       case EJECTING -> io.setConveyorVoltage(-conveyorVoltage.getAsDouble());
       case AGITATING -> {
-        if (((int) (Timer.getFPGATimestamp() * 10)) % 3 == 0) {
-          io.setConveyorVoltage(-conveyorVoltage.getAsDouble());
+        if (((int) (Timer.getFPGATimestamp() * 10)) % 4 == 0) { // Every 1/4 of the time we agitate
+          io.setConveyorVoltage(conveyorAgitatingVoltage.getAsDouble());
         } else {
           io.setConveyorVoltage(conveyorVoltage.getAsDouble());
         }

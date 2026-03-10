@@ -120,22 +120,22 @@ public class RobotStateMachine extends SubsystemBase {
   }
 
   public boolean transitionShooting() {
-    dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.INTAKING);
-    dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.STOWED);
+    dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.AGITATING);
+    dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.AGITATING);
 
     dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.ON);
 
     dHoodKickerState.setHoodState(DesiredHoodState.HoodState.AIMING);
     dHoodKickerState.setKickerState(DesiredHoodState.KickerState.FEEDING);
 
-    dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.CONVEYING);
+    dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.AGITATING);
 
     return true;
   }
 
   public boolean transitionAgitating() {
     dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.AGITATING);
-    dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.INTAKING);
+    dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.AGITATING);
 
     dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.AGITATING);
 
@@ -208,6 +208,7 @@ public class RobotStateMachine extends SubsystemBase {
 
     public enum IntakeRollerState {
       INTAKING,
+      AGITATING,
       EJECTING,
       OFF
     }

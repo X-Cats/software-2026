@@ -67,10 +67,26 @@ public class Intake extends SubsystemBase {
     /*
     TODO: Only run the roller if we're out and not running
      */
-    if (robotState.getDesiredIntakeState().getDesiredIntakeRollerState()
-            == RobotStateMachine.DesiredIntakeState.IntakeRollerState.INTAKING
-        && shouldRunRoller()) {
-      io.setRollerMotorTorque(intakeRollerAmps.getAsDouble());
+    if (shouldRunRoller()) {
+      switch (robotState.getDesiredIntakeState().getDesiredIntakeRollerState()) {
+        case INTAKING -> {
+          io.setRollerMotorTorque(intakeRollerAmps.getAsDouble());
+        }
+        case EJECTING -> {
+          io.setRollerMotorTorque(-intakeRollerAmps.getAsDouble());
+        }
+        case AGITATING -> {
+          if (((int) (Timer.getFPGATimestamp() * 10)) % 3
+              == 0) { // Every 1/3 of the time we agitate
+            io.setRollerMotorTorque(-intakeRollerAmps.getAsDouble() / 2);
+          } else {
+            io.setRollerMotorTorque(intakeRollerAmps.getAsDouble());
+          }
+        }
+        case OFF -> {
+          io.setRollerMotorTorque(0);
+        }
+      }
     } else {
       io.setRollerMotorTorque(0);
     }
