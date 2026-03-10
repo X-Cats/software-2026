@@ -8,24 +8,40 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.225700878925677,
-        "y": 6.882325748389905
+        "x": 6.21241796875,
+        "y": 7.354827329282407
       },
       "isLocked": false,
       "linkedName": "LHS Past Trench"
     },
     {
       "anchor": {
-        "x": 7.821355179398148,
-        "y": 4.9282873987268525
+        "x": 8.203798972800927,
+        "y": 6.911759403935186
       },
       "prevControl": {
-        "x": 7.571363614788487,
-        "y": 6.428288804600863
+        "x": 7.759254968431262,
+        "y": 7.2296952294243715
+      },
+      "nextControl": {
+        "x": 8.648342977170591,
+        "y": 6.593823578446
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.697780671296297,
+        "y": 5.003411458333333
+      },
+      "prevControl": {
+        "x": 8.712739872685185,
+        "y": 6.0029879195601845
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "LHS Intake End"
+      "linkedName": "Far Acq LHS"
     }
   ],
   "rotationTargets": [],
@@ -42,7 +58,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -88.45655773748554
+    "rotation": -88.47056014517166
   },
   "reversed": false,
   "folder": null,
@@ -50,5 +66,5 @@
     "velocity": 3.0,
     "rotation": 0.0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }
