@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.interpolation.InterpolatingTreeMap;
+import edu.wpi.first.math.interpolation.Interpolator;
 import edu.wpi.first.math.interpolation.InverseInterpolator;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
@@ -61,8 +62,8 @@ public class LaunchCalculator {
   private static final double phaseDelay;
 
   // Launching Maps
-  private static final InterpolatingTreeMap<Double, Rotation2d> hoodAngleMap =
-      new InterpolatingTreeMap<>(InverseInterpolator.forDouble(), Rotation2d::interpolate);
+  private static final InterpolatingTreeMap<Double, Double> hoodAngleMap =
+      new InterpolatingTreeMap<>(InverseInterpolator.forDouble(), Interpolator.forDouble());
   private static final InterpolatingDoubleTreeMap flywheelSpeedMap =
       new InterpolatingDoubleTreeMap();
   private static final InterpolatingDoubleTreeMap timeOfFlightMap =
@@ -133,31 +134,29 @@ public class LaunchCalculator {
     passingMaxDistance = 17.16;
     phaseDelay = 0.03;
 
-    hoodAngleMap.put(0.96, Rotation2d.fromDegrees(0));
-    hoodAngleMap.put(1.16, Rotation2d.fromDegrees(100));
-    hoodAngleMap.put(1.58, Rotation2d.fromDegrees(200));
-    hoodAngleMap.put(2.07, Rotation2d.fromDegrees(18.5));
-    hoodAngleMap.put(2.37, Rotation2d.fromDegrees(22.0));
-    hoodAngleMap.put(2.47, Rotation2d.fromDegrees(23.0));
-    hoodAngleMap.put(2.70, Rotation2d.fromDegrees(24.0));
-    hoodAngleMap.put(2.94, Rotation2d.fromDegrees(25.0));
-    hoodAngleMap.put(3.48, Rotation2d.fromDegrees(27.0));
-    hoodAngleMap.put(3.92, Rotation2d.fromDegrees(32.0));
-    hoodAngleMap.put(4.35, Rotation2d.fromDegrees(34.0));
-    hoodAngleMap.put(4.84, Rotation2d.fromDegrees(38.0));
+    hoodAngleMap.put(0.96, 0.0);
+    hoodAngleMap.put(1.46, 0.0);
+    hoodAngleMap.put(1.73, 0.0);
+    hoodAngleMap.put(2.18, 0.0);
+    hoodAngleMap.put(2.47, 0.0);
+    hoodAngleMap.put(2.70, 0.0);
+    hoodAngleMap.put(2.94, 50.0);
+    hoodAngleMap.put(3.48, 110.0);
+    hoodAngleMap.put(3.92, 230.0);
+    hoodAngleMap.put(4.35, 390.0);
+    hoodAngleMap.put(4.84, 500.0);
 
-    flywheelSpeedMap.put(0.96, 150.0);
-    flywheelSpeedMap.put(1.16, 155.0);
-    flywheelSpeedMap.put(1.58, 160.0);
-    flywheelSpeedMap.put(2.07, 165.0);
-    flywheelSpeedMap.put(2.37, 170.0);
-    flywheelSpeedMap.put(2.47, 170.0);
-    flywheelSpeedMap.put(2.70, 170.0);
-    flywheelSpeedMap.put(2.94, 175.0);
-    flywheelSpeedMap.put(3.48, 175.0);
-    flywheelSpeedMap.put(3.92, 180.0);
-    flywheelSpeedMap.put(4.35, 185.0);
-    flywheelSpeedMap.put(4.84, 190.0);
+    flywheelSpeedMap.put(0.96, 1500.0);
+    flywheelSpeedMap.put(1.46, 1500.0);
+    flywheelSpeedMap.put(1.73, 1650.0);
+    flywheelSpeedMap.put(2.18, 1800.0);
+    flywheelSpeedMap.put(2.47, 1900.0);
+    flywheelSpeedMap.put(2.70, 2000.0);
+    flywheelSpeedMap.put(2.94, 2000.0);
+    flywheelSpeedMap.put(3.48, 2000.0);
+    flywheelSpeedMap.put(3.92, 2000.0);
+    flywheelSpeedMap.put(4.35, 2000.0);
+    flywheelSpeedMap.put(4.84, 2000.0);
 
     timeOfFlightMap.put(5.68, 1.16);
     timeOfFlightMap.put(4.55, 1.12);
@@ -186,23 +185,21 @@ public class LaunchCalculator {
         new LaunchPreset(
             new LoggedTunableNumber(
                 "LaunchCalculator/Presets/Passing/HoodAngle",
-                hoodAngleMap.get(passingPresetDistance).getDegrees()),
+                hoodAngleMap.get(passingPresetDistance)),
             new LoggedTunableNumber(
                 "LaunchCalculator/Presets/Passing/FlywheelSpeed",
                 flywheelSpeedMap.get(passingPresetDistance)));
     hubPreset =
         new LaunchPreset(
             new LoggedTunableNumber(
-                "LaunchCalculator/Presets/Hub/HoodAngle",
-                hoodAngleMap.get(hubPresetDistance).getDegrees()),
+                "LaunchCalculator/Presets/Hub/HoodAngle", hoodAngleMap.get(hubPresetDistance)),
             new LoggedTunableNumber(
                 "LaunchCalculator/Presets/Hub/FlywheelSpeed",
                 flywheelSpeedMap.get(hubPresetDistance)));
     towerPreset =
         new LaunchPreset(
             new LoggedTunableNumber(
-                "LaunchCalculator/Presets/Tower/HoodAngle",
-                hoodAngleMap.get(towerPresetDistance).getDegrees()),
+                "LaunchCalculator/Presets/Tower/HoodAngle", hoodAngleMap.get(towerPresetDistance)),
             new LoggedTunableNumber(
                 "LaunchCalculator/Presets/Tower/FlywheelSpeed",
                 flywheelSpeedMap.get(towerPresetDistance)));
@@ -210,7 +207,7 @@ public class LaunchCalculator {
         new LaunchPreset(
             new LoggedTunableNumber(
                 "LaunchCalculator/Presets/Trench/HoodAngle",
-                hoodAngleMap.get(trenchPresetDistance).getDegrees()),
+                hoodAngleMap.get(trenchPresetDistance)),
             new LoggedTunableNumber(
                 "LaunchCalculator/Presets/Trench/FlywheelSpeed",
                 flywheelSpeedMap.get(trenchPresetDistance)));
@@ -218,7 +215,7 @@ public class LaunchCalculator {
         new LaunchPreset(
             new LoggedTunableNumber(
                 "LaunchCalculator/Presets/Outpost/HoodAngle",
-                hoodAngleMap.get(outpostPresetDistance).getDegrees()),
+                hoodAngleMap.get(outpostPresetDistance)),
             new LoggedTunableNumber(
                 "LaunchCalculator/Presets/Outpost/FlywheelSpeed",
                 flywheelSpeedMap.get(outpostPresetDistance)));
@@ -298,7 +295,7 @@ public class LaunchCalculator {
     double hoodAngle =
         passing
             ? passingHoodAngleMap.get(lookaheadLauncherToTargetDistance).getRadians()
-            : hoodAngleMap.get(lookaheadLauncherToTargetDistance).getRadians();
+            : hoodAngleMap.get(lookaheadLauncherToTargetDistance);
     if (lastDriveAngle == null) lastDriveAngle = driveAngle;
     if (Double.isNaN(lastHoodAngle)) lastHoodAngle = hoodAngle;
     double hoodVelocity =

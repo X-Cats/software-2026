@@ -17,6 +17,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import lombok.Getter;
 import lombok.Setter;
+import org.littletonrobotics.junction.Logger;
 
 /**
  * RobotState: localization + motion state only. - Field Pose Estimators (odometry + vision) -
@@ -136,6 +137,8 @@ public final class RobotState {
 
     fieldLocalizer.updateWithTime(timestampSeconds, yawWithOffset, wheelPositions);
     odometry.update(yawWithOffset, wheelPositions);
+
+    Logger.recordOutput("RobotState/fieldLocalization", fieldLocalizer.getEstimatedPosition());
 
     fusedPoseBuffer.addSample(timestampSeconds, fieldLocalizer.getEstimatedPosition());
   }
