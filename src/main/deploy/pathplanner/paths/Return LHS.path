@@ -8,43 +8,48 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.07125256619044,
-        "y": 4.921125270943607
+        "x": 8.043882076419921,
+        "y": 4.814349783770853
       },
       "isLocked": false,
       "linkedName": "LHS Intake End"
     },
     {
       "anchor": {
-        "x": 6.249863636363637,
-        "y": 7.395022727272727
+        "x": 5.792359916818251,
+        "y": 7.548253003260825
       },
       "prevControl": {
-        "x": 6.735637337713628,
-        "y": 7.204633082523024
+        "x": 6.483552361993034,
+        "y": 7.204257326793758
       },
       "nextControl": {
-        "x": 5.732863877668909,
-        "y": 7.597650823688866
+        "x": 5.302215610386002,
+        "y": 7.792190163504246
       },
       "isLocked": false,
       "linkedName": "LHS Past Trench"
     },
     {
       "anchor": {
-        "x": 3.3227272727272723,
-        "y": 7.395022727272727
+        "x": 3.9446037135612038,
+        "y": 7.548253003260825
       },
       "prevControl": {
-        "x": 3.572401248309717,
-        "y": 7.407786187495439
+        "x": 4.194112223212439,
+        "y": 7.563921558127797
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "LHS Shooting"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1,
+      "rotationDegrees": -89.93629284890133
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [
     {
@@ -69,7 +74,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -72.55013764735898
+    "rotation": -79.40211476651776
   },
   "reversed": false,
   "folder": null,
