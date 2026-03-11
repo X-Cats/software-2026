@@ -8,36 +8,36 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.947678058088588,
-        "y": 4.9962493305500875
+        "x": 9.141307269784239,
+        "y": 4.5455009958968855
       },
       "isLocked": false,
       "linkedName": "Far Acq LHS"
     },
     {
       "anchor": {
-        "x": 5.2124179687500005,
-        "y": 7.354827329282407
+        "x": 5.792359916818251,
+        "y": 7.548253003260825
       },
       "prevControl": {
-        "x": 5.698191670099992,
-        "y": 7.164437684532704
+        "x": 6.384856173597934,
+        "y": 7.297376035818626
       },
       "nextControl": {
-        "x": 4.695418210055273,
-        "y": 7.557455425698546
+        "x": 5.543701829981275,
+        "y": 7.65354073468836
       },
       "isLocked": false,
       "linkedName": "LHS Past Trench"
     },
     {
       "anchor": {
-        "x": 3.419085286458334,
-        "y": 7.233972728587963
+        "x": 3.9446037135612038,
+        "y": 7.548253003260825
       },
       "prevControl": {
-        "x": 3.6687592620407785,
-        "y": 7.246736188810675
+        "x": 5.047258299993292,
+        "y": 7.662456580040866
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,7 +47,7 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 1,
-      "rotationDegrees": -89.1587478745598
+      "rotationDegrees": -90.32759793794494
     }
   ],
   "constraintZones": [],
@@ -74,7 +74,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -72.55013764735898
+    "rotation": -79.40211476651776
   },
   "reversed": false,
   "folder": null,

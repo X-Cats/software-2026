@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.419085286458334,
-        "y": 7.233972728587963
+        "x": 3.9446037135612038,
+        "y": 7.548253003260825
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.19977374694307,
-        "y": 7.264926111512949
+        "x": 4.72529217404594,
+        "y": 7.579206386185811
       },
       "isLocked": false,
       "linkedName": "LHS Shooting"
@@ -97,7 +97,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -72.55013764735898
+    "rotation": -79.40211476651776
   },
   "useDefaultConstraints": true
 }

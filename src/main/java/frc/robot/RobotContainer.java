@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -43,6 +42,7 @@ import frc.robot.subsystems.vision.Camera;
 import frc.robot.subsystems.vision.CameraConstants;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.util.AllianceFlipUtil;
+import frc.robot.util.AutoManager;
 import frc.robot.util.FieldConstants;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -155,9 +155,10 @@ public class RobotContainer {
     }
 
     configureNamedCommands();
+    var autoManager = new AutoManager();
 
     // Set up auto routines
-    autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+    autoChooser = new LoggedDashboardChooser<>("Auto Choices", autoManager.getChooser());
 
     // Set up SysId routines
     autoChooser.addOption(
