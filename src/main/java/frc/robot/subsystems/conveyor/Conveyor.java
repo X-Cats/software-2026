@@ -39,7 +39,8 @@ public class Conveyor extends SubsystemBase {
       }
       case EJECTING -> io.setConveyorVoltage(-conveyorVoltage.getAsDouble());
       case AGITATING -> {
-        if (((int) (Timer.getFPGATimestamp() * 10)) % 4 == 0) { // Every 1/4 of the time we agitate
+        if (((int) (Timer.getFPGATimestamp() * 10.0)) % 4
+            == 0) { // Every 1/4 of the time we agitate
           io.setConveyorVoltage(conveyorAgitatingVoltage.getAsDouble());
         } else {
           io.setConveyorVoltage(conveyorVoltage.getAsDouble());

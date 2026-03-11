@@ -52,10 +52,11 @@ public class Intake extends SubsystemBase {
         runIn();
       }
       case AGITATING -> {
-        if (((int) (Timer.getFPGATimestamp() / 10)) % 3 == 0) {
-          runOut();
+        int time = ((int) (Timer.getFPGATimestamp()) % 2);
+        if (time == 0) {
+          agitateOut();
         } else {
-          runIn();
+          agitateIn();
         }
       }
       default -> {
@@ -103,6 +104,22 @@ public class Intake extends SubsystemBase {
   private void runOut() {
     if (inputs.deployOut == 0) {
       io.setDeployMotorTorque(intakeDeployTorque.getAsDouble());
+    } else {
+      io.setDeployMotorTorque(0);
+    }
+  }
+
+  private void agitateIn() {
+    if (inputs.deployIn == 0) {
+      io.setDeployMotorTorque(-intakeStowTorque.getAsDouble() / 1.5);
+    } else {
+      io.setDeployMotorTorque(0);
+    }
+  }
+
+  private void agitateOut() {
+    if (inputs.deployOut == 0) {
+      io.setDeployMotorTorque(intakeDeployTorque.getAsDouble() / 2);
     } else {
       io.setDeployMotorTorque(0);
     }

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.419085286458334,
-        "y": 7.233972728587963
+        "x": 3.3227272727272723,
+        "y": 7.395022727272727
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.419085286458333,
-        "y": 7.233972728587963
+        "x": 4.322727272727272,
+        "y": 7.395022727272727
       },
       "isLocked": false,
       "linkedName": "LHS Shooting"
     },
     {
       "anchor": {
-        "x": 5.2124179687500005,
-        "y": 7.354827329282407
+        "x": 6.249863636363637,
+        "y": 7.395022727272727
       },
       "prevControl": {
-        "x": 4.2124179687500005,
-        "y": 7.354827329282407
+        "x": 5.249863636363637,
+        "y": 7.395022727272727
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,7 +46,7 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 3.0,
     "rotation": 0.0
   },
   "reversed": false,

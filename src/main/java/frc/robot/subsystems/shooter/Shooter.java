@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotStateMachine;
+import frc.robot.util.LaunchCalculator;
 import frc.robot.util.LoggedTunableNumber;
 import org.littletonrobotics.junction.Logger;
 
@@ -43,7 +44,7 @@ public class Shooter extends SubsystemBase {
     // TODO: not going to look like this, no shooter motor voltages
     switch (robotState.getDesiredShooterState().getShooterMode()) {
       case ON -> {
-        outputs.velocityRPM = shooterRPM.get();
+        outputs.velocityRPM = LaunchCalculator.getInstance().getParameters().flywheelSpeed();
       }
       case IDLE -> {
         outputs.velocityRPM = shooterCoastRPM.get();

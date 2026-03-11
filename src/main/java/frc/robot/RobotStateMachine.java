@@ -120,7 +120,7 @@ public class RobotStateMachine extends SubsystemBase {
   }
 
   public boolean transitionShooting() {
-    dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.AGITATING);
+    dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.INTAKING);
     dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.AGITATING);
 
     dShooterState.setShooterMode(DesiredShooterState.ShooterModeState.ON);
@@ -128,7 +128,7 @@ public class RobotStateMachine extends SubsystemBase {
     dHoodKickerState.setHoodState(DesiredHoodState.HoodState.AIMING);
     dHoodKickerState.setKickerState(DesiredHoodState.KickerState.FEEDING);
 
-    dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.AGITATING);
+    dConveyorState.setConveyorState(DesiredConveyorState.ConveyorState.CONVEYING);
 
     return true;
   }
