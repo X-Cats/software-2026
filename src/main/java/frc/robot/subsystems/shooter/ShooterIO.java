@@ -8,7 +8,7 @@ public interface ShooterIO {
   @AutoLog
   public static class ShooterIOInputs {
     public double shooterAppliedVolts = 0.0;
-    public double shooterAppliedAmps = 0.0;
+    public double shooterSupplyCurrentAmps = 0.0;
     public double shooterRPM = 0.0;
   }
 
