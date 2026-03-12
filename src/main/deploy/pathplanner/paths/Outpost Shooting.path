@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.9446037135612038,
-        "y": 7.548253003260825
+        "x": 0.7232589354269039,
+        "y": 0.6421939304361173
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.217565316582893,
-        "y": 7.591434566482732
+        "x": 1.7930032890886034,
+        "y": 0.6752903643479342
       },
       "isLocked": false,
-      "linkedName": "LHS Shooting"
+      "linkedName": "Outpost Acq"
     },
     {
       "anchor": {
-        "x": 6.430674334490741,
-        "y": 7.362700593171296
+        "x": 2.179036506204044,
+        "y": 1.5456409409466914
       },
       "prevControl": {
-        "x": 5.479106929674264,
-        "y": 7.469901160034035
+        "x": 1.6866928914227135,
+        "y": 1.4189140167228222
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "LHS Past Trench"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -41,14 +41,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 3.0,
-    "rotation": -74.40448264408225
+    "velocity": 0,
+    "rotation": 45.805882706290944
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -79.40211476651776
+    "rotation": 179.29971921306222
   },
   "useDefaultConstraints": true
 }
