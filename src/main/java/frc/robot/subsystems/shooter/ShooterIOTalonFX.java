@@ -15,6 +15,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
+import frc.robot.Constants;
 import frc.robot.util.PhoenixUtil;
 
 public class ShooterIOTalonFX implements ShooterIO {
@@ -23,10 +24,12 @@ public class ShooterIOTalonFX implements ShooterIO {
   private final StatusSignal<Voltage> shooterAppliedVolts;
   private final StatusSignal<AngularVelocity> shooterRPM;
   private final StatusSignal<Current> shooterAmps;
+  private final ShooterConstants.ShooterSide side;
 
   private final VelocityVoltage velocityControl = new VelocityVoltage(0).withUpdateFreqHz(0.0);
 
   public ShooterIOTalonFX(ShooterConstants.ShooterSide side) {
+    this.side = side;
     shooterLeader =
         new TalonFX(
             side.compareTo(ShooterConstants.ShooterSide.LEFT) == 0
@@ -79,17 +82,19 @@ public class ShooterIOTalonFX implements ShooterIO {
   public void updateInputs(ShooterIO.ShooterIOInputs inputs) {
     inputs.shooterAppliedVolts = shooterAppliedVolts.getValueAsDouble();
     inputs.shooterRPM = shooterRPM.getValueAsDouble() * 60;
-    inputs.shooterAppliedAmps = shooterAmps.getValueAsDouble();
+    inputs.shooterSupplyCurrentAmps = shooterAmps.getValueAsDouble();
   }
 
   public void applyOutputs(ShooterIOOutputs outputs) {
-    var slot0Configs = new Slot0Configs();
-    slot0Configs.kP = outputs.kP;
-    slot0Configs.kI = outputs.kI;
-    slot0Configs.kD = outputs.kD;
-    slot0Configs.kV = outputs.kV;
+    if (Constants.tuningMode) {
+      var slot0Configs = new Slot0Configs();
+      slot0Configs.kP = outputs.kP;
+      slot0Configs.kI = outputs.kI;
+      slot0Configs.kD = outputs.kD;
+      slot0Configs.kV = outputs.kV;
 
-    shooterLeader.getConfigurator().apply(slot0Configs);
+      shooterLeader.getConfigurator().apply(slot0Configs);
+    }
     shooterLeader.setControl(velocityControl.withVelocity(outputs.velocityRPM / 60));
   }
 
@@ -105,5 +110,9 @@ public class ShooterIOTalonFX implements ShooterIO {
   @Override
   public void setShooterMotorRPS(double rpm) {
     shooterLeader.setControl(velocityControl.withVelocity(rpm));
+  }
+
+  public ShooterConstants.ShooterSide getShooterSide() {
+    return this.side;
   }
 }
