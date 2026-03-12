@@ -19,7 +19,7 @@ public final class Constants {
   public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
   public static final double loopPeriodSecs = 0.02;
 
-  public static final boolean tuningMode = true; // TODO: Remove before FingerLakes
+  public static final boolean tuningMode = false; // TODO: Remove before FingerLakes
   public static final boolean disableHAL = false;
 
   public static enum Mode {
