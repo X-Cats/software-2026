@@ -3,7 +3,8 @@ package frc.robot.subsystems.shooter;
 public class ShooterConstants {
   public enum ShooterSide {
     LEFT,
-    RIGHT
+    RIGHT,
+    SIM
   }
 
   public static final double SHOOTER_MOTOR_VOLTAGE = 1;

@@ -1,5 +1,7 @@
 package frc.robot.subsystems.shooter;
 
+import static frc.robot.subsystems.shooter.ShooterConstants.ShooterSide.SIM;
+
 import org.littletonrobotics.junction.AutoLog;
 
 public interface ShooterIO {
@@ -34,5 +36,8 @@ public interface ShooterIO {
 
   // Put your hands on these *****
   public default void setShooterMotorRPS(double RPM) {}
-  ;
+
+  public default ShooterConstants.ShooterSide getShooterSide() {
+    return SIM;
+  }
 }

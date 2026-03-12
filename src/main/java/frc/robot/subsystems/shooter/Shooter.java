@@ -26,8 +26,11 @@ public class Shooter extends SubsystemBase {
       new LoggedTunableNumber("Shooter/kV", ShooterConstants.kV);
   private final LinearFilter filteredRPM = LinearFilter.singlePoleIIR(0.1, 0.02);
 
+  private final String logKey;
+
   public Shooter(ShooterIO io, RobotStateMachine rs) {
     this.io = io;
+    this.logKey = "Shooter/" + io.getShooterSide();
     robotState = rs;
   }
 
@@ -35,7 +38,7 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     filteredRPM.calculate(inputs.shooterRPM);
-    Logger.processInputs("Shooter", inputs);
+    Logger.processInputs(logKey, inputs);
 
     outputs.kP = kP.getAsDouble();
     outputs.kD = kD.getAsDouble();

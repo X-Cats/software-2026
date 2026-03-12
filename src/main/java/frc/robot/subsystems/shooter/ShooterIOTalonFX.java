@@ -23,10 +23,12 @@ public class ShooterIOTalonFX implements ShooterIO {
   private final StatusSignal<Voltage> shooterAppliedVolts;
   private final StatusSignal<AngularVelocity> shooterRPM;
   private final StatusSignal<Current> shooterAmps;
+  private final ShooterConstants.ShooterSide side;
 
   private final VelocityVoltage velocityControl = new VelocityVoltage(0).withUpdateFreqHz(0.0);
 
   public ShooterIOTalonFX(ShooterConstants.ShooterSide side) {
+    this.side = side;
     shooterLeader =
         new TalonFX(
             side.compareTo(ShooterConstants.ShooterSide.LEFT) == 0
@@ -105,5 +107,9 @@ public class ShooterIOTalonFX implements ShooterIO {
   @Override
   public void setShooterMotorRPS(double rpm) {
     shooterLeader.setControl(velocityControl.withVelocity(rpm));
+  }
+
+  public ShooterConstants.ShooterSide getShooterSide() {
+    return this.side;
   }
 }
