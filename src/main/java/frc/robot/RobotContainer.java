@@ -283,6 +283,15 @@ public class RobotContainer {
             () -> {
               robotState.setDesiredSuperState(RobotStateConfig.SuperState.IDLE);
             }));
+
+    NamedCommands.registerCommand(
+            "Aim",
+            DriveCommands.joystickDriveAtAngle(
+                    drive,
+                    () -> -controller.getLeftY(),
+                    () -> -controller.getLeftX(),
+                    this::getHubDriveAngle)
+    );
   }
 
   private Rotation2d getHubDriveAngle() {
