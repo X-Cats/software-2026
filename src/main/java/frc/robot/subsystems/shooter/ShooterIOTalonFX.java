@@ -15,7 +15,6 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
-import frc.robot.Constants;
 import frc.robot.util.PhoenixUtil;
 
 public class ShooterIOTalonFX implements ShooterIO {
@@ -71,6 +70,7 @@ public class ShooterIOTalonFX implements ShooterIO {
     slot0Configs.kP = ShooterConstants.kP;
     slot0Configs.kI = ShooterConstants.kI;
     slot0Configs.kD = ShooterConstants.kD;
+    slot0Configs.kV = ShooterConstants.kV;
 
     shooterLeader.getConfigurator().apply(slot0Configs);
 
@@ -86,15 +86,15 @@ public class ShooterIOTalonFX implements ShooterIO {
   }
 
   public void applyOutputs(ShooterIOOutputs outputs) {
-    if (Constants.tuningMode) {
-      var slot0Configs = new Slot0Configs();
-      slot0Configs.kP = outputs.kP;
-      slot0Configs.kI = outputs.kI;
-      slot0Configs.kD = outputs.kD;
-      slot0Configs.kV = outputs.kV;
+    // if (Constants.tuningMode) {
+    //   var slot0Configs = new Slot0Configs();
+    //   slot0Configs.kP = outputs.kP;
+    //   slot0Configs.kI = outputs.kI;
+    //   slot0Configs.kD = outputs.kD;
+    //   slot0Configs.kV = outputs.kV;
 
-      shooterLeader.getConfigurator().apply(slot0Configs);
-    }
+    //   shooterLeader.getConfigurator().apply(slot0Configs);
+    // }
     shooterLeader.setControl(velocityControl.withVelocity(outputs.velocityRPM / 60));
   }
 
