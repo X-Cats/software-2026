@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.925151041666666,
-        "y": 5.860285011574074
+        "x": 7.705857229573907,
+        "y": 6.043514003092542
       },
       "isLocked": false,
       "linkedName": "LHS Intake End"
@@ -20,24 +20,56 @@
         "y": 7.397671006944445
       },
       "prevControl": {
-        "x": 8.21937431195631,
-        "y": 7.103609510072461
+        "x": 8.12193716988598,
+        "y": 7.037037346552379
       },
       "nextControl": {
-        "x": 6.825939177101969,
-        "y": 7.677602862254025
+        "x": 6.959232783564816,
+        "y": 7.7172599103009265
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.9642933810375665,
-        "y": 7.417996422182468
+        "x": 4.638063368055556,
+        "y": 7.5116365017361115
       },
       "prevControl": {
-        "x": 3.337477638640429,
-        "y": 7.596475849731663
+        "x": 5.157170416173874,
+        "y": 7.486928813885665
+      },
+      "nextControl": {
+        "x": 3.944691261574075,
+        "y": 7.544638599537038
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.176719979745371,
+        "y": 7.0158833188657415
+      },
+      "prevControl": {
+        "x": 3.4322073929398154,
+        "y": 7.275897858796296
+      },
+      "nextControl": {
+        "x": 2.8877990546859067,
+        "y": 6.721842839664239
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.9386193576388893,
+        "y": 6.086641348379629
+      },
+      "prevControl": {
+        "x": 2.8497170862268524,
+        "y": 6.505105324074075
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,6 +80,10 @@
     {
       "waypointRelativePos": 1,
       "rotationDegrees": -89.93629284890133
+    },
+    {
+      "waypointRelativePos": 2,
+      "rotationDegrees": -90.0
     }
   ],
   "constraintZones": [],
@@ -58,8 +94,8 @@
         "y": 4.0
       },
       "rotationOffset": 0.0,
-      "minWaypointRelativePos": 1.697233181063122,
-      "maxWaypointRelativePos": 1.8726640365448515,
+      "minWaypointRelativePos": 2.4,
+      "maxWaypointRelativePos": 2.8,
       "name": "Point Towards Zone"
     }
   ],

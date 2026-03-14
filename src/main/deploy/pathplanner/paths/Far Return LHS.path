@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.744494570249008,
-        "y": 6.0918740497454476
+        "x": 8.645641369722734,
+        "y": 6.345591425118569
       },
       "isLocked": false,
       "linkedName": "Far Acq LHS"
@@ -20,31 +20,52 @@
         "y": 6.935313585069444
       },
       "prevControl": {
-        "x": 8.641323299678861,
-        "y": 6.38080279607914
+        "x": 8.795618088439037,
+        "y": 6.54829056736347
       },
       "nextControl": {
-        "x": 8.302450805008945,
-        "y": 7.564025044722719
+        "x": 8.105770420626602,
+        "y": 7.400996326535129
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.9642933810375665,
-        "y": 7.417996422182468
+        "x": 4.66830982349537,
+        "y": 7.553102358217593
       },
       "prevControl": {
-        "x": 3.970268336314848,
-        "y": 7.758729874776385
+        "x": 5.513412359384199,
+        "y": 7.551788002850724
+      },
+      "nextControl": {
+        "x": 2.6855595341435183,
+        "y": 7.556186053240742
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.9386193576388893,
+        "y": 6.086641348379629
+      },
+      "prevControl": {
+        "x": 2.47573705150463,
+        "y": 6.364173900462963
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "LHS Shooting"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 2,
+      "rotationDegrees": -89.79345099146025
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [
     {
@@ -53,8 +74,8 @@
         "y": 4.0
       },
       "rotationOffset": 0.0,
-      "minWaypointRelativePos": 1.697233181063122,
-      "maxWaypointRelativePos": 1.8726640365448515,
+      "minWaypointRelativePos": 2.4,
+      "maxWaypointRelativePos": 2.75,
       "name": "Point Towards Zone"
     }
   ],

@@ -3,16 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.9642933810375665,
-        "y": 7.417996422182468
+        "x": 2.9386193576388893,
+        "y": 6.086641348379629
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.2372549840592555,
-        "y": 7.461177985404375
+        "x": 3.0207637442129633,
+        "y": 7.370048972800926
       },
       "isLocked": false,
       "linkedName": "LHS Shooting"
+    },
+    {
+      "anchor": {
+        "x": 4.5637922453703705,
+        "y": 7.517016565393519
+      },
+      "prevControl": {
+        "x": 3.871243826459877,
+        "y": 7.535926052057963
+      },
+      "nextControl": {
+        "x": 5.056396122685186,
+        "y": 7.50356640625
+      },
+      "isLocked": false,
+      "linkedName": null
     },
     {
       "anchor": {
@@ -20,15 +36,20 @@
         "y": 7.362700593171296
       },
       "prevControl": {
-        "x": 5.479106929674264,
-        "y": 7.469901160034035
+        "x": 6.1662638888888885,
+        "y": 7.487163773148149
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "LHS Past Trench"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1,
+      "rotationDegrees": -90.1699635624639
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
