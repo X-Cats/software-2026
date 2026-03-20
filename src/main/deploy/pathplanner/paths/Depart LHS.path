@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.445090044806985,
-        "y": 7.548253003260825
+        "x": 4.633392645314355,
+        "y": 7.601672597864768
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.53638853312755,
-        "y": 7.484686683932001
+        "x": 5.724691133634919,
+        "y": 7.538106278535944
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "LHS Trench Move"
     },
     {
       "anchor": {
