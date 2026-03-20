@@ -15,8 +15,6 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.HoodKicker.HoodKickerConstants;
 import frc.robot.util.PhoenixUtil;
 
@@ -59,7 +57,6 @@ public class IntakeIOTalonFX implements IntakeIO {
     rollerConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     //    tryUntilOk(5, () -> roller.getConfigurator().apply(rollerConfig, 0.25));
 
-
     var deployLimitsConfig = new CANdiConfiguration();
     deployLimitsConfig.DigitalInputs.S1CloseState = S1CloseStateValue.CloseWhenLow;
     deployLimitsConfig.DigitalInputs.S2CloseState = S2CloseStateValue.CloseWhenLow;
@@ -92,7 +89,9 @@ public class IntakeIOTalonFX implements IntakeIO {
         deployPosition,
         deployAppliedVolts,
         deployTorqueCurrent,
-        deploySupplyCurrent, deployForwardLimit, deployReverseLimit);
+        deploySupplyCurrent,
+        deployForwardLimit,
+        deployReverseLimit);
 
     //    roller.optimizeBusUtilization();
     deploy.optimizeBusUtilization();
@@ -108,7 +107,8 @@ public class IntakeIOTalonFX implements IntakeIO {
         deployPosition,
         deployTorqueCurrent,
         deploySupplyCurrent,
-        deployForwardLimit, deployReverseLimit);
+        deployForwardLimit,
+        deployReverseLimit);
   }
 
   @Override
