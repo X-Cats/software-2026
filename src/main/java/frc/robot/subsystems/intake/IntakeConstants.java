@@ -6,7 +6,7 @@ public class IntakeConstants {
   public static final int DEPLOYMENT_MOTOR_STOW_CURRENT = 15;
   public static final double DEPLOYMENT_MOTOR_REDUCTION = 5;
   public static final double DEPLOYMENT_MOTOR_CURRENT_LIMIT = 10;
-
+  public static final int DEPLOYMENT_LIMITS_CANDI_ID = 6;
   public static final int DEPLOYMENT_LIMIT_IN = 1;
   public static final int DEPLOYMENT_LIMIT_OUT = 0;
 

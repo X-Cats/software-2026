@@ -4,11 +4,12 @@ import static frc.robot.util.PhoenixUtil.tryUntilOk;
 
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.CANdiConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.TorqueCurrentFOC;
+import com.ctre.phoenix6.hardware.CANdi;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.*;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
@@ -16,6 +17,7 @@ import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.HoodKicker.HoodKickerConstants;
 import frc.robot.util.PhoenixUtil;
 
 public class IntakeIOTalonFX implements IntakeIO {
@@ -24,6 +26,7 @@ public class IntakeIOTalonFX implements IntakeIO {
   private final TalonFX deploy = new TalonFX(IntakeConstants.DEPLOYMENT_MOTOR_ID);
 
   // Sensors
+  private final CANdi deployLimits = new CANdi(IntakeConstants.DEPLOYMENT_LIMITS_CANDI_ID);
   private final DigitalInput limitIn = new DigitalInput(IntakeConstants.DEPLOYMENT_LIMIT_IN);
   private final DigitalInput limitOut = new DigitalInput(IntakeConstants.DEPLOYMENT_LIMIT_OUT);
 
@@ -45,6 +48,9 @@ public class IntakeIOTalonFX implements IntakeIO {
   private final StatusSignal<Current> rollerTorqueCurrent = roller.getTorqueCurrent();
   private final StatusSignal<Current> rollerSupplyCurrent = roller.getSupplyCurrent();
 
+  private final StatusSignal<Boolean> deployForwardLimit = deploy.getFault_ForwardHardLimit();
+  private final StatusSignal<Boolean> deployReverseLimit = deploy.getFault_ReverseHardLimit();
+
   public IntakeIOTalonFX() {
     var rollerConfig = new TalonFXConfiguration();
     rollerConfig.CurrentLimits.SupplyCurrentLimit = IntakeConstants.ROLLER_MOTOR_CURRENT_LIMIT;
@@ -53,15 +59,28 @@ public class IntakeIOTalonFX implements IntakeIO {
     rollerConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     //    tryUntilOk(5, () -> roller.getConfigurator().apply(rollerConfig, 0.25));
 
+
+    var deployLimitsConfig = new CANdiConfiguration();
+    deployLimitsConfig.DigitalInputs.S1CloseState = S1CloseStateValue.CloseWhenLow;
+    deployLimitsConfig.DigitalInputs.S2CloseState = S2CloseStateValue.CloseWhenLow;
+    deployLimitsConfig.DigitalInputs.S1FloatState = S1FloatStateValue.FloatDetect;
+    deployLimitsConfig.DigitalInputs.S2FloatState = S2FloatStateValue.FloatDetect;
+    tryUntilOk(5, () -> deployLimits.getConfigurator().apply(deployLimitsConfig));
+
     var deployConfig = new TalonFXConfiguration();
     deployConfig.CurrentLimits.SupplyCurrentLimit = IntakeConstants.DEPLOYMENT_MOTOR_CURRENT_LIMIT;
     deployConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     deployConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
     deploy.getConfigurator().apply(deployConfig, 0.25);
+    deployConfig.HardwareLimitSwitch.ForwardLimitSource = ForwardLimitSourceValue.RemoteCANdiS2;
+    deployConfig.HardwareLimitSwitch.ReverseLimitSource = ReverseLimitSourceValue.RemoteCANdiS1;
+    deployConfig.HardwareLimitSwitch.ForwardLimitEnable = true;
+    deployConfig.HardwareLimitSwitch.ReverseLimitEnable = true;
+    deployConfig.HardwareLimitSwitch.ReverseLimitAutosetPositionEnable = true;
+    deployConfig.HardwareLimitSwitch.ReverseLimitAutosetPositionValue = 0.0;
+    deployConfig.HardwareLimitSwitch.ForwardLimitRemoteSensorID = HoodKickerConstants.CANDI_CAN_ID;
+    deployConfig.HardwareLimitSwitch.ReverseLimitRemoteSensorID = HoodKickerConstants.CANDI_CAN_ID;
     tryUntilOk(5, () -> deploy.getConfigurator().apply(deployConfig, 0.25));
-
-    Trigger inTrigger = new Trigger(limitIn::get);
-    inTrigger.onTrue(new InstantCommand(this::zeroDeploy));
 
     BaseStatusSignal.setUpdateFrequencyForAll(
         50.0,
@@ -73,7 +92,7 @@ public class IntakeIOTalonFX implements IntakeIO {
         deployPosition,
         deployAppliedVolts,
         deployTorqueCurrent,
-        deploySupplyCurrent);
+        deploySupplyCurrent, deployForwardLimit, deployReverseLimit);
 
     //    roller.optimizeBusUtilization();
     deploy.optimizeBusUtilization();
@@ -88,7 +107,8 @@ public class IntakeIOTalonFX implements IntakeIO {
         deployVelocity,
         deployPosition,
         deployTorqueCurrent,
-        deploySupplyCurrent);
+        deploySupplyCurrent,
+        deployForwardLimit, deployReverseLimit);
   }
 
   @Override
@@ -103,8 +123,8 @@ public class IntakeIOTalonFX implements IntakeIO {
     inputs.deployPosition = deployPosition.getValueAsDouble();
     inputs.deployTorqueCurrentAmps = deployTorqueCurrent.getValueAsDouble();
     inputs.deploySupplyCurrentAmps = deploySupplyCurrent.getValueAsDouble();
-    inputs.deployIn = limitIn.get() ? 0. : 1.;
-    inputs.deployOut = limitOut.get() ? 0. : 1.;
+    inputs.deployIn = deployReverseLimit.getValueAsDouble();
+    inputs.deployOut = deployForwardLimit.getValueAsDouble();
     ;
   }
 
