@@ -7,6 +7,7 @@ import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CANdiConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.TorqueCurrentFOC;
+import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
 import com.ctre.phoenix6.hardware.CANdi;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.*;
@@ -15,7 +16,6 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DigitalInput;
-import frc.robot.subsystems.HoodKicker.HoodKickerConstants;
 import frc.robot.util.PhoenixUtil;
 
 public class IntakeIOTalonFX implements IntakeIO {
@@ -33,6 +33,8 @@ public class IntakeIOTalonFX implements IntakeIO {
       new TorqueCurrentFOC(0.0).withUpdateFreqHz(0.0);
   private final TorqueCurrentFOC deployTorqueCurrentRequest =
       new TorqueCurrentFOC(0.0).withUpdateFreqHz(0.0);
+  private final VelocityTorqueCurrentFOC deployVelocityTorqueCurrentRequest =
+      new VelocityTorqueCurrentFOC(0.0).withUpdateFreqHz(0.0);
 
   // LOGGABLES
   private final StatusSignal<Voltage> deployAppliedVolts = deploy.getMotorVoltage();
@@ -46,8 +48,8 @@ public class IntakeIOTalonFX implements IntakeIO {
   private final StatusSignal<Current> rollerTorqueCurrent = roller.getTorqueCurrent();
   private final StatusSignal<Current> rollerSupplyCurrent = roller.getSupplyCurrent();
 
-  private final StatusSignal<Boolean> deployForwardLimit = deploy.getFault_ForwardHardLimit();
-  private final StatusSignal<Boolean> deployReverseLimit = deploy.getFault_ReverseHardLimit();
+  private final StatusSignal<Boolean> deployForwardLimit;
+  private final StatusSignal<Boolean> deployReverseLimit;
 
   public IntakeIOTalonFX() {
     var rollerConfig = new TalonFXConfiguration();
@@ -68,16 +70,22 @@ public class IntakeIOTalonFX implements IntakeIO {
     deployConfig.CurrentLimits.SupplyCurrentLimit = IntakeConstants.DEPLOYMENT_MOTOR_CURRENT_LIMIT;
     deployConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     deployConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-    deploy.getConfigurator().apply(deployConfig, 0.25);
     deployConfig.HardwareLimitSwitch.ForwardLimitSource = ForwardLimitSourceValue.RemoteCANdiS2;
     deployConfig.HardwareLimitSwitch.ReverseLimitSource = ReverseLimitSourceValue.RemoteCANdiS1;
     deployConfig.HardwareLimitSwitch.ForwardLimitEnable = true;
     deployConfig.HardwareLimitSwitch.ReverseLimitEnable = true;
+    deployConfig.HardwareLimitSwitch.ForwardLimitType = ForwardLimitTypeValue.NormallyOpen;
+    deployConfig.HardwareLimitSwitch.ReverseLimitType = ReverseLimitTypeValue.NormallyOpen;
     deployConfig.HardwareLimitSwitch.ReverseLimitAutosetPositionEnable = true;
     deployConfig.HardwareLimitSwitch.ReverseLimitAutosetPositionValue = 0.0;
-    deployConfig.HardwareLimitSwitch.ForwardLimitRemoteSensorID = HoodKickerConstants.CANDI_CAN_ID;
-    deployConfig.HardwareLimitSwitch.ReverseLimitRemoteSensorID = HoodKickerConstants.CANDI_CAN_ID;
+    deployConfig.HardwareLimitSwitch.ForwardLimitRemoteSensorID =
+        IntakeConstants.DEPLOYMENT_LIMITS_CANDI_ID;
+    deployConfig.HardwareLimitSwitch.ReverseLimitRemoteSensorID =
+        IntakeConstants.DEPLOYMENT_LIMITS_CANDI_ID;
     tryUntilOk(5, () -> deploy.getConfigurator().apply(deployConfig, 0.25));
+
+    deployForwardLimit = deployLimits.getS2Closed();
+    deployReverseLimit = deployLimits.getS1Closed();
 
     BaseStatusSignal.setUpdateFrequencyForAll(
         50.0,
@@ -135,7 +143,7 @@ public class IntakeIOTalonFX implements IntakeIO {
 
   @Override
   public void setDeployMotorTorque(double amps) {
-    deploy.setControl(deployTorqueCurrentRequest.withOutput(amps));
+    deploy.setControl(deployVelocityTorqueCurrentRequest.withVelocity(20).withFeedForward(amps));
   }
 
   public void zeroDeploy() {
