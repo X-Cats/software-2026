@@ -143,7 +143,10 @@ public class IntakeIOTalonFX implements IntakeIO {
 
   @Override
   public void setDeployMotorTorque(double amps) {
-    deploy.setControl(deployVelocityTorqueCurrentRequest.withVelocity(20).withFeedForward(amps));
+    deploy.setControl(
+        deployVelocityTorqueCurrentRequest
+            .withVelocity(IntakeConstants.DEPLOYMENT_MOTOR_VELOCITY)
+            .withFeedForward(amps));
   }
 
   public void zeroDeploy() {

@@ -138,6 +138,12 @@
                 "data": {
                   "name": "Activate Shooting"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Aim"
+                }
               }
             ]
           }

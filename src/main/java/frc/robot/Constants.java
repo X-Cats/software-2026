@@ -22,6 +22,8 @@ public final class Constants {
   public static final boolean tuningMode = false; // TODO: Remove before FingerLakes
   public static final boolean disableHAL = false;
 
+  public static final double DRIVE_SLEW_RATE = 0.975;
+
   public static enum Mode {
     /** Running on a real robot. */
     REAL,
