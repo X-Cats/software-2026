@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.697780671296297,
-        "y": 5.003411458333333
+        "x": 8.711126927639384,
+        "y": 5.9124792408066424
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.645641369722734,
-        "y": 6.345591425118569
+        "x": 8.670408833668874,
+        "y": 7.01525866192355
       },
       "isLocked": false,
       "linkedName": "Far Acq LHS"
@@ -20,40 +20,40 @@
         "y": 6.935313585069444
       },
       "prevControl": {
-        "x": 8.795618088439037,
-        "y": 6.54829056736347
+        "x": 8.895222439979431,
+        "y": 6.472444782033825
       },
       "nextControl": {
-        "x": 8.105770420626602,
-        "y": 7.400996326535129
+        "x": 8.061635098452328,
+        "y": 7.40734251806423
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.633392645314355,
-        "y": 7.601672597864768
+        "x": 4.676429418742587,
+        "y": 7.547876631079477
       },
       "prevControl": {
-        "x": 5.478495181203183,
-        "y": 7.600358242497899
+        "x": 5.068550555533878,
+        "y": 7.5482890513723975
       },
       "nextControl": {
-        "x": 2.6506423559625025,
-        "y": 7.604756292887917
+        "x": 4.3740037985057185,
+        "y": 7.547558549621525
       },
       "isLocked": false,
       "linkedName": "LHS Trench Move"
     },
     {
       "anchor": {
-        "x": 2.9386193576388893,
-        "y": 6.086641348379629
+        "x": 2.976476868327403,
+        "y": 7.268137603795967
       },
       "prevControl": {
-        "x": 2.47573705150463,
-        "y": 6.364173900462963
+        "x": 3.589750889679717,
+        "y": 7.6447093712930005
       },
       "nextControl": null,
       "isLocked": false,
@@ -63,7 +63,7 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 2,
-      "rotationDegrees": -89.79345099146025
+      "rotationDegrees": -90.0
     }
   ],
   "constraintZones": [],
@@ -81,8 +81,8 @@
   ],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 5.4,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -90,13 +90,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -50.429555357125814
+    "rotation": -63.28030471932591
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -88.47056014517166
+    "rotation": -90.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

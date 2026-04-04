@@ -42,7 +42,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.0
+                  "waitTime": 0.5
                 }
               },
               {
@@ -68,6 +68,12 @@
                 "type": "named",
                 "data": {
                   "name": "Activate Shooting"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Aim"
                 }
               }
             ]
@@ -111,7 +117,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.0
+                  "waitTime": 0.5
                 }
               },
               {
@@ -130,7 +136,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 3.0
+                  "waitTime": 10.0
                 }
               },
               {

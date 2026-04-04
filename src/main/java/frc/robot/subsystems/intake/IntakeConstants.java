@@ -2,8 +2,8 @@ package frc.robot.subsystems.intake;
 
 public class IntakeConstants {
   public static final int DEPLOYMENT_MOTOR_ID = 5;
-  public static final int DEPLOYMENT_MOTOR_CURRENT = 15;
-  public static final int DEPLOYMENT_MOTOR_STOW_CURRENT = 15;
+  public static final int DEPLOYMENT_MOTOR_CURRENT = 10;
+  public static final int DEPLOYMENT_MOTOR_STOW_CURRENT = 10;
   public static final int DEPLOYMENT_MOTOR_VELOCITY = 20;
   public static final double DEPLOYMENT_MOTOR_REDUCTION = 5;
   public static final double DEPLOYMENT_MOTOR_CURRENT_LIMIT = 10;

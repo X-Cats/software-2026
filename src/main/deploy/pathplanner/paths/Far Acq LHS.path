@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.430674334490741,
-        "y": 7.362700593171296
+        "x": 6.09664294187426,
+        "y": 7.461803084223013
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.42869485056417,
-        "y": 7.371421101205042
+        "x": 7.094663457947689,
+        "y": 7.470523592256759
       },
       "isLocked": false,
       "linkedName": "LHS Past Trench"
@@ -32,39 +32,44 @@
     },
     {
       "anchor": {
-        "x": 8.697780671296297,
-        "y": 5.003411458333333
+        "x": 8.711126927639384,
+        "y": 5.9124792408066424
       },
       "prevControl": {
-        "x": 8.677743824107274,
-        "y": 6.161670436098966
+        "x": 8.691090080450362,
+        "y": 7.070738218572275
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "Far Acq LHS"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1,
+      "rotationDegrees": -89.61674353481288
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 5.4,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": -88.47056014517166
+    "velocity": 5.4,
+    "rotation": -90.0
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 3.0,
-    "rotation": -74.40448264408225
+    "rotation": -68.83874018317181
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }
