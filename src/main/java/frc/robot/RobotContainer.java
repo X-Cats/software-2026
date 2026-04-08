@@ -176,8 +176,7 @@ public class RobotContainer {
         "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
     autoChooser.addOption(
         "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-    autoChooser.addOption(
-            "Do Nothing", new InstantCommand());
+    autoChooser.addOption("Do Nothing", new InstantCommand());
 
     // default bindings
     configureDefaultCommands();
@@ -288,13 +287,12 @@ public class RobotContainer {
             }));
 
     NamedCommands.registerCommand(
-            "Aim",
-            DriveCommands.joystickDriveAtAngle(
-                    drive,
-                    () -> -controller.getLeftY(),
-                    () -> -controller.getLeftX(),
-                    this::getHubDriveAngle)
-    );
+        "Aim",
+        DriveCommands.joystickDriveAtAngle(
+            drive,
+            () -> -controller.getLeftY(),
+            () -> -controller.getLeftX(),
+            this::getHubDriveAngle));
   }
 
   private Rotation2d getHubDriveAngle() {
