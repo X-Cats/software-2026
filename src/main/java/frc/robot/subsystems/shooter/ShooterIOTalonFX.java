@@ -95,7 +95,11 @@ public class ShooterIOTalonFX implements ShooterIO {
 
     //   shooterLeader.getConfigurator().apply(slot0Configs);
     // }
-    shooterLeader.setControl(velocityControl.withVelocity(outputs.velocityRPM / 60));
+    if (!outputs.idleDown) {
+      shooterLeader.setControl(velocityControl.withVelocity(outputs.velocityRPM / 60));
+    } else {
+      shooterLeader.setVoltage(0);
+    }
   }
 
   /**

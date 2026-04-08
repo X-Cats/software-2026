@@ -37,7 +37,9 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     io.updateInputs(inputs);
-    filteredRPM.calculate(inputs.shooterRPM);
+    double currentRPM;
+    currentRPM = filteredRPM.calculate(inputs.shooterRPM);
+//    filteredRPM.calculate(inputs.shooterRPM);
     Logger.processInputs(logKey, inputs);
 
     outputs.kP = kP.getAsDouble();
@@ -64,6 +66,11 @@ public class Shooter extends SubsystemBase {
         .setShooterAtSpeed(
             filteredRPM.lastValue() + 100 > outputs.velocityRPM
                 && filteredRPM.lastValue() - 100 < outputs.velocityRPM);
+    if (outputs.velocityRPM < currentRPM) {
+      outputs.idleDown = true;
+    } else {
+      outputs.idleDown = false;
+    }
     io.applyOutputs(outputs);
   }
 

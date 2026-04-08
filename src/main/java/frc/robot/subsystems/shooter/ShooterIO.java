@@ -27,6 +27,7 @@ public interface ShooterIO {
     public double kI;
     public double kD;
     public double kV;
+    public boolean idleDown = false;
   }
 
   // Dont touch these ******
