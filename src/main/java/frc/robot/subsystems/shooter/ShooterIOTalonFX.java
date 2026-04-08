@@ -33,7 +33,7 @@ public class ShooterIOTalonFX implements ShooterIO {
         new TalonFX(
             side.compareTo(ShooterConstants.ShooterSide.LEFT) == 0
                 ? ShooterConstants.LeftShooter.SHOOTER_LEADER_MOTOR_ID
-                : ShooterConstants.RightShooter.SHOOTER_LEADER_MOTOR_ID);
+                : ShooterConstants.SHOOTER_LEADER_MOTOR_ID);
 
     shooterFollower =
         new TalonFX(
