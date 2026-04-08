@@ -49,6 +49,7 @@ public class ShooterIOTalonFX implements ShooterIO {
     shooterConfig.CurrentLimits.SupplyCurrentLimit = ShooterConstants.SHOOTER_MOTOR_CURRENT_LIMIT;
     shooterConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     shooterConfig.OpenLoopRamps.VoltageOpenLoopRampPeriod = 10;
+    shooterConfig.ClosedLoopRamps.TorqueClosedLoopRampPeriod = 1;
     shooterConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
     if (side.compareTo(ShooterConstants.ShooterSide.LEFT) == 0)
