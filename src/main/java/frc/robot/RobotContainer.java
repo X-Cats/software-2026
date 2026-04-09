@@ -59,8 +59,7 @@ public class RobotContainer {
   private final Drive drive;
   private final Conveyor conveyor;
   private final Intake intake;
-  private final Shooter leftShooter;
-  private final Shooter rightShooter;
+  private final Shooter shooter;
   private final HoodKicker hood;
   private final Vision vision;
 
@@ -91,10 +90,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.BackRight));
         conveyor = new Conveyor(new ConveyorIOTalonFX(), robotState);
         intake = new Intake(new IntakeIOTalonFX(), robotState);
-        leftShooter =
-            new Shooter(new ShooterIOTalonFX(ShooterConstants.ShooterSide.LEFT), robotState);
-        rightShooter =
-            new Shooter(new ShooterIOTalonFX(ShooterConstants.ShooterSide.RIGHT), robotState);
+        shooter = new Shooter(new ShooterIOTalonFX(), robotState);
         hood = new HoodKicker(new HoodKickerIOTalonFX(), robotState);
 
         Camera cam = CameraConstants.RobotCameras.SHOOTER;
@@ -131,8 +127,7 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.BackRight));
         conveyor = new Conveyor(new ConveyorIOSim(), robotState);
         intake = new Intake(new IntakeIOSim(), robotState);
-        leftShooter = new Shooter(new ShooterIOSim(), robotState);
-        rightShooter = new Shooter(new ShooterIOSim(), robotState);
+        shooter = new Shooter(new ShooterIOSim(), robotState);
         hood = new HoodKicker(new HoodKickerIOSim(), robotState);
 
         vision = new Vision();
@@ -149,8 +144,7 @@ public class RobotContainer {
                 new ModuleIO() {});
         conveyor = new Conveyor(new ConveyorIOSim(), robotState);
         intake = new Intake(new IntakeIOSim(), robotState);
-        leftShooter = new Shooter(new ShooterIOSim(), robotState);
-        rightShooter = new Shooter(new ShooterIOSim(), robotState);
+        shooter = new Shooter(new ShooterIOSim(), robotState);
         hood = new HoodKicker(new HoodKickerIOSim(), robotState);
         vision = new Vision();
         break;

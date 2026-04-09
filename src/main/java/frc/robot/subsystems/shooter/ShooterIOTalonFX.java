@@ -19,27 +19,20 @@ import frc.robot.util.PhoenixUtil;
 
 public class ShooterIOTalonFX implements ShooterIO {
   private final TalonFX shooterLeader;
-  private final TalonFX shooterFollower;
+  private final TalonFX shooterLeftLower;
+  private final TalonFX shooterRightUpper;
+  private final TalonFX shooterRightLower;
   private final StatusSignal<Voltage> shooterAppliedVolts;
   private final StatusSignal<AngularVelocity> shooterRPM;
   private final StatusSignal<Current> shooterAmps;
-  private final ShooterConstants.ShooterSide side;
 
   private final VelocityVoltage velocityControl = new VelocityVoltage(0).withUpdateFreqHz(0.0);
 
-  public ShooterIOTalonFX(ShooterConstants.ShooterSide side) {
-    this.side = side;
-    shooterLeader =
-        new TalonFX(
-            side.compareTo(ShooterConstants.ShooterSide.LEFT) == 0
-                ? ShooterConstants.LeftShooter.SHOOTER_LEADER_MOTOR_ID
-                : ShooterConstants.SHOOTER_LEADER_MOTOR_ID);
-
-    shooterFollower =
-        new TalonFX(
-            side.compareTo(ShooterConstants.ShooterSide.LEFT) == 0
-                ? ShooterConstants.LeftShooter.SHOOTER_FOLLOWER_MOTOR_ID
-                : ShooterConstants.RightShooter.SHOOTER_FOLLOWER_MOTOR_ID);
+  public ShooterIOTalonFX() {
+    shooterLeader = new TalonFX(ShooterConstants.SHOOTER_LEFT_UPPER);
+    shooterLeftLower = new TalonFX(ShooterConstants.SHOOTER_LEFT_LOWER);
+    shooterRightUpper = new TalonFX(ShooterConstants.SHOOTER_RIGHT_UPPER);
+    shooterRightLower = new TalonFX(ShooterConstants.SHOOTER_RIGHT_LOWER);
 
     shooterAppliedVolts = shooterLeader.getMotorVoltage();
     shooterRPM = shooterLeader.getVelocity();
@@ -51,21 +44,19 @@ public class ShooterIOTalonFX implements ShooterIO {
     shooterConfig.OpenLoopRamps.VoltageOpenLoopRampPeriod = 10;
     shooterConfig.ClosedLoopRamps.TorqueClosedLoopRampPeriod = 1;
     shooterConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    shooterConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
-    if (side.compareTo(ShooterConstants.ShooterSide.LEFT) == 0)
-      shooterConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-    else shooterConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-
-    // TODO: CHange to coast?
-    // shooterConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     tryUntilOk(5, () -> shooterLeader.getConfigurator().apply(shooterConfig, 0.25));
+    tryUntilOk(5, () -> shooterLeftLower.getConfigurator().apply(shooterConfig, 0.25));
+    tryUntilOk(5, () -> shooterRightUpper.getConfigurator().apply(shooterConfig, 0.25));
+    tryUntilOk(5, () -> shooterRightLower.getConfigurator().apply(shooterConfig, 0.25));
 
-    var followerConfig = shooterConfig.clone();
-    // followerConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-    tryUntilOk(5, () -> shooterFollower.getConfigurator().apply(followerConfig, 0.25));
-
-    shooterFollower.setControl(
-        new Follower(shooterLeader.getDeviceID(), MotorAlignmentValue.Aligned));
+    int leaderID = shooterLeader.getDeviceID();
+    // Left lower runs in the same direction as the leader
+    shooterLeftLower.setControl(new Follower(leaderID, MotorAlignmentValue.Aligned));
+    // Right motors run opposite to the left (inverted)
+    shooterRightUpper.setControl(new Follower(leaderID, MotorAlignmentValue.Opposed));
+    shooterRightLower.setControl(new Follower(leaderID, MotorAlignmentValue.Opposed));
 
     var slot0Configs = new Slot0Configs();
     slot0Configs.kP = ShooterConstants.kP;
@@ -87,15 +78,6 @@ public class ShooterIOTalonFX implements ShooterIO {
   }
 
   public void applyOutputs(ShooterIOOutputs outputs) {
-    // if (Constants.tuningMode) {
-    //   var slot0Configs = new Slot0Configs();
-    //   slot0Configs.kP = outputs.kP;
-    //   slot0Configs.kI = outputs.kI;
-    //   slot0Configs.kD = outputs.kD;
-    //   slot0Configs.kV = outputs.kV;
-
-    //   shooterLeader.getConfigurator().apply(slot0Configs);
-    // }
     if (!outputs.idleDown) {
       shooterLeader.setControl(velocityControl.withVelocity(outputs.velocityRPM / 60));
     } else {
@@ -103,21 +85,13 @@ public class ShooterIOTalonFX implements ShooterIO {
     }
   }
 
-  /**
-   * TODO: Method apply outputs;
-   *
-   * <p>Take the values from the intakeIOOutputs class and apply them to the leader
-   *
-   * <p>See
-   * https://github.com/Mechanical-Advantage/RobotCode2024Public/blob/main/src/main/java/org/littletonrobotics/frc2024/subsystems/flywheels/FlywheelsIOKrakenFOC.java#L157
-   * This doesn't use the latest phoenix API, you'll need to update it
-   */
   @Override
   public void setShooterMotorRPS(double rpm) {
     shooterLeader.setControl(velocityControl.withVelocity(rpm));
   }
 
+  @Override
   public ShooterConstants.ShooterSide getShooterSide() {
-    return this.side;
+    return ShooterConstants.ShooterSide.LEFT;
   }
 }
