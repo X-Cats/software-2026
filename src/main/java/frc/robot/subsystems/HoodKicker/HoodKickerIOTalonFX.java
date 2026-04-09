@@ -7,6 +7,7 @@ import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CANdiConfiguration;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.PositionTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.CANdi;
@@ -23,6 +24,7 @@ public class HoodKickerIOTalonFX implements HoodKickerIO {
   // Motors
   private final TalonFX hood = new TalonFX(HoodKickerConstants.HOOD_MOTOR_ID);
   private final TalonFX kicker = new TalonFX(HoodKickerConstants.KICKER_MOTOR_ID);
+  private final TalonFX kickerFollower = new TalonFX(HoodKickerConstants.KICKER_MOTOR_FOLLOWER_ID);
   private final CANdi hoodLimits = new CANdi(HoodKickerConstants.CANDI_CAN_ID);
 
   // Control Requests
@@ -82,7 +84,9 @@ public class HoodKickerIOTalonFX implements HoodKickerIO {
     kickerConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     kickerConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     kickerConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-    kicker.getConfigurator().apply(kickerConfig, 0.25);
+    tryUntilOk(5, () -> kicker.getConfigurator().apply(kickerConfig, 0.25));
+    tryUntilOk(5, () -> kickerFollower.getConfigurator().apply(kickerConfig, 0.25));
+    kickerFollower.setControl(new Follower(kicker.getDeviceID(), false));
 
     BaseStatusSignal.setUpdateFrequencyForAll(
         50,
@@ -99,6 +103,7 @@ public class HoodKickerIOTalonFX implements HoodKickerIO {
         kickerTorqueCurrent);
 
     kicker.optimizeBusUtilization();
+    kickerFollower.optimizeBusUtilization();
     hood.optimizeBusUtilization();
 
     PhoenixUtil.registerSignals(
