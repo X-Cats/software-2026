@@ -86,7 +86,7 @@ public class HoodKickerIOTalonFX implements HoodKickerIO {
     kickerConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     tryUntilOk(5, () -> kicker.getConfigurator().apply(kickerConfig, 0.25));
     tryUntilOk(5, () -> kickerFollower.getConfigurator().apply(kickerConfig, 0.25));
-    kickerFollower.setControl(new Follower(kicker.getDeviceID(), false));
+    kickerFollower.setControl(new Follower(kicker.getDeviceID(), MotorAlignmentValue.Aligned));
 
     BaseStatusSignal.setUpdateFrequencyForAll(
         50,

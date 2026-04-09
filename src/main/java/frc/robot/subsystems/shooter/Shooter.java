@@ -39,7 +39,7 @@ public class Shooter extends SubsystemBase {
     io.updateInputs(inputs);
     double currentRPM;
     currentRPM = filteredRPM.calculate(inputs.shooterRPM);
-//    filteredRPM.calculate(inputs.shooterRPM);
+    //    filteredRPM.calculate(inputs.shooterRPM);
     Logger.processInputs(logKey, inputs);
 
     outputs.kP = kP.getAsDouble();
