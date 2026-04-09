@@ -41,9 +41,7 @@ public class ShooterIOTalonFX implements ShooterIO {
     var shooterConfig = new TalonFXConfiguration();
     shooterConfig.CurrentLimits.SupplyCurrentLimit = ShooterConstants.SHOOTER_MOTOR_CURRENT_LIMIT;
     shooterConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
-    shooterConfig.OpenLoopRamps.VoltageOpenLoopRampPeriod = 10;
-    shooterConfig.ClosedLoopRamps.TorqueClosedLoopRampPeriod = 1;
-    shooterConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    shooterConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
     shooterConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
     tryUntilOk(5, () -> shooterLeader.getConfigurator().apply(shooterConfig, 0.25));
@@ -79,19 +77,23 @@ public class ShooterIOTalonFX implements ShooterIO {
 
   public void applyOutputs(ShooterIOOutputs outputs) {
     if (!outputs.idleDown) {
-      shooterLeader.setControl(velocityControl.withVelocity(outputs.velocityRPM / 60));
+      setShooterMotorRPM(outputs.velocityRPM);
     } else {
-      shooterLeader.setVoltage(0);
+      setShooterMotorVoltage(0);
     }
   }
 
   @Override
-  public void setShooterMotorRPS(double rpm) {
-    shooterLeader.setControl(velocityControl.withVelocity(rpm));
+  public void setShooterMotorRPM(double rpm) {
+    shooterLeader.setControl(velocityControl.withVelocity(rpm / 60));
+  }
+
+  public void setShooterMotorVoltage(double volts) {
+    shooterLeader.setVoltage(volts);
   }
 
   @Override
   public ShooterConstants.ShooterSide getShooterSide() {
-    return ShooterConstants.ShooterSide.LEFT;
+    return ShooterConstants.ShooterSide.LEFT; // TODO: Deprecate this
   }
 }

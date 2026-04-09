@@ -36,7 +36,8 @@ public interface ShooterIO {
   public default void applyOutputs(ShooterIOOutputs outputs) {}
 
   // Put your hands on these *****
-  public default void setShooterMotorRPS(double RPM) {}
+  public default void setShooterMotorRPM(double RPM) {}
+  public default void setShooterMotorVoltage(double volts) {}
 
   public default ShooterConstants.ShooterSide getShooterSide() {
     return SIM;

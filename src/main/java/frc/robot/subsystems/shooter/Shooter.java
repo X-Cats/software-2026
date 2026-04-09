@@ -1,8 +1,6 @@
 package frc.robot.subsystems.shooter;
 
 import edu.wpi.first.math.filter.LinearFilter;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotStateMachine;
 import frc.robot.util.LaunchCalculator;
@@ -46,19 +44,18 @@ public class Shooter extends SubsystemBase {
     outputs.kD = kD.getAsDouble();
     outputs.kV = kV.getAsDouble();
 
-    // TODO: not going to look like this, no shooter motor voltages
     switch (robotState.getDesiredShooterState().getShooterMode()) {
       case ON -> {
         outputs.velocityRPM = LaunchCalculator.getInstance().getParameters().flywheelSpeed();
       }
       case IDLE -> {
         outputs.velocityRPM = shooterCoastRPM.get();
-      } // NOT REAL, JUST HALF VOLTAGE
+      }
       case OFF -> outputs.velocityRPM = 0;
       default -> {
         System.out.println(
             "Illegal Shooter mode : " + robotState.getDesiredShooterState().getShooterMode());
-        io.setShooterMotorRPS(0);
+        io.setShooterMotorVoltage(0);
       }
     }
     robotState
@@ -66,25 +63,11 @@ public class Shooter extends SubsystemBase {
         .setShooterAtSpeed(
             filteredRPM.lastValue() + 100 > outputs.velocityRPM
                 && filteredRPM.lastValue() - 100 < outputs.velocityRPM);
-    if (outputs.velocityRPM < currentRPM) {
+    if (outputs.velocityRPM < currentRPM) { // TODO: apply a deadband of some sort here
       outputs.idleDown = true;
     } else {
       outputs.idleDown = false;
     }
     io.applyOutputs(outputs);
-  }
-
-  public Command runStateful() {
-    return Commands.none();
-  }
-
-  public Command runShooterMotor() {
-    return runEnd(
-        () -> {
-          io.setShooterMotorRPS(ShooterConstants.SHOOTER_MOTOR_VOLTAGE);
-        },
-        () -> {
-          io.setShooterMotorRPS(0.0);
-        });
   }
 }
