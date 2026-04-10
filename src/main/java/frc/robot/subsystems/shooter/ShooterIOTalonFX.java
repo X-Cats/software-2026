@@ -15,6 +15,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
+import frc.robot.Constants;
 import frc.robot.util.PhoenixUtil;
 
 public class ShooterIOTalonFX implements ShooterIO {
@@ -42,7 +43,7 @@ public class ShooterIOTalonFX implements ShooterIO {
     shooterConfig.CurrentLimits.SupplyCurrentLimit = ShooterConstants.SHOOTER_MOTOR_CURRENT_LIMIT;
     shooterConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     shooterConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-    shooterConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+    shooterConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
     tryUntilOk(5, () -> shooterLeader.getConfigurator().apply(shooterConfig, 0.25));
     tryUntilOk(5, () -> shooterLeftLower.getConfigurator().apply(shooterConfig, 0.25));
@@ -76,6 +77,15 @@ public class ShooterIOTalonFX implements ShooterIO {
   }
 
   public void applyOutputs(ShooterIOOutputs outputs) {
+    if (Constants.tuningMode) {
+      var slot0Configs = new Slot0Configs();
+      slot0Configs.kP = outputs.kP;
+      slot0Configs.kI = outputs.kI;
+      slot0Configs.kD = outputs.kD;
+      slot0Configs.kV = outputs.kV;
+
+      shooterLeader.getConfigurator().apply(slot0Configs);
+    }
     if (!outputs.idleDown) {
       setShooterMotorRPM(outputs.velocityRPM);
     } else {
