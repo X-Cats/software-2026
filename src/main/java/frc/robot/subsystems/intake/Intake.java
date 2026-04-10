@@ -157,4 +157,20 @@ public class Intake extends SubsystemBase {
       io.setDeployMotorTorque(0);
     }
   }
+
+  private void agitateIn() {
+    if (inputs.deployIn == 0) {
+      io.setDeployMotorTorque(-intakeStowTorque.getAsDouble());
+    } else {
+      io.setDeployMotorTorque(0);
+    }
+  }
+
+  private void agitateOut() {
+    if (inputs.deployOut == 0) {
+      io.setDeployMotorTorque(intakeDeployTorque.getAsDouble() / 2);
+    } else {
+      io.setDeployMotorTorque(0);
+    }
+  }
 }
