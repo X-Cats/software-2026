@@ -1,12 +1,14 @@
 package frc.robot.subsystems.shooter;
 
+import static frc.robot.subsystems.shooter.ShooterConstants.ShooterSide.SIM;
+
 import org.littletonrobotics.junction.AutoLog;
 
 public interface ShooterIO {
   @AutoLog
   public static class ShooterIOInputs {
     public double shooterAppliedVolts = 0.0;
-    public double shooterAppliedAmps = 0.0;
+    public double shooterSupplyCurrentAmps = 0.0;
     public double shooterRPM = 0.0;
   }
 
@@ -34,5 +36,8 @@ public interface ShooterIO {
 
   // Put your hands on these *****
   public default void setShooterMotorRPS(double RPM) {}
-  ;
+
+  public default ShooterConstants.ShooterSide getShooterSide() {
+    return SIM;
+  }
 }

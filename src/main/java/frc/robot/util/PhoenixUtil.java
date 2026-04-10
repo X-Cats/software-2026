@@ -16,12 +16,7 @@ public class PhoenixUtil {
   public static void tryUntilOk(int maxAttempts, Supplier<StatusCode> command) {
     for (int i = 0; i < maxAttempts; i++) {
       var error = command.get();
-      if (error.isOK()) {
-        System.out.println("Were so back");
-        break;
-      } else {
-        System.out.println("Hehe im broken");
-      }
+      if (error.isOK()) break;
     }
   }
 

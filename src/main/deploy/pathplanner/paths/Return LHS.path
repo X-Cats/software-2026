@@ -8,43 +8,84 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.07125256619044,
-        "y": 4.921125270943607
+        "x": 7.705857229573907,
+        "y": 6.043514003092542
       },
       "isLocked": false,
       "linkedName": "LHS Intake End"
     },
     {
       "anchor": {
-        "x": 5.2124179687500005,
-        "y": 7.354827329282407
+        "x": 7.505506076388889,
+        "y": 7.397671006944445
       },
       "prevControl": {
-        "x": 5.698191670099992,
-        "y": 7.164437684532704
+        "x": 8.12193716988598,
+        "y": 7.037037346552379
       },
       "nextControl": {
-        "x": 4.695418210055273,
-        "y": 7.557455425698546
+        "x": 6.959232783564816,
+        "y": 7.7172599103009265
       },
       "isLocked": false,
-      "linkedName": "LHS Past Trench"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.419085286458334,
-        "y": 7.233972728587963
+        "x": 4.633392645314355,
+        "y": 7.601672597864768
       },
       "prevControl": {
-        "x": 3.6687592620407785,
-        "y": 7.246736188810675
+        "x": 5.152499693432673,
+        "y": 7.576964910014322
+      },
+      "nextControl": {
+        "x": 3.940020538832874,
+        "y": 7.634674695665694
+      },
+      "isLocked": false,
+      "linkedName": "LHS Trench Move"
+    },
+    {
+      "anchor": {
+        "x": 3.176719979745371,
+        "y": 7.0158833188657415
+      },
+      "prevControl": {
+        "x": 3.4322073929398154,
+        "y": 7.275897858796296
+      },
+      "nextControl": {
+        "x": 2.8877990546859067,
+        "y": 6.721842839664239
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.9386193576388893,
+        "y": 6.086641348379629
+      },
+      "prevControl": {
+        "x": 2.8497170862268524,
+        "y": 6.505105324074075
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "LHS Shooting"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1,
+      "rotationDegrees": -89.93629284890133
+    },
+    {
+      "waypointRelativePos": 2,
+      "rotationDegrees": -90.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [
     {
@@ -53,8 +94,8 @@
         "y": 4.0
       },
       "rotationOffset": 0.0,
-      "minWaypointRelativePos": 1.697233181063122,
-      "maxWaypointRelativePos": 1.8726640365448515,
+      "minWaypointRelativePos": 2.4,
+      "maxWaypointRelativePos": 2.8,
       "name": "Point Towards Zone"
     }
   ],
@@ -69,7 +110,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -72.55013764735898
+    "rotation": -50.429555357125814
   },
   "reversed": false,
   "folder": null,

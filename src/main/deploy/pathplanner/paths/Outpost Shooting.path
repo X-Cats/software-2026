@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.5498428862100733,
-        "y": 5.8288575665509255
+        "x": 0.7232589354269039,
+        "y": 0.6421939304361173
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.060166515994074,
-        "y": 5.986026626794557
+        "x": 1.7930032890886034,
+        "y": 0.6752903643479342
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Outpost Acq"
     },
     {
       "anchor": {
-        "x": 0.7103844076234158,
-        "y": 5.934489268960619
+        "x": 2.179036506204044,
+        "y": 1.5456409409466914
       },
       "prevControl": {
-        "x": 1.9611766210512804,
-        "y": 6.024656829699062
+        "x": 1.6866928914227135,
+        "y": 1.4189140167228222
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Depo Acq"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -179.3210945680174
+    "rotation": 45.805882706290944
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -179.3929704255187
+    "rotation": 179.29971921306222
   },
   "useDefaultConstraints": true
 }

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.547813151041667,
-        "y": 7.354827329282407
+        "x": 4.633392645314355,
+        "y": 7.601672597864768
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.547813151041669,
-        "y": 7.354827329282407
+        "x": 5.724691133634919,
+        "y": 7.538106278535944
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "LHS Trench Move"
     },
     {
       "anchor": {
-        "x": 5.2124179687500005,
-        "y": 7.354827329282407
+        "x": 6.430674334490741,
+        "y": 7.362700593171296
       },
       "prevControl": {
-        "x": 4.2124179687500005,
-        "y": 7.354827329282407
+        "x": 5.933133966860995,
+        "y": 7.4326714773198495
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 3.0,
-    "rotation": 0.0
+    "rotation": -74.40448264408225
   },
   "reversed": false,
   "folder": null,

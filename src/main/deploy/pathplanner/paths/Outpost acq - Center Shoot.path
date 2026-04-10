@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.5498428862100733,
-        "y": 5.8288575665509255
-      },
-      "prevControl": null,
-      "nextControl": {
-        "x": 2.060166515994074,
-        "y": 5.986026626794557
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
         "x": 0.7103844076234158,
         "y": 5.934489268960619
       },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.014710146947762,
+        "y": 5.945972736648396
+      },
+      "isLocked": false,
+      "linkedName": "Depo Acq"
+    },
+    {
+      "anchor": {
+        "x": 2.5268650664158474,
+        "y": 4.008231870009213
+      },
       "prevControl": {
-        "x": 1.9611766210512804,
-        "y": 6.024656829699062
+        "x": 0.2568102188816881,
+        "y": 5.342629037386954
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Depo Acq"
+      "linkedName": "center shooting"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -179.3210945680174
+    "rotation": -0.12470442751912399
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -179.3929704255187
+    "rotation": -179.3210945680174
   },
   "useDefaultConstraints": true
 }

@@ -8,36 +8,52 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.947678058088588,
-        "y": 4.9962493305500875
+        "x": 8.645641369722734,
+        "y": 6.345591425118569
       },
       "isLocked": false,
       "linkedName": "Far Acq LHS"
     },
     {
       "anchor": {
-        "x": 5.2124179687500005,
-        "y": 7.354827329282407
+        "x": 8.482512514467594,
+        "y": 6.935313585069444
       },
       "prevControl": {
-        "x": 5.698191670099992,
-        "y": 7.164437684532704
+        "x": 8.795618088439037,
+        "y": 6.54829056736347
       },
       "nextControl": {
-        "x": 4.695418210055273,
-        "y": 7.557455425698546
+        "x": 8.105770420626602,
+        "y": 7.400996326535129
       },
       "isLocked": false,
-      "linkedName": "LHS Past Trench"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.419085286458334,
-        "y": 7.233972728587963
+        "x": 4.633392645314355,
+        "y": 7.601672597864768
       },
       "prevControl": {
-        "x": 3.6687592620407785,
-        "y": 7.246736188810675
+        "x": 5.478495181203183,
+        "y": 7.600358242497899
+      },
+      "nextControl": {
+        "x": 2.6506423559625025,
+        "y": 7.604756292887917
+      },
+      "isLocked": false,
+      "linkedName": "LHS Trench Move"
+    },
+    {
+      "anchor": {
+        "x": 2.9386193576388893,
+        "y": 6.086641348379629
+      },
+      "prevControl": {
+        "x": 2.47573705150463,
+        "y": 6.364173900462963
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,8 +62,8 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1,
-      "rotationDegrees": -89.1587478745598
+      "waypointRelativePos": 2,
+      "rotationDegrees": -89.79345099146025
     }
   ],
   "constraintZones": [],
@@ -58,8 +74,8 @@
         "y": 4.0
       },
       "rotationOffset": 0.0,
-      "minWaypointRelativePos": 1.697233181063122,
-      "maxWaypointRelativePos": 1.8726640365448515,
+      "minWaypointRelativePos": 2.4,
+      "maxWaypointRelativePos": 2.75,
       "name": "Point Towards Zone"
     }
   ],
@@ -74,7 +90,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -72.55013764735898
+    "rotation": -50.429555357125814
   },
   "reversed": false,
   "folder": null,

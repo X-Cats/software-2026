@@ -143,8 +143,8 @@ public class LaunchCalculator {
     hoodAngleMap.put(2.94, 50.0);
     hoodAngleMap.put(3.48, 110.0);
     hoodAngleMap.put(3.92, 230.0);
-    hoodAngleMap.put(4.35, 390.0);
-    hoodAngleMap.put(4.84, 500.0);
+    hoodAngleMap.put(4.35, 350.0);
+    hoodAngleMap.put(4.84, 450.0);
 
     flywheelSpeedMap.put(0.96, 1500.0);
     flywheelSpeedMap.put(1.46, 1500.0);
@@ -157,6 +157,7 @@ public class LaunchCalculator {
     flywheelSpeedMap.put(3.92, 2000.0);
     flywheelSpeedMap.put(4.35, 2000.0);
     flywheelSpeedMap.put(4.84, 2000.0);
+    flywheelSpeedMap.put(12., 4000.0);
 
     timeOfFlightMap.put(5.68, 1.16);
     timeOfFlightMap.put(4.55, 1.12);
@@ -292,10 +293,10 @@ public class LaunchCalculator {
     Rotation2d driveAngle = getDriveAngleWithLauncherOffset(lookaheadRobotPose, target);
 
     // Calculate remaining parameters
-    double hoodAngle =
-        passing
-            ? passingHoodAngleMap.get(lookaheadLauncherToTargetDistance).getRadians()
-            : hoodAngleMap.get(lookaheadLauncherToTargetDistance);
+    double hoodAngle = hoodAngleMap.get(lookaheadLauncherToTargetDistance);
+    //        passing
+    //            ? passingHoodAngleMap.get(lookaheadLauncherToTargetDistance).getRadians()
+    //            : hoodAngleMap.get(lookaheadLauncherToTargetDistance);
     if (lastDriveAngle == null) lastDriveAngle = driveAngle;
     if (Double.isNaN(lastHoodAngle)) lastHoodAngle = hoodAngle;
     double hoodVelocity =
@@ -313,10 +314,10 @@ public class LaunchCalculator {
     boolean behindFarHub = farHubBound.contains(flippedPose.getTranslation());
     boolean outsideOfBadBoxes = !(insideTowerBadBox || behindNearHub || behindFarHub);
 
-    double flywheelVelocity =
-        passing
-            ? passingFlywheelSpeedMap.get(lookaheadLauncherToTargetDistance)
-            : flywheelSpeedMap.get(lookaheadLauncherToTargetDistance);
+    double flywheelVelocity = flywheelSpeedMap.get(lookaheadLauncherToTargetDistance);
+    //        passing
+    //            ? passingFlywheelSpeedMap.get(lookaheadLauncherToTargetDistance)
+    //            : flywheelSpeedMap.get(lookaheadLauncherToTargetDistance);
 
     // Constructor parameters
     latestParameters =
