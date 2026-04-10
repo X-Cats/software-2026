@@ -140,11 +140,11 @@ public class LaunchCalculator {
     hoodAngleMap.put(2.18, 0.0);
     hoodAngleMap.put(2.47, 0.0);
     hoodAngleMap.put(2.70, 0.0);
-    hoodAngleMap.put(2.94, 50.0);
-    hoodAngleMap.put(3.48, 110.0);
-    hoodAngleMap.put(3.92, 230.0);
-    hoodAngleMap.put(4.35, 350.0);
-    hoodAngleMap.put(4.84, 450.0);
+    hoodAngleMap.put(2.94, 0.0);
+    hoodAngleMap.put(3.48, 0.0);
+    hoodAngleMap.put(3.92, 0.0);
+    hoodAngleMap.put(4.35, 0.0);
+    hoodAngleMap.put(4.84, 0.0);
 
     flywheelSpeedMap.put(0.96, 1500.0);
     flywheelSpeedMap.put(1.46, 1500.0);

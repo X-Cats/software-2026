@@ -61,7 +61,8 @@ public class HoodKickerIOTalonFX implements HoodKickerIO {
     hoodConfig.CurrentLimits.SupplyCurrentLimit = HoodKickerConstants.HOOD_MOTOR_CURRENT_LIMIT;
     hoodConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     hoodConfig.Feedback.SensorToMechanismRatio = HoodKickerConstants.HOOD_MOTOR_REDUCTION;
-    hoodConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    hoodConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+    hoodConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     hoodConfig.HardwareLimitSwitch.ForwardLimitSource = ForwardLimitSourceValue.RemoteCANdiS1;
     hoodConfig.HardwareLimitSwitch.ReverseLimitSource = ReverseLimitSourceValue.RemoteCANdiS2;
     hoodConfig.HardwareLimitSwitch.ForwardLimitEnable = true;
@@ -138,8 +139,8 @@ public class HoodKickerIOTalonFX implements HoodKickerIO {
     inputs.kickerSupplyCurrent = kickerSupplyCurrent.getValueAsDouble();
   }
 
-  public void setHoodPosition(double ticks) {
-    hood.setControl(positionControl.withPosition(ticks));
+  public void setHoodPosition(double radians) {
+    hood.setControl(positionControl.withPosition(radians));
   }
 
   public void setKickerMotorVoltage(double volts) {
