@@ -80,18 +80,21 @@ public class IntakeIOTalonFX implements IntakeIO {
     deployConfig.CurrentLimits.SupplyCurrentLimit = IntakeConstants.DEPLOYMENT_MOTOR_CURRENT_LIMIT;
     deployConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     deployConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-    deployConfig.HardwareLimitSwitch.ForwardLimitSource = ForwardLimitSourceValue.RemoteCANdiS2;
-    deployConfig.HardwareLimitSwitch.ReverseLimitSource = ReverseLimitSourceValue.RemoteCANdiS1;
-    deployConfig.HardwareLimitSwitch.ForwardLimitEnable = true;
-    deployConfig.HardwareLimitSwitch.ReverseLimitEnable = true;
-    deployConfig.HardwareLimitSwitch.ForwardLimitType = ForwardLimitTypeValue.NormallyOpen;
-    deployConfig.HardwareLimitSwitch.ReverseLimitType = ReverseLimitTypeValue.NormallyOpen;
-    deployConfig.HardwareLimitSwitch.ReverseLimitAutosetPositionEnable = true;
-    deployConfig.HardwareLimitSwitch.ReverseLimitAutosetPositionValue = 0.0;
-    deployConfig.HardwareLimitSwitch.ForwardLimitRemoteSensorID =
-        IntakeConstants.DEPLOYMENT_LIMITS_CANDI_ID;
-    deployConfig.HardwareLimitSwitch.ReverseLimitRemoteSensorID =
-        IntakeConstants.DEPLOYMENT_LIMITS_CANDI_ID;
+    deployConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    //    deployConfig.HardwareLimitSwitch.ForwardLimitSource =
+    // ForwardLimitSourceValue.RemoteCANdiS2;
+    //    deployConfig.HardwareLimitSwitch.ReverseLimitSource =
+    // ReverseLimitSourceValue.RemoteCANdiS1;
+    //    deployConfig.HardwareLimitSwitch.ForwardLimitEnable = true;
+    //    deployConfig.HardwareLimitSwitch.ReverseLimitEnable = true;
+    //    deployConfig.HardwareLimitSwitch.ForwardLimitType = ForwardLimitTypeValue.NormallyOpen;
+    //    deployConfig.HardwareLimitSwitch.ReverseLimitType = ReverseLimitTypeValue.NormallyOpen;
+    //    deployConfig.HardwareLimitSwitch.ReverseLimitAutosetPositionEnable = true;
+    //    deployConfig.HardwareLimitSwitch.ReverseLimitAutosetPositionValue = 0.0;
+    //    deployConfig.HardwareLimitSwitch.ForwardLimitRemoteSensorID =
+    //        IntakeConstants.DEPLOYMENT_LIMITS_CANDI_ID;
+    //    deployConfig.HardwareLimitSwitch.ReverseLimitRemoteSensorID =
+    //        IntakeConstants.DEPLOYMENT_LIMITS_CANDI_ID;
     tryUntilOk(5, () -> deploy.getConfigurator().apply(deployConfig, 0.25));
 
     deploySlot0.kP = IntakeConstants.DEPLOYMENT_KP;

@@ -71,7 +71,18 @@ public class Intake extends SubsystemBase {
 
     if (Constants.tuningMode) {
       updateTunables();
-      io.applyTunables(tunables);
+      LoggedTunableNumber.ifChanged(
+          1,
+          () -> io.applyTunables(tunables),
+          kS,
+          kV,
+          kA,
+          kP,
+          kI,
+          kD,
+          deployMMCruiseVelocity,
+          deployMMAcceleration,
+          deployMMJerk);
     }
     switch (robotState.getDesiredIntakeState().getDesiredIntakeDeployState()) {
       case DEPLOYED -> {
