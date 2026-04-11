@@ -1,0 +1,111 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 6.249863636363637,
+        "y": 7.291954545454546
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.7054749221969825,
+        "y": 6.331889013206203
+      },
+      "isLocked": false,
+      "linkedName": "LHS Past Trench"
+    },
+    {
+      "anchor": {
+        "x": 6.919806818181818,
+        "y": 5.797465909090908
+      },
+      "prevControl": {
+        "x": 6.6187757712649775,
+        "y": 6.301462571647173
+      },
+      "nextControl": {
+        "x": 7.7282331692560815,
+        "y": 4.443970357595434
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.177715909090908,
+        "y": 3.5093522727272726
+      },
+      "prevControl": {
+        "x": 6.92675026965207,
+        "y": 3.285000554179479
+      },
+      "nextControl": {
+        "x": 5.88236757498182,
+        "y": 3.5978153791166245
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.672681818181818,
+        "y": 4.117454545454546
+      },
+      "prevControl": {
+        "x": 5.72584618894972,
+        "y": 3.8570852157056454
+      },
+      "nextControl": {
+        "x": 5.609163546443249,
+        "y": 4.428531486656018
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.652068181818181,
+        "y": 5.271818181818182
+      },
+      "prevControl": {
+        "x": 5.66804434407779,
+        "y": 4.987349543536534
+      },
+      "nextControl": null,
+      "isLocked": true,
+      "linkedName": "Cheesy 2nd turn"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1,
+      "rotationDegrees": -90.64374571417538
+    },
+    {
+      "waypointRelativePos": 3,
+      "rotationDegrees": 90.34962354461322
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 5.4,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 5.4,
+    "rotation": 90.0
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 5.4,
+    "rotation": -37.4053566314087
+  },
+  "useDefaultConstraints": false
+}
