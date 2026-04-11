@@ -1,0 +1,70 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 6.2042348754448415,
+        "y": 4.180249110320284
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.2042348754448415,
+        "y": 4.180249110320284
+      },
+      "isLocked": false,
+      "linkedName": "lhs hub 5"
+    },
+    {
+      "anchor": {
+        "x": 6.73143534994069,
+        "y": 6.159940688018979
+      },
+      "prevControl": {
+        "x": 7.364806211135514,
+        "y": 5.0496788254539355
+      },
+      "nextControl": {
+        "x": 5.816903914590748,
+        "y": 7.763060498220641
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.998600237247925,
+        "y": 7.354211150652431
+      },
+      "prevControl": {
+        "x": 4.498600237247925,
+        "y": 7.354211150652431
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "lhs hub 6"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 8.0,
+    "rotation": 0.0
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -66.25050550713327
+  },
+  "useDefaultConstraints": true
+}

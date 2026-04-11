@@ -1,0 +1,95 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.613689205219455,
+        "y": 5.589703440094898
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.349893099319747,
+        "y": 6.795303536105587
+      },
+      "isLocked": false,
+      "linkedName": "Cheesy 1st turn"
+    },
+    {
+      "anchor": {
+        "x": 7.054211150652432,
+        "y": 7.063712930011863
+      },
+      "prevControl": {
+        "x": 7.349893100374989,
+        "y": 6.7943520051719455
+      },
+      "nextControl": {
+        "x": 6.703968817121091,
+        "y": 7.3827773807387835
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.536559905100831,
+        "y": 7.332692763938315
+      },
+      "prevControl": {
+        "x": 5.862449029289692,
+        "y": 7.332456037787091
+      },
+      "nextControl": {
+        "x": 4.2776653487885605,
+        "y": 7.332738987344761
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.976476868327403,
+        "y": 7.268137603795967
+      },
+      "prevControl": {
+        "x": 3.2423736470346762,
+        "y": 7.294941564020154
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "LHS Shooting"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1,
+      "rotationDegrees": 90.0
+    },
+    {
+      "waypointRelativePos": 2.0,
+      "rotationDegrees": 89.9761564810789
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 5.4,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 118.46516214265489
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 5.4,
+    "rotation": 90.0
+  },
+  "useDefaultConstraints": false
+}
