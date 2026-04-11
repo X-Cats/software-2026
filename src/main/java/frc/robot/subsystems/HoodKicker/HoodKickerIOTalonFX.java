@@ -153,6 +153,11 @@ public class HoodKickerIOTalonFX implements HoodKickerIO {
 
   @Override
   public void applyOutputs(HoodIOOutputs outputs) {
+    hood.setControl(
+        positionControl.withPosition(outputs.positionRad).withSlot(0).withFeedForward(outputs.kS));
+  }
+
+  public void applyTunables(HoodIOOutputs outputs) {
     if (Constants.tuningMode) {
       var configs = hoodSlot0;
       configs.kP = outputs.kP;
@@ -160,7 +165,5 @@ public class HoodKickerIOTalonFX implements HoodKickerIO {
       configs.kS = outputs.kS;
       tryUntilOk(5, () -> hood.getConfigurator().apply(configs));
     }
-    hood.setControl(
-        positionControl.withPosition(outputs.positionRad).withSlot(0).withFeedForward(outputs.kS));
   }
 }
