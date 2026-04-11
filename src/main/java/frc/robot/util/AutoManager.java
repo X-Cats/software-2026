@@ -11,8 +11,10 @@ public class AutoManager {
     autos = new SendableChooser<>();
     autos.addOption("LHS Trench Run", new PathPlannerAuto("LHS Theirs and Ours"));
     autos.addOption("LHS Wait Trench", new PathPlannerAuto("LHS Wait and Theirs"));
+    autos.addOption("LHS CHEEEEEESE", new PathPlannerAuto("Cheesy Copy"));
     autos.addOption("RHS Trench Run", new PathPlannerAuto("LHS Theirs and Ours", true));
     autos.addOption("RHS Wait Trench", new PathPlannerAuto("LHS Wait and Theirs", true));
+    autos.addOption("LHS CHEEEEEESE", new PathPlannerAuto("Cheesy Copy", true));
   }
 
   public SendableChooser<Command> getChooser() {

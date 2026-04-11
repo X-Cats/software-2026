@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.430674334490741,
-        "y": 7.362700593171296
+        "x": 6.249863636363637,
+        "y": 7.291954545454546
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.42869485056417,
-        "y": 7.371421101205042
+        "x": 7.2478841524370665,
+        "y": 7.300675053488292
       },
       "isLocked": false,
       "linkedName": "LHS Past Trench"
@@ -49,22 +49,22 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 5.4,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 5.4,
     "rotation": -88.47056014517166
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
-    "velocity": 3.0,
-    "rotation": -74.40448264408225
+    "velocity": 5.4,
+    "rotation": -37.4053566314087
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

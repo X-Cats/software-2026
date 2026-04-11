@@ -58,6 +58,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Backup Autos",
+  "folder": null,
   "choreoAuto": false
 }
