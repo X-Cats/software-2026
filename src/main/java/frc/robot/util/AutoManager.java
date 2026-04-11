@@ -13,9 +13,9 @@ public class AutoManager {
     autos.addOption("LHS Wait Trench", new PathPlannerAuto("LHS Wait and Theirs"));
     autos.addOption("RHS Trench Run", new PathPlannerAuto("LHS Theirs and Ours", true));
     autos.addOption("RHS Wait Trench", new PathPlannerAuto("LHS Wait and Theirs", true));
-    autos.addOption("THE CHEEEEESE", new PathPlannerAuto("Cheesy Copy"));
+    autos.addOption("RHS CHEEEEESE", new PathPlannerAuto("Cheesy Copy"));
+    autos.addOption("LHS CHEEEEESE", new PathPlannerAuto("Cheesy Copy", true));
     autos.addOption("Center Backup", new PathPlannerAuto("Score Preloads"));
-    autos.addOption("Home Away From Home Depot", new PathPlannerAuto("Away From Home Depot"));
   }
 
   public SendableChooser<Command> getChooser() {
