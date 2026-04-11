@@ -22,11 +22,11 @@ public class IntakeConstants {
   public static final double DEPLOYMENT_MM_CRUISE_ACCELERATION = 80;
   public static final double DEPLOYMENT_MM_CRUISE_JERK = 1000;
 
-  public static final double DEPLOYMENT_DEPLOYED_SETPOINT = 30.0; // TODO: Fill in tomorrow
-  public static final double DEPLOYMENT_STOWED_SETPOINT = 5.0;
+  public static final double DEPLOYMENT_DEPLOYED_SETPOINT = 32.0; // TODO: Fill in tomorrow
+  public static final double DEPLOYMENT_STOWED_SETPOINT = 1.5;
 
   public static final int ROLLER_MOTOR_ID = 4;
-  public static final int ROLLER_MOTOR_TORQUE = 40;
+  public static final int ROLLER_MOTOR_TORQUE = 10;
   public static final double ROLLER_MOTOR_REDUCTION = 1;
   public static final double ROLLER_MOTOR_CURRENT_LIMIT = 40;
 }

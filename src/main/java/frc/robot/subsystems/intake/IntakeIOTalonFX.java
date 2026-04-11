@@ -39,6 +39,8 @@ public class IntakeIOTalonFX implements IntakeIO {
   // Control Requests
   private final TorqueCurrentFOC rollerTorqueCurrentRequest =
       new TorqueCurrentFOC(0.0).withUpdateFreqHz(0.0);
+  private final VelocityTorqueCurrentFOC rollerVelocityCurrentRequest =
+      new VelocityTorqueCurrentFOC(0.0).withUpdateFreqHz(0.0);
   private final TorqueCurrentFOC deployTorqueCurrentRequest =
       new TorqueCurrentFOC(0.0).withUpdateFreqHz(0.0);
   private final VelocityTorqueCurrentFOC deployVelocityTorqueCurrentRequest =
@@ -65,15 +67,15 @@ public class IntakeIOTalonFX implements IntakeIO {
     var rollerConfig = new TalonFXConfiguration();
     rollerConfig.CurrentLimits.SupplyCurrentLimit = IntakeConstants.ROLLER_MOTOR_CURRENT_LIMIT;
     rollerConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
-    rollerConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    rollerConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
     rollerConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     //    tryUntilOk(5, () -> roller.getConfigurator().apply(rollerConfig, 0.25));
 
     var deployLimitsConfig = new CANdiConfiguration();
     deployLimitsConfig.DigitalInputs.S1CloseState = S1CloseStateValue.CloseWhenLow;
     deployLimitsConfig.DigitalInputs.S2CloseState = S2CloseStateValue.CloseWhenLow;
-    deployLimitsConfig.DigitalInputs.S1FloatState = S1FloatStateValue.FloatDetect;
-    deployLimitsConfig.DigitalInputs.S2FloatState = S2FloatStateValue.FloatDetect;
+    deployLimitsConfig.DigitalInputs.S1FloatState = S1FloatStateValue.PullHigh;
+    deployLimitsConfig.DigitalInputs.S2FloatState = S2FloatStateValue.PullHigh;
     tryUntilOk(5, () -> deployLimits.getConfigurator().apply(deployLimitsConfig));
 
     var deployConfig = new TalonFXConfiguration();
@@ -83,18 +85,17 @@ public class IntakeIOTalonFX implements IntakeIO {
     deployConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     //    deployConfig.HardwareLimitSwitch.ForwardLimitSource =
     // ForwardLimitSourceValue.RemoteCANdiS2;
-    //    deployConfig.HardwareLimitSwitch.ReverseLimitSource =
-    // ReverseLimitSourceValue.RemoteCANdiS1;
+    deployConfig.HardwareLimitSwitch.ReverseLimitSource = ReverseLimitSourceValue.RemoteCANdiS1;
     //    deployConfig.HardwareLimitSwitch.ForwardLimitEnable = true;
-    //    deployConfig.HardwareLimitSwitch.ReverseLimitEnable = true;
+    deployConfig.HardwareLimitSwitch.ReverseLimitEnable = true;
     //    deployConfig.HardwareLimitSwitch.ForwardLimitType = ForwardLimitTypeValue.NormallyOpen;
-    //    deployConfig.HardwareLimitSwitch.ReverseLimitType = ReverseLimitTypeValue.NormallyOpen;
-    //    deployConfig.HardwareLimitSwitch.ReverseLimitAutosetPositionEnable = true;
-    //    deployConfig.HardwareLimitSwitch.ReverseLimitAutosetPositionValue = 0.0;
+    deployConfig.HardwareLimitSwitch.ReverseLimitType = ReverseLimitTypeValue.NormallyOpen;
+    deployConfig.HardwareLimitSwitch.ReverseLimitAutosetPositionEnable = true;
+    deployConfig.HardwareLimitSwitch.ReverseLimitAutosetPositionValue = 0.0;
     //    deployConfig.HardwareLimitSwitch.ForwardLimitRemoteSensorID =
     //        IntakeConstants.DEPLOYMENT_LIMITS_CANDI_ID;
-    //    deployConfig.HardwareLimitSwitch.ReverseLimitRemoteSensorID =
-    //        IntakeConstants.DEPLOYMENT_LIMITS_CANDI_ID;
+    deployConfig.HardwareLimitSwitch.ReverseLimitRemoteSensorID =
+        IntakeConstants.DEPLOYMENT_LIMITS_CANDI_ID;
     tryUntilOk(5, () -> deploy.getConfigurator().apply(deployConfig, 0.25));
 
     deploySlot0.kP = IntakeConstants.DEPLOYMENT_KP;
@@ -167,6 +168,14 @@ public class IntakeIOTalonFX implements IntakeIO {
   @Override
   public void setRollerMotorTorque(double torque) {
     roller.setControl(rollerTorqueCurrentRequest.withOutput(torque));
+  }
+
+  public void setRollerMotorVoltage(double volts) {
+    roller.setVoltage(volts);
+  }
+
+  public void setRollerMotorSpeed(double velocityRpm) {
+    roller.setControl(rollerVelocityCurrentRequest.withVelocity(velocityRpm / 60));
   }
 
   public void applyTunables(IntakeIOTunables tunables) {

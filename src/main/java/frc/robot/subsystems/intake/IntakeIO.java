@@ -53,5 +53,7 @@ public interface IntakeIO {
    */
   public default void setRollerMotorTorque(double torque) {}
 
+  public default void setRollerMotorSpeed(double velocityRpm) {}
+
   public default void zeroDeploy() {}
 }

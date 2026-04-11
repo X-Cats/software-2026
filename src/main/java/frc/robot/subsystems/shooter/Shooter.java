@@ -2,6 +2,7 @@ package frc.robot.subsystems.shooter;
 
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.RobotStateMachine;
 import frc.robot.util.LaunchCalculator;
 import frc.robot.util.LoggedTunableNumber;
@@ -46,7 +47,10 @@ public class Shooter extends SubsystemBase {
 
     switch (robotState.getDesiredShooterState().getShooterMode()) {
       case ON -> {
-        outputs.velocityRPM = LaunchCalculator.getInstance().getParameters().flywheelSpeed();
+        outputs.velocityRPM =
+            Constants.tuningMode
+                ? shooterRPM.getAsDouble()
+                : LaunchCalculator.getInstance().getParameters().flywheelSpeed();
       }
       case IDLE -> {
         outputs.velocityRPM = shooterCoastRPM.get();

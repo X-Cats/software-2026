@@ -16,7 +16,7 @@ public class HoodKicker extends SubsystemBase {
   private final RobotStateMachine robotState;
 
   private static final LoggedTunableNumber goalPosition =
-      new LoggedTunableNumber("Hood/Position", 500);
+      new LoggedTunableNumber("Hood/Position", 0.02);
   private static final LoggedTunableNumber kP =
       new LoggedTunableNumber("Hood/kP", HoodKickerConstants.kP);
   private static final LoggedTunableNumber kD =
@@ -56,7 +56,9 @@ public class HoodKicker extends SubsystemBase {
     if (this.hasBeenZeroed) {
       switch (robotState.getDesiredHoodState().getHoodState()) {
         case AIMING -> outputs.positionRad =
-            LaunchCalculator.getInstance().getParameters().hoodAngle();
+            Constants.tuningMode
+                ? goalPosition.getAsDouble()
+                : LaunchCalculator.getInstance().getParameters().hoodAngle();
         case STOWED -> outputs.positionRad = 0;
         default -> {
           System.out.println(

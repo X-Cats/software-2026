@@ -53,8 +53,8 @@ public class HoodKickerIOTalonFX implements HoodKickerIO {
     var hoodLimitsConfig = new CANdiConfiguration();
     hoodLimitsConfig.DigitalInputs.S1CloseState = S1CloseStateValue.CloseWhenLow;
     hoodLimitsConfig.DigitalInputs.S2CloseState = S2CloseStateValue.CloseWhenLow;
-    hoodLimitsConfig.DigitalInputs.S1FloatState = S1FloatStateValue.FloatDetect;
-    hoodLimitsConfig.DigitalInputs.S2FloatState = S2FloatStateValue.FloatDetect;
+    hoodLimitsConfig.DigitalInputs.S1FloatState = S1FloatStateValue.PullHigh;
+    hoodLimitsConfig.DigitalInputs.S2FloatState = S2FloatStateValue.PullHigh;
     tryUntilOk(5, () -> hoodLimits.getConfigurator().apply(hoodLimitsConfig));
 
     var hoodConfig = new TalonFXConfiguration();
