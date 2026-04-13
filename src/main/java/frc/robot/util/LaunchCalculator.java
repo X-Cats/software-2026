@@ -10,7 +10,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.interpolation.InterpolatingTreeMap;
-import edu.wpi.first.math.interpolation.Interpolator;
 import edu.wpi.first.math.interpolation.InverseInterpolator;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
@@ -199,14 +198,16 @@ public class LaunchCalculator {
     hubPreset =
         new LaunchPreset(
             new LoggedTunableNumber(
-                "LaunchCalculator/Presets/Hub/HoodAngle", hoodAngleMap.get(hubPresetDistance).getRotations()),
+                "LaunchCalculator/Presets/Hub/HoodAngle",
+                hoodAngleMap.get(hubPresetDistance).getRotations()),
             new LoggedTunableNumber(
                 "LaunchCalculator/Presets/Hub/FlywheelSpeed",
                 flywheelSpeedMap.get(hubPresetDistance)));
     towerPreset =
         new LaunchPreset(
             new LoggedTunableNumber(
-                "LaunchCalculator/Presets/Tower/HoodAngle", hoodAngleMap.get(towerPresetDistance).getRotations()),
+                "LaunchCalculator/Presets/Tower/HoodAngle",
+                hoodAngleMap.get(towerPresetDistance).getRotations()),
             new LoggedTunableNumber(
                 "LaunchCalculator/Presets/Tower/FlywheelSpeed",
                 flywheelSpeedMap.get(towerPresetDistance)));
@@ -299,10 +300,10 @@ public class LaunchCalculator {
     Rotation2d driveAngle = getDriveAngleWithLauncherOffset(lookaheadRobotPose, target);
 
     // Calculate remaining parameters
-    double hoodAngle = //hoodAngleMap.get(lookaheadLauncherToTargetDistance);
-            passing
-                ? passingHoodAngleMap.get(lookaheadLauncherToTargetDistance).getRadians()
-                : hoodAngleMap.get(lookaheadLauncherToTargetDistance);
+    double hoodAngle = // hoodAngleMap.get(lookaheadLauncherToTargetDistance);
+        passing
+            ? passingHoodAngleMap.get(lookaheadLauncherToTargetDistance).getRadians()
+            : hoodAngleMap.get(lookaheadLauncherToTargetDistance).getRadians();
     if (lastDriveAngle == null) lastDriveAngle = driveAngle;
     if (Double.isNaN(lastHoodAngle)) lastHoodAngle = hoodAngle;
     double hoodVelocity =
@@ -320,10 +321,10 @@ public class LaunchCalculator {
     boolean behindFarHub = farHubBound.contains(flippedPose.getTranslation());
     boolean outsideOfBadBoxes = !(insideTowerBadBox || behindNearHub || behindFarHub);
 
-    double flywheelVelocity = //flywheelSpeedMap.get(lookaheadLauncherToTargetDistance);
-            passing
-                ? passingFlywheelSpeedMap.get(lookaheadLauncherToTargetDistance)
-                : flywheelSpeedMap.get(lookaheadLauncherToTargetDistance);
+    double flywheelVelocity = // flywheelSpeedMap.get(lookaheadLauncherToTargetDistance);
+        passing
+            ? passingFlywheelSpeedMap.get(lookaheadLauncherToTargetDistance)
+            : flywheelSpeedMap.get(lookaheadLauncherToTargetDistance);
 
     // Constructor parameters
     latestParameters =
