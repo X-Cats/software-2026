@@ -65,8 +65,8 @@ public class Shooter extends SubsystemBase {
     robotState
         .getShooterState()
         .setShooterAtSpeed(
-            filteredRPM.lastValue() + 100 > outputs.velocityRPM
-                && filteredRPM.lastValue() - 100 < outputs.velocityRPM);
+            filteredRPM.lastValue() + 200 > outputs.velocityRPM
+                && filteredRPM.lastValue() - 200 < outputs.velocityRPM);
     if (outputs.velocityRPM < currentRPM - 100) { // TODO: apply a deadband of some sort here
       outputs.idleDown = true;
     } else {

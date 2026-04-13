@@ -3,7 +3,7 @@ package frc.robot.subsystems.HoodKicker;
 public class HoodKickerConstants {
   public static final int HOOD_MOTOR_ID = 54;
   public static final int HOOD_MOTOR_VOLTAGE = 1;
-  public static final double HOOD_MOTOR_REDUCTION = 91.8;
+  public static final double HOOD_MOTOR_REDUCTION = 91.8; // (36 / 12) * (36 / 18) * (153 / 10)
   public static final double HOOD_MOTOR_CURRENT_LIMIT = 10;
   public static final int CANDI_CAN_ID = 53;
   public static final int UPPER_LIMIT_SWITCH = 1;
