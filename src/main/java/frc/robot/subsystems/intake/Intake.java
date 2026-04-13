@@ -55,7 +55,7 @@ public class Intake extends SubsystemBase {
   }
 
   private boolean shouldRunRoller() {
-    return (inputs.deployIn == 0) && deployPositionFilter.lastValue() > 1;
+    return (inputs.deployIn == 0) && deployPositionFilter.lastValue() > 15;
   }
 
   private boolean deployIsStopped() {
@@ -111,7 +111,11 @@ public class Intake extends SubsystemBase {
     if (shouldRunRoller()) {
       switch (robotState.getDesiredIntakeState().getDesiredIntakeRollerState()) {
         case INTAKING -> {
-          io.setRollerMotorVoltage(8);
+          if (inputs.deployPosition > 15) {
+            io.setRollerMotorVoltage(8);
+          } else {
+            io.setRollerMotorVoltage(0);
+          }
           //          io.setRollerMotorTorque(intakeRollerAmps.getAsDouble());
         }
         case EJECTING -> {
@@ -120,9 +124,9 @@ public class Intake extends SubsystemBase {
         case AGITATING -> {
           if (((int) (Timer.getFPGATimestamp() * 10)) % 3
               == 0) { // Every 1/3 of the time we agitate
-            io.setRollerMotorSpeed(500);
+            //            io.setRollerMotorSpeed(500);
           } else {
-            io.setRollerMotorSpeed(500);
+            //            io.setRollerMotorSpeed(500);
           }
         }
         case OFF -> {

@@ -210,4 +210,12 @@ public class Camera {
   public CameraIO getIo() {
     return io;
   }
+
+  /**
+   * @return SmartDashboard/NetworkTables key prefix for this camera (e.g., {@code
+   *     "limelight-shoot/"})
+   */
+  public String getTableKey() {
+    return name + "/";
+  }
 }
