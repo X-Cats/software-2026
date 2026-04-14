@@ -165,7 +165,11 @@ public class IntakeIOTalonFX implements IntakeIO {
     inputs.deployIn = deployReverseLimit.getValueAsDouble();
     inputs.deployOut = deployForwardLimit.getValueAsDouble();
     inputs.deploySetpoint = deploySetpoint;
-    inputs.deployAtSetpoint = (inputs.deployPosition - 0.5 < deploySetpoint) && (inputs.deployPosition + 0.5 > deploySetpoint) ? 1 : 0;
+    inputs.deployAtSetpoint =
+        (inputs.deployPosition - 0.5 < deploySetpoint)
+                && (inputs.deployPosition + 0.5 > deploySetpoint)
+            ? 1
+            : 0;
   }
 
   @Override

@@ -145,9 +145,11 @@ public class Intake extends SubsystemBase {
     tunables.deploymentMMAcceleration = deployMMAcceleration.getAsDouble();
     tunables.deploymentMMJerk = deployMMJerk.getAsDouble();
   }
+
   private void zero() {
     io.setDeployMotorTorque(-2);
   }
+
   private void runIn() {
     io.setDeployMotorPosition(IntakeConstants.DEPLOYMENT_STOWED_SETPOINT);
   }
