@@ -63,6 +63,8 @@ public class IntakeIOTalonFX implements IntakeIO {
   private final StatusSignal<Boolean> deployForwardLimit;
   private final StatusSignal<Boolean> deployReverseLimit;
 
+  private double deploySetpoint = 0.0;
+
   public IntakeIOTalonFX() {
     var rollerConfig = new TalonFXConfiguration();
     rollerConfig.CurrentLimits.SupplyCurrentLimit = IntakeConstants.ROLLER_MOTOR_CURRENT_LIMIT;
@@ -162,7 +164,8 @@ public class IntakeIOTalonFX implements IntakeIO {
     inputs.deploySupplyCurrentAmps = deploySupplyCurrent.getValueAsDouble();
     inputs.deployIn = deployReverseLimit.getValueAsDouble();
     inputs.deployOut = deployForwardLimit.getValueAsDouble();
-    ;
+    inputs.deploySetpoint = deploySetpoint;
+    inputs.deployAtSetpoint = (inputs.deployPosition - 0.5 < deploySetpoint) && (inputs.deployPosition + 0.5 > deploySetpoint) ? 1 : 0;
   }
 
   @Override
@@ -204,10 +207,11 @@ public class IntakeIOTalonFX implements IntakeIO {
   }
 
   public void setDeployMotorPosition(double ticks) {
+    deploySetpoint = ticks;
     deploy.setControl(deployMotionMagicRequest.withPosition(ticks));
   }
 
   public void zeroDeploy() {
-    deploy.setPosition(0);
+    // deploy.setPosition(0); // No-op since we have a limit switch now
   }
 }

@@ -17,6 +17,8 @@ public interface IntakeIO {
     public double deployPosition = 0.0;
     public double deployTorqueCurrentAmps = 0.0;
     public double deploySupplyCurrentAmps = 0.0;
+    public double deploySetpoint = 0.0;
+    public double deployAtSetpoint = 0;
   }
 
   public static class IntakeIOTunables {

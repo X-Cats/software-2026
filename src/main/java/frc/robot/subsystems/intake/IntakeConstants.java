@@ -26,7 +26,7 @@ public class IntakeConstants {
   public static final double DEPLOYMENT_STOWED_SETPOINT = 1.5;
 
   public static final int ROLLER_MOTOR_ID = 4;
-  public static final int ROLLER_MOTOR_TORQUE = 10;
+  public static final double ROLLER_MOTOR_TORQUE = 5.;
   public static final double ROLLER_MOTOR_REDUCTION = 1;
   public static final double ROLLER_MOTOR_CURRENT_LIMIT = 40;
 }
