@@ -3,51 +3,55 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.4361022727272723,
+        "x": 7.847420454545453,
         "y": 7.230113636363637
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.322532547933844,
-        "y": 7.388686163451619
+        "x": 8.158653396303663,
+        "y": 7.347921180555667
       },
       "isLocked": false,
-      "linkedName": "LHS Shooting"
+      "linkedName": "Cheesy depart"
     },
     {
       "anchor": {
-        "x": 4.6419999999999995,
-        "y": 7.343488636363636
+        "x": 7.8165,
+        "y": 4.148375000000001
       },
       "prevControl": {
-        "x": 4.386928854237845,
-        "y": 7.351311162878767
+        "x": 8.699574453290152,
+        "y": 4.411418454171536
       },
       "nextControl": {
-        "x": 4.966178744250454,
-        "y": 7.333546716767188
+        "x": 6.847659090909091,
+        "y": 3.8597840909090912
       },
       "isLocked": false,
-      "linkedName": "LHS Trench Move"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.249863636363637,
-        "y": 7.291954545454546
+        "x": 7.208397727272727,
+        "y": 5.921147727272728
       },
       "prevControl": {
-        "x": 5.563049685112009,
-        "y": 7.367343927078505
+        "x": 7.265816213080624,
+        "y": 6.164464634797725
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "LHS Past Trench"
+      "linkedName": "Cheesy aqu"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1,
-      "rotationDegrees": 90.0
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": -91.6365770416168
+    },
+    {
+      "waypointRelativePos": 1.3769123783031993,
+      "rotationDegrees": 91.38452770599562
     }
   ],
   "constraintZones": [],
@@ -63,13 +67,13 @@
   },
   "goalEndState": {
     "velocity": 5.4,
-    "rotation": -37.4053566314087
+    "rotation": 90.0
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 111.97450799147202
+    "rotation": -63.86899945506134
   },
   "useDefaultConstraints": false
 }

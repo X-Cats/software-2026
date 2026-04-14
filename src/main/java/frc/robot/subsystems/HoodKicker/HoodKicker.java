@@ -3,6 +3,7 @@ package frc.robot.subsystems.HoodKicker;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.RobotStateMachine;
 import frc.robot.util.LaunchCalculator;
 import frc.robot.util.LoggedTunableNumber;
@@ -15,7 +16,7 @@ public class HoodKicker extends SubsystemBase {
   private final RobotStateMachine robotState;
 
   private static final LoggedTunableNumber goalPosition =
-      new LoggedTunableNumber("Hood/Position", 500);
+      new LoggedTunableNumber("Hood/Position", 0.02);
   private static final LoggedTunableNumber kP =
       new LoggedTunableNumber("Hood/kP", HoodKickerConstants.kP);
   private static final LoggedTunableNumber kD =
@@ -49,10 +50,15 @@ public class HoodKicker extends SubsystemBase {
     outputs.kD = kD.getAsDouble();
     outputs.kS = kS.getAsDouble();
 
+    if (Constants.tuningMode)
+      LoggedTunableNumber.ifChanged(2, () -> io.applyTunables(outputs), kP, kD, kS);
+
     if (this.hasBeenZeroed) {
       switch (robotState.getDesiredHoodState().getHoodState()) {
         case AIMING -> outputs.positionRad =
-            LaunchCalculator.getInstance().getParameters().hoodAngle();
+            Constants.tuningMode
+                ? goalPosition.getAsDouble()
+                : LaunchCalculator.getInstance().getParameters().hoodAngle();
         case STOWED -> outputs.positionRad = 0;
         default -> {
           System.out.println(

@@ -32,6 +32,8 @@ public interface HoodKickerIO {
 
   public default void applyOutputs(HoodIOOutputs outputs) {}
 
+  public default void applyTunables(HoodIOOutputs outputs) {}
+
   /**
    * setting the hood motor voltage
    *

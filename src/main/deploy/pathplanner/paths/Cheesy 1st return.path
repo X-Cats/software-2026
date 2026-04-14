@@ -3,16 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.4361022727272723,
-        "y": 7.230113636363637
+        "x": 7.208397727272727,
+        "y": 5.921147727272728
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.322532547933844,
-        "y": 7.388686163451619
+        "x": 7.068458806029229,
+        "y": 6.92599031242327
       },
       "isLocked": false,
-      "linkedName": "LHS Shooting"
+      "linkedName": "Cheesy aqu"
+    },
+    {
+      "anchor": {
+        "x": 6.363238636363636,
+        "y": 7.333
+      },
+      "prevControl": {
+        "x": 6.914582908544312,
+        "y": 7.194816573774217
+      },
+      "nextControl": {
+        "x": 6.074647727272727,
+        "y": 7.405329545454546
+      },
+      "isLocked": false,
+      "linkedName": null
     },
     {
       "anchor": {
@@ -20,33 +36,37 @@
         "y": 7.343488636363636
       },
       "prevControl": {
-        "x": 4.386928854237845,
-        "y": 7.351311162878767
+        "x": 5.126215854117032,
+        "y": 7.308804429823692
       },
       "nextControl": {
-        "x": 4.966178744250454,
-        "y": 7.333546716767188
+        "x": 4.062473842554857,
+        "y": 7.384999885467161
       },
       "isLocked": false,
       "linkedName": "LHS Trench Move"
     },
     {
       "anchor": {
-        "x": 6.249863636363637,
-        "y": 7.291954545454546
+        "x": 3.4361022727272723,
+        "y": 7.230113636363637
       },
       "prevControl": {
-        "x": 5.563049685112009,
-        "y": 7.367343927078505
+        "x": 4.411177519979092,
+        "y": 7.360797441318876
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "LHS Past Trench"
+      "linkedName": "LHS Shooting"
     }
   ],
   "rotationTargets": [
     {
       "waypointRelativePos": 1,
+      "rotationDegrees": 90.0
+    },
+    {
+      "waypointRelativePos": 2,
       "rotationDegrees": 90.0
     }
   ],
@@ -62,14 +82,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 5.4,
-    "rotation": -37.4053566314087
+    "velocity": 0,
+    "rotation": 111.97450799147202
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 111.97450799147202
+    "velocity": 5.4,
+    "rotation": 90.0
   },
   "useDefaultConstraints": false
 }

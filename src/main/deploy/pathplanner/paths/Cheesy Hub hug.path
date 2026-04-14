@@ -3,51 +3,51 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.4361022727272723,
-        "y": 7.230113636363637
+        "x": 5.899431818181817,
+        "y": 7.343488636363636
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.322532547933844,
-        "y": 7.388686163451619
+        "x": 5.819326113070129,
+        "y": 6.296958438715155
       },
       "isLocked": false,
-      "linkedName": "LHS Shooting"
+      "linkedName": "hub hug"
     },
     {
       "anchor": {
-        "x": 4.6419999999999995,
-        "y": 7.343488636363636
+        "x": 5.765,
+        "y": 5.745931818181819
       },
       "prevControl": {
-        "x": 4.386928854237845,
-        "y": 7.351311162878767
+        "x": 5.909545018501422,
+        "y": 6.378818321965432
       },
       "nextControl": {
-        "x": 4.966178744250454,
-        "y": 7.333546716767188
+        "x": 5.649142443690645,
+        "y": 5.238652601576937
       },
       "isLocked": false,
-      "linkedName": "LHS Trench Move"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.249863636363637,
-        "y": 7.291954545454546
+        "x": 5.765443181818182,
+        "y": 1.9839431818181823
       },
       "prevControl": {
-        "x": 5.563049685112009,
-        "y": 7.367343927078505
+        "x": 5.775758100931854,
+        "y": 2.3068057924644045
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "LHS Past Trench"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
     {
       "waypointRelativePos": 1,
-      "rotationDegrees": 90.0
+      "rotationDegrees": -89.42127443439219
     }
   ],
   "constraintZones": [],
@@ -62,14 +62,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 5.4,
-    "rotation": -37.4053566314087
+    "velocity": 0.0,
+    "rotation": -90.0
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 111.97450799147202
+    "velocity": 5.4,
+    "rotation": -37.4053566314087
   },
   "useDefaultConstraints": false
 }

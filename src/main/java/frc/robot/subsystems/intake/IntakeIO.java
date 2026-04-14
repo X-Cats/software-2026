@@ -19,10 +19,26 @@ public interface IntakeIO {
     public double deploySupplyCurrentAmps = 0.0;
   }
 
+  public static class IntakeIOTunables {
+    public double deploymentKV,
+        deploymentKS,
+        deploymentKA,
+        deploymentKP,
+        deploymentKI,
+        deploymentKD,
+        deploymentMMCruiseVelocity,
+        deploymentMMAcceleration,
+        deploymentMMJerk = 0.0;
+  }
+
   public default void updateInputs(IntakeIOInputs inputs) {}
+
+  public default void applyTunables(IntakeIOTunables tunables) {}
 
   /** sets the deployment motor's current */
   public default void setDeployMotorTorque(double amps) {}
+
+  public default void setDeployMotorPosition(double ticks) {}
   /**
    * sets the roller motor's voltage
    *
@@ -36,6 +52,8 @@ public interface IntakeIO {
    * <p>TODO: What is the torque unit?
    */
   public default void setRollerMotorTorque(double torque) {}
+
+  public default void setRollerMotorSpeed(double velocityRpm) {}
 
   public default void zeroDeploy() {}
 }

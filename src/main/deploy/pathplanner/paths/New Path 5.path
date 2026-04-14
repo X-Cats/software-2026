@@ -3,45 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.249863636363637,
-        "y": 7.291954545454546
+        "x": 7.35546856465006,
+        "y": 6.783973902728351
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.2478841524370665,
-        "y": 7.300675053488292
+        "x": 7.688016768386039,
+        "y": 6.931262585247012
       },
       "isLocked": false,
-      "linkedName": "LHS Past Trench"
+      "linkedName": "lhs hub 4"
     },
     {
       "anchor": {
-        "x": 8.51295580150463,
-        "y": 7.134769603587963
+        "x": 5.816903914597893,
+        "y": 5.933997627526932
       },
       "prevControl": {
-        "x": 8.128526237792741,
-        "y": 7.510877868403229
+        "x": 6.156909077266668,
+        "y": 6.923397544152098
       },
       "nextControl": {
-        "x": 8.935912606136974,
-        "y": 6.720968052151347
+        "x": 5.476898751929118,
+        "y": 4.944597710901767
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.697780671296297,
-        "y": 5.003411458333333
+        "x": 6.2042348754448415,
+        "y": 4.180249110320284
       },
       "prevControl": {
-        "x": 8.677743824107274,
-        "y": 6.161670436098966
+        "x": 6.064653744574708,
+        "y": 4.387654770573361
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Far Acq LHS"
+      "linkedName": "lhs hub 5"
     }
   ],
   "rotationTargets": [],
@@ -49,22 +49,22 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.4,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 5.4,
-    "rotation": -88.47056014517166
+    "velocity": 8.0,
+    "rotation": -66.25050550713327
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
-    "velocity": 5.4,
-    "rotation": -37.4053566314087
+    "velocity": 0,
+    "rotation": -166.96664367429764
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.430674334490741,
-        "y": 7.362700593171296
+        "x": 6.249863636363637,
+        "y": 7.291954545454546
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.837925707500922,
-        "y": 7.207175023657407
+        "x": 7.657115009373818,
+        "y": 7.136428975940657
       },
       "isLocked": false,
       "linkedName": "LHS Past Trench"
@@ -48,7 +48,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 3.0,
-    "rotation": -74.40448264408225
+    "rotation": -37.4053566314087
   },
   "useDefaultConstraints": false
 }

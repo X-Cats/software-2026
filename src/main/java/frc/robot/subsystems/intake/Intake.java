@@ -3,6 +3,7 @@ package frc.robot.subsystems.intake;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.RobotStateMachine;
 import frc.robot.util.LoggedTunableNumber;
 import org.littletonrobotics.junction.Logger;
@@ -10,6 +11,7 @@ import org.littletonrobotics.junction.Logger;
 public class Intake extends SubsystemBase {
   private final IntakeIO io;
   private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
+  private final IntakeIO.IntakeIOTunables tunables = new IntakeIO.IntakeIOTunables();
   private final RobotStateMachine robotState;
 
   private LinearFilter deployVelocityFilter = LinearFilter.singlePoleIIR(0.1, 0.02);
@@ -19,6 +21,29 @@ public class Intake extends SubsystemBase {
       new LoggedTunableNumber("Intake/Deploy Amps", IntakeConstants.DEPLOYMENT_MOTOR_CURRENT);
   private LoggedTunableNumber intakeStowTorque =
       new LoggedTunableNumber("Intake/Stow Amps", IntakeConstants.DEPLOYMENT_MOTOR_STOW_CURRENT);
+  private static final LoggedTunableNumber kP =
+      new LoggedTunableNumber("Intake/Deploy/kP", IntakeConstants.DEPLOYMENT_KP);
+  private static final LoggedTunableNumber kD =
+      new LoggedTunableNumber("Intake/Deploy/kD", IntakeConstants.DEPLOYMENT_KD);
+  private static final LoggedTunableNumber kV =
+      new LoggedTunableNumber("Intake/Deploy/kV", IntakeConstants.DEPLOYMENT_KV);
+  private static final LoggedTunableNumber kI =
+      new LoggedTunableNumber("Intake/Deploy/kI", IntakeConstants.DEPLOYMENT_KI);
+  private static final LoggedTunableNumber kS =
+      new LoggedTunableNumber("Intake/Deploy/kS", IntakeConstants.DEPLOYMENT_KS);
+  private static final LoggedTunableNumber kA =
+      new LoggedTunableNumber("Intake/Deploy/kA", IntakeConstants.DEPLOYMENT_KA);
+  private static final LoggedTunableNumber deployMMCruiseVelocity =
+      new LoggedTunableNumber(
+          "Intake/Deploy/Motion Magic/Cruise Velocity",
+          IntakeConstants.DEPLOYMENT_MM_CRUISE_VELOCITY);
+  private static final LoggedTunableNumber deployMMAcceleration =
+      new LoggedTunableNumber(
+          "Intake/Deploy/Motion Magic/Acceleration",
+          IntakeConstants.DEPLOYMENT_MM_CRUISE_ACCELERATION);
+  private static final LoggedTunableNumber deployMMJerk =
+      new LoggedTunableNumber(
+          "Intake/Deploy/Motion Magic/Jerk", IntakeConstants.DEPLOYMENT_MM_CRUISE_JERK);
 
   private LoggedTunableNumber intakeRollerAmps =
       new LoggedTunableNumber("Intake/Roller Amps", IntakeConstants.ROLLER_MOTOR_TORQUE);
@@ -30,7 +55,7 @@ public class Intake extends SubsystemBase {
   }
 
   private boolean shouldRunRoller() {
-    return (inputs.deployIn == 0) && deployPositionFilter.lastValue() > 1;
+    return (inputs.deployIn == 0) && deployPositionFilter.lastValue() > 15;
   }
 
   private boolean deployIsStopped() {
@@ -44,6 +69,21 @@ public class Intake extends SubsystemBase {
     io.updateInputs(inputs);
     Logger.processInputs("Intake", inputs);
 
+    if (Constants.tuningMode) {
+      updateTunables();
+      LoggedTunableNumber.ifChanged(
+          1,
+          () -> io.applyTunables(tunables),
+          kS,
+          kV,
+          kA,
+          kP,
+          kI,
+          kD,
+          deployMMCruiseVelocity,
+          deployMMAcceleration,
+          deployMMJerk);
+    }
     switch (robotState.getDesiredIntakeState().getDesiredIntakeDeployState()) {
       case DEPLOYED -> {
         runOut();
@@ -71,17 +111,22 @@ public class Intake extends SubsystemBase {
     if (shouldRunRoller()) {
       switch (robotState.getDesiredIntakeState().getDesiredIntakeRollerState()) {
         case INTAKING -> {
-          io.setRollerMotorTorque(intakeRollerAmps.getAsDouble());
+          if (inputs.deployPosition > 15) {
+            io.setRollerMotorVoltage(5);
+          } else {
+            io.setRollerMotorVoltage(0);
+          }
+          //          io.setRollerMotorTorque(intakeRollerAmps.getAsDouble());
         }
         case EJECTING -> {
-          io.setRollerMotorTorque(-intakeRollerAmps.getAsDouble());
+          //          io.setRollerMotorTorque(-intakeRollerAmps.getAsDouble());
         }
         case AGITATING -> {
           if (((int) (Timer.getFPGATimestamp() * 10)) % 3
               == 0) { // Every 1/3 of the time we agitate
-            io.setRollerMotorTorque(-intakeRollerAmps.getAsDouble() / 2);
+            //            io.setRollerMotorSpeed(500);
           } else {
-            io.setRollerMotorTorque(intakeRollerAmps.getAsDouble());
+            //            io.setRollerMotorSpeed(500);
           }
         }
         case OFF -> {
@@ -93,35 +138,32 @@ public class Intake extends SubsystemBase {
     }
   }
 
+  public void updateTunables() {
+    tunables.deploymentKS = kS.getAsDouble();
+    tunables.deploymentKV = kV.getAsDouble();
+    tunables.deploymentKA = kA.getAsDouble();
+    tunables.deploymentKP = kP.getAsDouble();
+    tunables.deploymentKI = kI.getAsDouble();
+    tunables.deploymentKD = kD.getAsDouble();
+    tunables.deploymentMMCruiseVelocity = deployMMCruiseVelocity.getAsDouble();
+    tunables.deploymentMMAcceleration = deployMMAcceleration.getAsDouble();
+    tunables.deploymentMMJerk = deployMMJerk.getAsDouble();
+  }
+
   private void runIn() {
-    if (inputs.deployIn == 0) {
-      io.setDeployMotorTorque(-intakeStowTorque.getAsDouble());
-    } else {
-      io.setDeployMotorTorque(0);
-    }
+    io.setDeployMotorPosition(IntakeConstants.DEPLOYMENT_STOWED_SETPOINT);
   }
 
   private void runOut() {
-    if (inputs.deployOut == 0) {
-      io.setDeployMotorTorque(intakeDeployTorque.getAsDouble());
-    } else {
-      io.setDeployMotorTorque(0);
-    }
+    io.setDeployMotorPosition(IntakeConstants.DEPLOYMENT_DEPLOYED_SETPOINT);
   }
 
+  // TODO: add FF here?
   private void agitateIn() {
-    if (inputs.deployIn == 0) {
-      io.setDeployMotorTorque(-intakeStowTorque.getAsDouble());
-    } else {
-      io.setDeployMotorTorque(0);
-    }
+    runIn();
   }
 
   private void agitateOut() {
-    if (inputs.deployOut == 0) {
-      io.setDeployMotorTorque(intakeDeployTorque.getAsDouble() / 2);
-    } else {
-      io.setDeployMotorTorque(0);
-    }
+    runOut();
   }
 }

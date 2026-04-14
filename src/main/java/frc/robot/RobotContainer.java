@@ -37,10 +37,8 @@ import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeIOSim;
 import frc.robot.subsystems.intake.IntakeIOTalonFX;
 import frc.robot.subsystems.shooter.Shooter;
-import frc.robot.subsystems.shooter.ShooterConstants;
 import frc.robot.subsystems.shooter.ShooterIOSim;
 import frc.robot.subsystems.shooter.ShooterIOTalonFX;
-import frc.robot.subsystems.vision.Camera;
 import frc.robot.subsystems.vision.CameraConstants;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.util.AllianceFlipUtil;
@@ -59,8 +57,7 @@ public class RobotContainer {
   private final Drive drive;
   private final Conveyor conveyor;
   private final Intake intake;
-  private final Shooter leftShooter;
-  private final Shooter rightShooter;
+  private final Shooter shooter;
   private final HoodKicker hood;
   private final Vision vision;
 
@@ -91,15 +88,10 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.BackRight));
         conveyor = new Conveyor(new ConveyorIOTalonFX(), robotState);
         intake = new Intake(new IntakeIOTalonFX(), robotState);
-        leftShooter =
-            new Shooter(new ShooterIOTalonFX(ShooterConstants.ShooterSide.LEFT), robotState);
-        rightShooter =
-            new Shooter(new ShooterIOTalonFX(ShooterConstants.ShooterSide.RIGHT), robotState);
+        shooter = new Shooter(new ShooterIOTalonFX(), robotState);
         hood = new HoodKicker(new HoodKickerIOTalonFX(), robotState);
 
-        Camera cam = CameraConstants.RobotCameras.SHOOTER;
-
-        vision = new Vision(cam);
+        vision = new Vision(CameraConstants.RobotCameras.CAMERAS);
 
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
@@ -131,8 +123,7 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.BackRight));
         conveyor = new Conveyor(new ConveyorIOSim(), robotState);
         intake = new Intake(new IntakeIOSim(), robotState);
-        leftShooter = new Shooter(new ShooterIOSim(), robotState);
-        rightShooter = new Shooter(new ShooterIOSim(), robotState);
+        shooter = new Shooter(new ShooterIOSim(), robotState);
         hood = new HoodKicker(new HoodKickerIOSim(), robotState);
 
         vision = new Vision();
@@ -149,8 +140,7 @@ public class RobotContainer {
                 new ModuleIO() {});
         conveyor = new Conveyor(new ConveyorIOSim(), robotState);
         intake = new Intake(new IntakeIOSim(), robotState);
-        leftShooter = new Shooter(new ShooterIOSim(), robotState);
-        rightShooter = new Shooter(new ShooterIOSim(), robotState);
+        shooter = new Shooter(new ShooterIOSim(), robotState);
         hood = new HoodKicker(new HoodKickerIOSim(), robotState);
         vision = new Vision();
         break;
@@ -303,7 +293,8 @@ public class RobotContainer {
     Rotation2d hubAngle =
         AllianceFlipUtil.apply(FieldConstants.Hub.innerCenterPoint.toTranslation2d())
             .minus(RobotState.getInstance().getRobotPoseField().getTranslation())
-            .getAngle();
+            .getAngle()
+            .rotateBy(Rotation2d.fromDegrees(180));
     SmartDashboard.putNumber("Hub Drive Angle", hubAngle.getDegrees());
     return hubAngle;
   }

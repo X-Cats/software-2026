@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.6419999999999995,
-        "y": 7.343488636363636
+        "x": 3.331530249110321,
+        "y": 7.300415183867142
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.733298488320564,
-        "y": 7.279922317034812
+        "x": 4.751743772241993,
+        "y": 7.763060498220641
       },
       "isLocked": false,
-      "linkedName": "LHS Trench Move"
+      "linkedName": "lhs hub 3"
     },
     {
       "anchor": {
-        "x": 6.249863636363637,
-        "y": 7.291954545454546
+        "x": 7.35546856465006,
+        "y": 6.783973902728351
       },
       "prevControl": {
-        "x": 5.752323268733891,
-        "y": 7.361925429603099
+        "x": 7.215599051008305,
+        "y": 7.666227758007118
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "LHS Past Trench"
+      "linkedName": "lhs hub 4"
     }
   ],
   "rotationTargets": [],
@@ -33,22 +33,22 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.4,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 5.4,
-    "rotation": -37.4053566314087
+    "velocity": 8.0,
+    "rotation": -166.96664367429764
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": -87.75425743410494
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }
