@@ -92,11 +92,9 @@ public class Intake extends SubsystemBase {
         runIn();
       }
       case AGITATING -> {
-        int time = ((int) (Timer.getFPGATimestamp()) % 2);
-        if (time == 0) {
-          agitateOut();
-        } else {
-          agitateIn();
+        if (inputs.deployAtSetpoint == 1) { // Flip-flop; wait until deploy at setpoint before making another change
+          if (inputs.deploySetpoint <= IntakeConstants.DEPLOY_AGITATE_FAR) io.setDeployMotorPosition(IntakeConstants.DEPLOY_AGITATE_FAR);
+          else io.setDeployMotorPosition(IntakeConstants.DEPLOY_AGITATE_CLOSE);
         }
       }
       default -> {
