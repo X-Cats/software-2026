@@ -15,7 +15,7 @@ public class Shooter extends SubsystemBase {
   private final RobotStateMachine robotState;
   private final LoggedTunableNumber shooterRPM = new LoggedTunableNumber("Shooter/Shoot RPM", 2000);
   private final LoggedTunableNumber shooterCoastRPM =
-      new LoggedTunableNumber("Shooter/Coast RPM", 750);
+      new LoggedTunableNumber("Shooter/Coast RPM", ShooterConstants.SHOOTER_IDLE_RPM);
 
   private static final LoggedTunableNumber kP =
       new LoggedTunableNumber("Shooter/kP", ShooterConstants.kP);
@@ -65,8 +65,8 @@ public class Shooter extends SubsystemBase {
     robotState
         .getShooterState()
         .setShooterAtSpeed(
-            filteredRPM.lastValue() + 200 > outputs.velocityRPM
-                && filteredRPM.lastValue() - 200 < outputs.velocityRPM);
+            filteredRPM.lastValue() + 50 > outputs.velocityRPM
+                && filteredRPM.lastValue() - 50 < outputs.velocityRPM);
     if (outputs.velocityRPM < currentRPM - 100) { // TODO: apply a deadband of some sort here
       outputs.idleDown = true;
     } else {

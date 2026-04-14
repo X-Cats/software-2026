@@ -2,10 +2,9 @@ package frc.robot.subsystems.shooter;
 
 public class ShooterConstants {
 
-  public static final double SHOOTER_MOTOR_VOLTAGE = 1;
+  public static final double SHOOTER_IDLE_RPM = 750;
   public static final double SHOOTER_MOTOR_REDUCTION = 1;
-  public static final double SHOOTER_MOTOR_CURRENT_LIMIT = 40;
-  public static final double SHOOTER_RAMP_RATE = 20;
+  public static final double SHOOTER_MOTOR_CURRENT_LIMIT = 70;
   public static final double kP = 0.4;
   public static final double kI = 0.0;
   public static final double kD = 0.0;

@@ -293,7 +293,8 @@ public class RobotContainer {
     Rotation2d hubAngle =
         AllianceFlipUtil.apply(FieldConstants.Hub.innerCenterPoint.toTranslation2d())
             .minus(RobotState.getInstance().getRobotPoseField().getTranslation())
-            .getAngle();
+            .getAngle()
+            .rotateBy(Rotation2d.fromDegrees(180));
     SmartDashboard.putNumber("Hub Drive Angle", hubAngle.getDegrees());
     return hubAngle;
   }
