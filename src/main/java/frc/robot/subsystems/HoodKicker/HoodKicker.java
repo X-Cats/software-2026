@@ -1,5 +1,6 @@
 package frc.robot.subsystems.HoodKicker;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -39,6 +40,14 @@ public class HoodKicker extends SubsystemBase {
     robotState = rs;
   }
 
+  public void setHoodIsReady(HoodKickerIO.HoodIOInputs inputs, HoodKickerIO.HoodIOOutputs outputs) {
+    var pos = Rotation2d.fromRadians(outputs.positionRad).getRotations();
+    robotState.getShooterState().setHoodIsReady(
+            inputs.hoodPosition < pos + .001
+            && inputs.hoodPosition > pos - .001
+    );
+  }
+
   @Override
   public void periodic() {
     io.updateInputs(inputs);
@@ -66,6 +75,7 @@ public class HoodKicker extends SubsystemBase {
           io.setHoodMotorVoltage(0);
         }
       }
+      setHoodIsReady(inputs, outputs);
       io.applyOutputs(outputs);
     } else {
       io.zero();
