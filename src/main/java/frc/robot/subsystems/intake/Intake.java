@@ -55,12 +55,14 @@ public class Intake extends SubsystemBase {
   }
 
   private boolean shouldRunRoller() {
-    return (inputs.deployIn == 0) && deployPositionFilter.lastValue() > 15;
+    return (inputs.deployIn == 0) && deployPositionFilter.lastValue() > 0.5;
   }
 
   private boolean deployIsStopped() {
     return deployVelocityFilter.lastValue() <= 5 && deployVelocityFilter.lastValue() >= -5;
   }
+
+  private double agitateSetpoint = IntakeConstants.DEPLOY_AGITATE_CLOSE;
 
   @Override
   public void periodic() {
@@ -92,12 +94,13 @@ public class Intake extends SubsystemBase {
         runIn();
       }
       case AGITATING -> {
-        int time = ((int) (Timer.getFPGATimestamp()) % 2);
-        if (time == 0) {
-          agitateOut();
-        } else {
-          agitateIn();
+        if (inputs.deployAtSetpoint
+            == 1) { // Flip-flop; wait until deploy at setpoint before making another change
+          if (inputs.deploySetpoint <= IntakeConstants.DEPLOY_AGITATE_FAR)
+            agitateSetpoint = IntakeConstants.DEPLOY_AGITATE_FAR;
+          else agitateSetpoint = IntakeConstants.DEPLOY_AGITATE_CLOSE;
         }
+        io.setDeployMotorPosition(agitateSetpoint);
       }
       default -> {
         System.out.println("Unknown Intake Extension State");
@@ -105,28 +108,24 @@ public class Intake extends SubsystemBase {
       }
     }
 
-    /*
-    TODO: Only run the roller if we're out and not running
-     */
     if (shouldRunRoller()) {
       switch (robotState.getDesiredIntakeState().getDesiredIntakeRollerState()) {
         case INTAKING -> {
           if (inputs.deployPosition > 15) {
-            io.setRollerMotorVoltage(5);
+            io.setRollerMotorTorque(IntakeConstants.ROLLER_MOTOR_TORQUE);
           } else {
             io.setRollerMotorVoltage(0);
           }
-          //          io.setRollerMotorTorque(intakeRollerAmps.getAsDouble());
         }
         case EJECTING -> {
-          //          io.setRollerMotorTorque(-intakeRollerAmps.getAsDouble());
+          // Do nothing
         }
         case AGITATING -> {
           if (((int) (Timer.getFPGATimestamp() * 10)) % 3
               == 0) { // Every 1/3 of the time we agitate
-            //            io.setRollerMotorSpeed(500);
+            io.setRollerMotorTorque(IntakeConstants.ROLLER_MOTOR_TORQUE / 2);
           } else {
-            //            io.setRollerMotorSpeed(500);
+            io.setRollerMotorTorque(-IntakeConstants.ROLLER_MOTOR_TORQUE / 3);
           }
         }
         case OFF -> {
@@ -148,6 +147,10 @@ public class Intake extends SubsystemBase {
     tunables.deploymentMMCruiseVelocity = deployMMCruiseVelocity.getAsDouble();
     tunables.deploymentMMAcceleration = deployMMAcceleration.getAsDouble();
     tunables.deploymentMMJerk = deployMMJerk.getAsDouble();
+  }
+
+  private void zero() {
+    io.setDeployMotorTorque(-2);
   }
 
   private void runIn() {

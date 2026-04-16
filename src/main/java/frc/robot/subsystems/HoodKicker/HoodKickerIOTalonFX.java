@@ -20,7 +20,6 @@ import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 import frc.robot.Constants;
 import frc.robot.util.PhoenixUtil;
-
 public class HoodKickerIOTalonFX implements HoodKickerIO {
   // Motors
   private final TalonFX hood = new TalonFX(HoodKickerConstants.HOOD_MOTOR_ID);
@@ -78,6 +77,7 @@ public class HoodKickerIOTalonFX implements HoodKickerIO {
     hoodSlot0.kI = HoodKickerConstants.kI;
     hoodSlot0.kD = HoodKickerConstants.kD;
     hoodSlot0.kS = HoodKickerConstants.kS;
+    hoodSlot0.kV = HoodKickerConstants.kV;
     hoodSlot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
     hood.getConfigurator().apply(hoodSlot0);
 

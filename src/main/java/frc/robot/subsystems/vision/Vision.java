@@ -93,7 +93,7 @@ public class Vision extends SubsystemBase {
   public void periodic() {
     LoggedTracer.record("VisionStart");
     List<Rotation2d> mt1Yaws = new ArrayList<>();
-    // If available, push yaw to MT2 cameras before we read (254/6328 pattern).
+    // If available, push yaw to MT2 cameras before we read (254/63 28 pattern).
     Rotation2d yawNow = (yawSupplier != null) ? yawSupplier.get() : null;
 
     for (Camera cam : cameras) {
@@ -166,6 +166,9 @@ public class Vision extends SubsystemBase {
     if (injectVision) {
       if (candidates.size() >= 2) {
         VisionCandidate fused = fuse(candidates.get(0), candidates.get(1));
+        if (DriverStation.isDisabled()) {
+          RobotState.getInstance().resetRobotPose(fused.pose());
+        }
         feedFieldEstimate(fused);
       } else if (candidates.size() == 1) {
         feedFieldEstimate(candidates.get(0));
@@ -247,7 +250,7 @@ public class Vision extends SubsystemBase {
       // TODO - had to comment this out after switching to MT1 tags, need to debug
       // // Ignore flickering when too close to tags
       // var priorPose = RobotState.getInstance().getRobotPoseField();
-      // SmartDashboard.putBoolean("YawDiff OK", true);
+      // SmartDashboard.putBoolean(cam.getTableKey() + "YawDiff OK", true);
       // if (pe.avgTagArea < 2.0) {
       //   double yawDiff =
       //       Math.abs(
@@ -255,7 +258,7 @@ public class Vision extends SubsystemBase {
       //               priorPose.getRotation().getRadians() - pose.getRotation().getRadians()));
 
       //   if (yawDiff > Units.degreesToRadians(5.0)) {
-      //     SmartDashboard.putBoolean("YawDiff OK", false);
+      //     SmartDashboard.putBoolean(cam.getTableKey() + "YawDiff OK", false);
       //     return Optional.empty();
       //   }
       // }
@@ -270,7 +273,7 @@ public class Vision extends SubsystemBase {
             ? cam.getPrimaryXYStandardDeviationCoefficient()
             : cam.getSecondaryXYStandardDeviationCoefficient();
     double xyStd = coeff * modeled;
-    xyStd = Math.max(xyStd, 0.04); // tune 0.03–0.07
+    xyStd = Math.max(xyStd, 0.04); // 3 cm; tune 0.03–0.07
 
     // Exclusive‑tag filtering USE FOR AUTO ALIGN
     // var exclusiveTag = state.getExclusiveTag();
@@ -433,8 +436,8 @@ public class Vision extends SubsystemBase {
     double t = b.timestampSec();
     double rotStd = a.trustYaw() && b.trustYaw() ? fusedStd : 9999.0;
 
-    Logger.recordOutput("Vision/Fuse/a.trustYaw", a.trustYaw());
-    Logger.recordOutput("Vision/Fuse/b.trustYaw", b.trustYaw());
+    Logger.recordOutput("Vision/Fuse/a.trustYaw", a.trustYaw);
+    Logger.recordOutput("Vision/Fuse/b.trustYaw", b.trustYaw);
     Logger.recordOutput("Vision/Fuse/fusedStd", fusedStd);
     Logger.recordOutput("Vision/Fuse/rotStd", rotStd);
 

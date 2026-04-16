@@ -33,12 +33,7 @@ public class Conveyor extends SubsystemBase {
 
     switch (robotState.getDesiredConveyorState().getConveyorState()) {
       case CONVEYING -> {
-        if (((int) (Timer.getFPGATimestamp() * 10.0)) % 8
-            == 0) { // Every 1/8 of the time we agitate
-          io.setConveyorVoltage(-conveyorAgitatingVoltage.getAsDouble());
-        } else {
-          io.setConveyorVoltage(conveyorVoltage.getAsDouble());
-        }
+        io.setConveyorVoltage(conveyorVoltage.getAsDouble());
       }
       case EJECTING -> io.setConveyorVoltage(-conveyorVoltage.getAsDouble());
       case AGITATING -> {

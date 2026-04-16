@@ -16,7 +16,7 @@ public class HoodKickerConstants {
   public static final double KICKER_MOTOR_CURRENT_LIMIT = 40;
 
   public static final double kS = 4.0;
-  public static final double kV = 0.0;
+  public static final double kV = 1.0;
   public static final double kP = 0.015;
   public static final double kI = 0.0;
   public static final double kD = 0.0;
