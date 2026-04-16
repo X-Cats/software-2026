@@ -13,13 +13,13 @@ import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.CANdi;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.*;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 import frc.robot.Constants;
 import frc.robot.util.PhoenixUtil;
-
 public class HoodKickerIOTalonFX implements HoodKickerIO {
   // Motors
   private final TalonFX hood = new TalonFX(HoodKickerConstants.HOOD_MOTOR_ID);
@@ -53,8 +53,8 @@ public class HoodKickerIOTalonFX implements HoodKickerIO {
     var hoodLimitsConfig = new CANdiConfiguration();
     hoodLimitsConfig.DigitalInputs.S1CloseState = S1CloseStateValue.CloseWhenLow;
     hoodLimitsConfig.DigitalInputs.S2CloseState = S2CloseStateValue.CloseWhenLow;
-    hoodLimitsConfig.DigitalInputs.S1FloatState = S1FloatStateValue.FloatDetect;
-    hoodLimitsConfig.DigitalInputs.S2FloatState = S2FloatStateValue.FloatDetect;
+    hoodLimitsConfig.DigitalInputs.S1FloatState = S1FloatStateValue.PullHigh;
+    hoodLimitsConfig.DigitalInputs.S2FloatState = S2FloatStateValue.PullHigh;
     tryUntilOk(5, () -> hoodLimits.getConfigurator().apply(hoodLimitsConfig));
 
     var hoodConfig = new TalonFXConfiguration();
@@ -77,6 +77,7 @@ public class HoodKickerIOTalonFX implements HoodKickerIO {
     hoodSlot0.kI = HoodKickerConstants.kI;
     hoodSlot0.kD = HoodKickerConstants.kD;
     hoodSlot0.kS = HoodKickerConstants.kS;
+    hoodSlot0.kV = HoodKickerConstants.kV;
     hoodSlot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
     hood.getConfigurator().apply(hoodSlot0);
 
@@ -153,6 +154,14 @@ public class HoodKickerIOTalonFX implements HoodKickerIO {
 
   @Override
   public void applyOutputs(HoodIOOutputs outputs) {
+    hood.setControl(
+        positionControl
+            .withPosition(Rotation2d.fromRadians(outputs.positionRad).getRotations())
+            .withSlot(0)
+            .withFeedForward(outputs.kS));
+  }
+
+  public void applyTunables(HoodIOOutputs outputs) {
     if (Constants.tuningMode) {
       var configs = hoodSlot0;
       configs.kP = outputs.kP;
@@ -160,7 +169,5 @@ public class HoodKickerIOTalonFX implements HoodKickerIO {
       configs.kS = outputs.kS;
       tryUntilOk(5, () -> hood.getConfigurator().apply(configs));
     }
-    hood.setControl(
-        positionControl.withPosition(outputs.positionRad).withSlot(0).withFeedForward(outputs.kS));
   }
 }

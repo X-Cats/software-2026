@@ -2,6 +2,7 @@ package frc.robot.subsystems.shooter;
 
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.RobotStateMachine;
 import frc.robot.util.LaunchCalculator;
 import frc.robot.util.LoggedTunableNumber;
@@ -14,7 +15,7 @@ public class Shooter extends SubsystemBase {
   private final RobotStateMachine robotState;
   private final LoggedTunableNumber shooterRPM = new LoggedTunableNumber("Shooter/Shoot RPM", 2000);
   private final LoggedTunableNumber shooterCoastRPM =
-      new LoggedTunableNumber("Shooter/Coast RPM", 750);
+      new LoggedTunableNumber("Shooter/Coast RPM", ShooterConstants.SHOOTER_IDLE_RPM);
 
   private static final LoggedTunableNumber kP =
       new LoggedTunableNumber("Shooter/kP", ShooterConstants.kP);
@@ -46,7 +47,10 @@ public class Shooter extends SubsystemBase {
 
     switch (robotState.getDesiredShooterState().getShooterMode()) {
       case ON -> {
-        outputs.velocityRPM = LaunchCalculator.getInstance().getParameters().flywheelSpeed();
+        outputs.velocityRPM =
+            Constants.tuningMode
+                ? shooterRPM.getAsDouble()
+                : LaunchCalculator.getInstance().getParameters().flywheelSpeed();
       }
       case IDLE -> {
         outputs.velocityRPM = shooterCoastRPM.get();
@@ -61,9 +65,9 @@ public class Shooter extends SubsystemBase {
     robotState
         .getShooterState()
         .setShooterAtSpeed(
-            filteredRPM.lastValue() + 100 > outputs.velocityRPM
-                && filteredRPM.lastValue() - 100 < outputs.velocityRPM);
-    if (outputs.velocityRPM < currentRPM) { // TODO: apply a deadband of some sort here
+            filteredRPM.lastValue() + 50 > outputs.velocityRPM
+                && filteredRPM.lastValue() - 50 < outputs.velocityRPM);
+    if (outputs.velocityRPM < currentRPM - 100) { // TODO: apply a deadband of some sort here
       outputs.idleDown = true;
     } else {
       outputs.idleDown = false;

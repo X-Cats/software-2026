@@ -39,6 +39,8 @@ public class IntakeIOTalonFX implements IntakeIO {
   // Control Requests
   private final TorqueCurrentFOC rollerTorqueCurrentRequest =
       new TorqueCurrentFOC(0.0).withUpdateFreqHz(0.0);
+  private final VelocityTorqueCurrentFOC rollerVelocityCurrentRequest =
+      new VelocityTorqueCurrentFOC(0.0).withUpdateFreqHz(0.0);
   private final TorqueCurrentFOC deployTorqueCurrentRequest =
       new TorqueCurrentFOC(0.0).withUpdateFreqHz(0.0);
   private final VelocityTorqueCurrentFOC deployVelocityTorqueCurrentRequest =
@@ -61,35 +63,39 @@ public class IntakeIOTalonFX implements IntakeIO {
   private final StatusSignal<Boolean> deployForwardLimit;
   private final StatusSignal<Boolean> deployReverseLimit;
 
+  private double deploySetpoint = 0.0;
+
   public IntakeIOTalonFX() {
     var rollerConfig = new TalonFXConfiguration();
     rollerConfig.CurrentLimits.SupplyCurrentLimit = IntakeConstants.ROLLER_MOTOR_CURRENT_LIMIT;
     rollerConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
-    rollerConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    rollerConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
     rollerConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     //    tryUntilOk(5, () -> roller.getConfigurator().apply(rollerConfig, 0.25));
 
     var deployLimitsConfig = new CANdiConfiguration();
     deployLimitsConfig.DigitalInputs.S1CloseState = S1CloseStateValue.CloseWhenLow;
     deployLimitsConfig.DigitalInputs.S2CloseState = S2CloseStateValue.CloseWhenLow;
-    deployLimitsConfig.DigitalInputs.S1FloatState = S1FloatStateValue.FloatDetect;
-    deployLimitsConfig.DigitalInputs.S2FloatState = S2FloatStateValue.FloatDetect;
+    deployLimitsConfig.DigitalInputs.S1FloatState = S1FloatStateValue.PullHigh;
+    deployLimitsConfig.DigitalInputs.S2FloatState = S2FloatStateValue.PullHigh;
     tryUntilOk(5, () -> deployLimits.getConfigurator().apply(deployLimitsConfig));
 
     var deployConfig = new TalonFXConfiguration();
     deployConfig.CurrentLimits.SupplyCurrentLimit = IntakeConstants.DEPLOYMENT_MOTOR_CURRENT_LIMIT;
     deployConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     deployConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-    deployConfig.HardwareLimitSwitch.ForwardLimitSource = ForwardLimitSourceValue.RemoteCANdiS2;
+    deployConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    //    deployConfig.HardwareLimitSwitch.ForwardLimitSource =
+    // ForwardLimitSourceValue.RemoteCANdiS2;
     deployConfig.HardwareLimitSwitch.ReverseLimitSource = ReverseLimitSourceValue.RemoteCANdiS1;
-    deployConfig.HardwareLimitSwitch.ForwardLimitEnable = true;
+    //    deployConfig.HardwareLimitSwitch.ForwardLimitEnable = true;
     deployConfig.HardwareLimitSwitch.ReverseLimitEnable = true;
-    deployConfig.HardwareLimitSwitch.ForwardLimitType = ForwardLimitTypeValue.NormallyOpen;
+    //    deployConfig.HardwareLimitSwitch.ForwardLimitType = ForwardLimitTypeValue.NormallyOpen;
     deployConfig.HardwareLimitSwitch.ReverseLimitType = ReverseLimitTypeValue.NormallyOpen;
     deployConfig.HardwareLimitSwitch.ReverseLimitAutosetPositionEnable = true;
     deployConfig.HardwareLimitSwitch.ReverseLimitAutosetPositionValue = 0.0;
-    deployConfig.HardwareLimitSwitch.ForwardLimitRemoteSensorID =
-        IntakeConstants.DEPLOYMENT_LIMITS_CANDI_ID;
+    //    deployConfig.HardwareLimitSwitch.ForwardLimitRemoteSensorID =
+    //        IntakeConstants.DEPLOYMENT_LIMITS_CANDI_ID;
     deployConfig.HardwareLimitSwitch.ReverseLimitRemoteSensorID =
         IntakeConstants.DEPLOYMENT_LIMITS_CANDI_ID;
     tryUntilOk(5, () -> deploy.getConfigurator().apply(deployConfig, 0.25));
@@ -158,12 +164,25 @@ public class IntakeIOTalonFX implements IntakeIO {
     inputs.deploySupplyCurrentAmps = deploySupplyCurrent.getValueAsDouble();
     inputs.deployIn = deployReverseLimit.getValueAsDouble();
     inputs.deployOut = deployForwardLimit.getValueAsDouble();
-    ;
+    inputs.deploySetpoint = deploySetpoint;
+    inputs.deployAtSetpoint =
+        (inputs.deployPosition - 0.5 < deploySetpoint)
+                && (inputs.deployPosition + 0.5 > deploySetpoint)
+            ? 1
+            : 0;
   }
 
   @Override
   public void setRollerMotorTorque(double torque) {
     roller.setControl(rollerTorqueCurrentRequest.withOutput(torque));
+  }
+
+  public void setRollerMotorVoltage(double volts) {
+    roller.setVoltage(volts);
+  }
+
+  public void setRollerMotorSpeed(double velocityRpm) {
+    roller.setControl(rollerVelocityCurrentRequest.withVelocity(velocityRpm / 60));
   }
 
   public void applyTunables(IntakeIOTunables tunables) {
@@ -192,10 +211,11 @@ public class IntakeIOTalonFX implements IntakeIO {
   }
 
   public void setDeployMotorPosition(double ticks) {
+    deploySetpoint = ticks;
     deploy.setControl(deployMotionMagicRequest.withPosition(ticks));
   }
 
   public void zeroDeploy() {
-    deploy.setPosition(0);
+    // deploy.setPosition(0); // No-op since we have a limit switch now
   }
 }

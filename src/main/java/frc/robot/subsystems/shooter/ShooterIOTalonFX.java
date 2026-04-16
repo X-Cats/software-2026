@@ -7,6 +7,7 @@ import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.MotionMagicVelocityTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -28,6 +29,8 @@ public class ShooterIOTalonFX implements ShooterIO {
   private final StatusSignal<Current> shooterAmps;
 
   private final VelocityVoltage velocityControl = new VelocityVoltage(0).withUpdateFreqHz(0.0);
+  private final MotionMagicVelocityTorqueCurrentFOC mmVelocityControl =
+      new MotionMagicVelocityTorqueCurrentFOC(0).withUpdateFreqHz(0.0);
 
   public ShooterIOTalonFX() {
     shooterLeader = new TalonFX(ShooterConstants.SHOOTER_LEFT_UPPER);
@@ -63,8 +66,13 @@ public class ShooterIOTalonFX implements ShooterIO {
     slot0Configs.kI = ShooterConstants.kI;
     slot0Configs.kD = ShooterConstants.kD;
     slot0Configs.kV = ShooterConstants.kV;
+    tryUntilOk(5, () -> shooterLeader.getConfigurator().apply(slot0Configs, 0.25));
 
-    shooterLeader.getConfigurator().apply(slot0Configs);
+    var motionMagicConfigs = shooterConfig.MotionMagic;
+    motionMagicConfigs.MotionMagicAcceleration =
+        400; // Target acceleration of 400 rps/s (0.25 seconds to max)
+    motionMagicConfigs.MotionMagicJerk = 4000; // Target jerk of 4000 rps/s/s (0.1 seconds)
+    tryUntilOk(5, () -> shooterLeader.getConfigurator().apply(motionMagicConfigs, 0.25));
 
     BaseStatusSignal.setUpdateFrequencyForAll(50, shooterAppliedVolts, shooterRPM, shooterAmps);
 

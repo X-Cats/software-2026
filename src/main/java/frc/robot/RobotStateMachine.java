@@ -93,6 +93,7 @@ public class RobotStateMachine extends SubsystemBase {
 
   // State Transition Helper Functions
   public boolean transitionIdle() {
+    this.aShooterState.shooterAtSpeed = false;
     dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.OFF);
     dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.STOWED);
 
@@ -106,6 +107,7 @@ public class RobotStateMachine extends SubsystemBase {
   }
 
   public boolean transitionIntaking() {
+    this.aShooterState.shooterAtSpeed = false;
     dIntakeState.setDesiredIntakeRollerState(DesiredIntakeState.IntakeRollerState.INTAKING);
     dIntakeState.setDesiredIntakeDeployState(DesiredIntakeState.IntakeDeployState.DEPLOYED);
 
@@ -187,7 +189,7 @@ public class RobotStateMachine extends SubsystemBase {
 
   public boolean getShooterAssyReady() {
     // TODO: Add hood here too
-    return this.aShooterState.shooterAtSpeed;
+    return this.aShooterState.shooterAtSpeed && this.aShooterState.hoodIsReady;
   }
 
   // Desired states
@@ -344,9 +346,13 @@ public class RobotStateMachine extends SubsystemBase {
   @AutoLog
   public static class ShooterState {
     public boolean shooterAtSpeed;
+    public boolean hoodIsReady;
 
     public void setShooterAtSpeed(boolean atSpeed) {
-      this.shooterAtSpeed = atSpeed;
+      this.shooterAtSpeed = this.shooterAtSpeed || atSpeed;
+    }
+    public void setHoodIsReady(boolean isReady) {
+      this.shooterAtSpeed = isReady;
     }
   }
 }

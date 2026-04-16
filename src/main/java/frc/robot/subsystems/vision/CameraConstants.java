@@ -49,25 +49,52 @@ public class CameraConstants {
 
   /** Factory for robot cameras. Edit transforms and duties to match your robot configuration. */
   public static class RobotCameras {
-    /** Shooter Limelight configuration including physical transform and duties. */
-    public static final Camera SHOOTER =
+    /** Left-side Limelight configuration including physical transform and duties. */
+    public static final Camera LEFT =
         new Camera(
-            new CameraIOLimelight("shoot", CameraType.LIMELIGHT_3),
-            Limelight3GConstants.HORIZONTAL_FOV,
-            Limelight3GConstants.VERTICAL_FOV,
-            Limelight3GConstants.MEGATAG_XY_STANDARD_DEVIATION_COEFFICIENT,
-            Limelight3GConstants.MEGATAG_2_XY_STANDARD_DEVIATION_COEFFICIENT,
+            new CameraIOLimelight("left", CameraType.LIMELIGHT_4),
+            Limelight4Constants.HORIZONTAL_FOV,
+            Limelight4Constants.VERTICAL_FOV,
+            Limelight4Constants.MEGATAG_XY_STANDARD_DEVIATION_COEFFICIENT,
+            Limelight4Constants.MEGATAG_2_XY_STANDARD_DEVIATION_COEFFICIENT,
             NetworkTableInstance.getDefault()
-                .getTable("limelight-shoot")
+                .getTable("limelight-left")
                 .getDoubleArrayTopic("robot_orientation_set")
                 .publish(),
             List.of(CameraDuty.FIELD_LOCALIZATION),
             new Transform3d(
-                -0.01287, 0.0, 0.541229, new Rotation3d(0, Units.degreesToRadians(28), 0)));
+                -0.33, // forward + / backward -
+                -0.089, // side right + / left -
+                0.419, // up + / down -
+                new Rotation3d(
+                    Units.degreesToRadians(3.45),
+                    Units.degreesToRadians(23.98),
+                    Units.degreesToRadians(170.0))));
 
-    /** Cameras used by the robot. Order is not significant. */
-    // public static final Camera[] CAMERAS = {robotInitConstants.isCompBot ? RIGHT : LEFT};
-    // public static final Camera[] SIM_CAMERAS = {LEFT_SIM, RIGHT_SIM};
+    /** Right-side Limelight configuration including physical transform and duties. */
+    public static final Camera RIGHT =
+        new Camera(
+            new CameraIOLimelight("right", CameraType.LIMELIGHT_4),
+            Limelight4Constants.HORIZONTAL_FOV,
+            Limelight4Constants.VERTICAL_FOV,
+            Limelight4Constants.MEGATAG_XY_STANDARD_DEVIATION_COEFFICIENT,
+            Limelight4Constants.MEGATAG_2_XY_STANDARD_DEVIATION_COEFFICIENT,
+            NetworkTableInstance.getDefault()
+                .getTable("limelight-right")
+                .getDoubleArrayTopic("robot_orientation_set")
+                .publish(),
+            List.of(CameraDuty.FIELD_LOCALIZATION),
+            new Transform3d(
+                -0.33, // forward + / backward -
+                0.089, // side right + / left -
+                0.419, // up + / down -
+                new Rotation3d(
+                    Units.degreesToRadians(-4.97),
+                    Units.degreesToRadians(24.77),
+                    Units.degreesToRadians(190.0))));
+
+    /** Both comp bot cameras used for field localization. */
+    public static final Camera[] CAMERAS = {LEFT, RIGHT};
   }
 
   /** Placeholder for replay/sim configurations if needed. */

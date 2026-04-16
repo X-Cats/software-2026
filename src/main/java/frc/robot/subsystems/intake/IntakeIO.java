@@ -17,6 +17,20 @@ public interface IntakeIO {
     public double deployPosition = 0.0;
     public double deployTorqueCurrentAmps = 0.0;
     public double deploySupplyCurrentAmps = 0.0;
+    public double deploySetpoint = 0.0;
+    public double deployAtSetpoint = 0;
+  }
+
+  public static class IntakeIOTunables {
+    public double deploymentKV,
+        deploymentKS,
+        deploymentKA,
+        deploymentKP,
+        deploymentKI,
+        deploymentKD,
+        deploymentMMCruiseVelocity,
+        deploymentMMAcceleration,
+        deploymentMMJerk = 0.0;
   }
 
   public static class IntakeIOTunables {
@@ -52,6 +66,8 @@ public interface IntakeIO {
    * <p>TODO: What is the torque unit?
    */
   public default void setRollerMotorTorque(double torque) {}
+
+  public default void setRollerMotorSpeed(double velocityRpm) {}
 
   public default void zeroDeploy() {}
 }

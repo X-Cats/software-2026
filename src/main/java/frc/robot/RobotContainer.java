@@ -39,7 +39,6 @@ import frc.robot.subsystems.intake.IntakeIOTalonFX;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIOSim;
 import frc.robot.subsystems.shooter.ShooterIOTalonFX;
-import frc.robot.subsystems.vision.Camera;
 import frc.robot.subsystems.vision.CameraConstants;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.util.AllianceFlipUtil;
@@ -92,9 +91,7 @@ public class RobotContainer {
         shooter = new Shooter(new ShooterIOTalonFX(), robotState);
         hood = new HoodKicker(new HoodKickerIOTalonFX(), robotState);
 
-        Camera cam = CameraConstants.RobotCameras.SHOOTER;
-
-        vision = new Vision(cam);
+        vision = new Vision(CameraConstants.RobotCameras.CAMERAS);
 
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
@@ -219,7 +216,7 @@ public class RobotContainer {
             Commands.runOnce(
                     () ->
                         drive.setPose(
-                            new Pose2d(drive.getPose().getTranslation(), Rotation2d.k180deg)),
+                            new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
                     drive)
                 .ignoringDisable(true));
 
@@ -296,7 +293,8 @@ public class RobotContainer {
     Rotation2d hubAngle =
         AllianceFlipUtil.apply(FieldConstants.Hub.innerCenterPoint.toTranslation2d())
             .minus(RobotState.getInstance().getRobotPoseField().getTranslation())
-            .getAngle();
+            .getAngle()
+            .rotateBy(Rotation2d.fromDegrees(180));
     SmartDashboard.putNumber("Hub Drive Angle", hubAngle.getDegrees());
     return hubAngle;
   }
