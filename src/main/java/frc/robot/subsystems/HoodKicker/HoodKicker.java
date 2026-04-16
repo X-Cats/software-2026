@@ -42,10 +42,9 @@ public class HoodKicker extends SubsystemBase {
 
   public void setHoodIsReady(HoodKickerIO.HoodIOInputs inputs, HoodKickerIO.HoodIOOutputs outputs) {
     var pos = Rotation2d.fromRadians(outputs.positionRad).getRotations();
-    robotState.getShooterState().setHoodIsReady(
-            inputs.hoodPosition < pos + .001
-            && inputs.hoodPosition > pos - .001
-    );
+    robotState
+        .getShooterState()
+        .setHoodIsReady(inputs.hoodPosition < pos + .001 && inputs.hoodPosition > pos - .001);
   }
 
   @Override

@@ -351,6 +351,7 @@ public class RobotStateMachine extends SubsystemBase {
     public void setShooterAtSpeed(boolean atSpeed) {
       this.shooterAtSpeed = this.shooterAtSpeed || atSpeed;
     }
+
     public void setHoodIsReady(boolean isReady) {
       this.shooterAtSpeed = isReady;
     }

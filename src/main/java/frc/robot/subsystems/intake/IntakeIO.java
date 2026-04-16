@@ -33,18 +33,6 @@ public interface IntakeIO {
         deploymentMMJerk = 0.0;
   }
 
-  public static class IntakeIOTunables {
-    public double deploymentKV,
-        deploymentKS,
-        deploymentKA,
-        deploymentKP,
-        deploymentKI,
-        deploymentKD,
-        deploymentMMCruiseVelocity,
-        deploymentMMAcceleration,
-        deploymentMMJerk = 0.0;
-  }
-
   public default void updateInputs(IntakeIOInputs inputs) {}
 
   public default void applyTunables(IntakeIOTunables tunables) {}

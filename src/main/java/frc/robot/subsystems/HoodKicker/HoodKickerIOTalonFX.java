@@ -20,6 +20,7 @@ import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 import frc.robot.Constants;
 import frc.robot.util.PhoenixUtil;
+
 public class HoodKickerIOTalonFX implements HoodKickerIO {
   // Motors
   private final TalonFX hood = new TalonFX(HoodKickerConstants.HOOD_MOTOR_ID);
