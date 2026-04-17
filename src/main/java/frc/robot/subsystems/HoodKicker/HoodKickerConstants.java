@@ -17,7 +17,7 @@ public class HoodKickerConstants {
 
   public static final double kS = 2.0;
   public static final double kV = 0.0;
-  public static final double kP = 0.015;
+c  public static final double kP = 120;
   public static final double kI = 0.0;
   public static final double kD = 0.0;
 }
