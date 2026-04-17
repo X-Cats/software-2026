@@ -1,5 +1,7 @@
 package frc.robot.util;
 
+import static frc.robot.util.LauncherConstants.robotToLauncher;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -17,8 +19,6 @@ import frc.robot.RobotState;
 import lombok.Getter;
 import lombok.experimental.ExtensionMethod;
 import org.littletonrobotics.junction.Logger;
-
-import static frc.robot.util.LauncherConstants.robotToLauncher;
 
 @ExtensionMethod({GeomUtil.class})
 public class LaunchCalculator {

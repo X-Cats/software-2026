@@ -19,17 +19,23 @@ public class HoodKickerIOSim implements HoodKickerIO {
 
   private double hoodAppliedVolts = 0.0;
   private double kickerAppliedVolts = 0.0;
+  private double hoodPosition = 0.0;
 
   public void updateInputs(HoodIOInputs inputs) {
     hoodSim.setInputVoltage(hoodAppliedVolts);
     hoodSim.update(0.02);
 
     inputs.hoodAppliedVolts = hoodAppliedVolts;
+    inputs.hoodPosition = hoodPosition;
 
     kickerSim.setInputVoltage(kickerAppliedVolts);
     kickerSim.update(0.02);
 
     inputs.kickerAppliedVolts = kickerAppliedVolts;
+  }
+
+  public void applyOutputs(HoodIOOutputs outputs) {
+    hoodPosition = outputs.positionRotations;
   }
 
   @Override

@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.AutoLog;
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 // author Daniel Rabess
@@ -345,7 +346,10 @@ public class RobotStateMachine extends SubsystemBase {
 
   @AutoLog
   public static class ShooterState {
+    @AutoLogOutput(key = "ShooterState/FlywheelReady")
     public boolean shooterAtSpeed;
+
+    @AutoLogOutput(key = "ShooterState/HoodReady")
     public boolean hoodIsReady;
 
     public void setShooterAtSpeed(boolean atSpeed) {
