@@ -353,7 +353,7 @@ public class RobotStateMachine extends SubsystemBase {
     }
 
     public void setHoodIsReady(boolean isReady) {
-      this.shooterAtSpeed = isReady;
+      this.hoodIsReady = isReady;
     }
   }
 }

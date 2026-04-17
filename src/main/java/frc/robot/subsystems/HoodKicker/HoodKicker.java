@@ -72,6 +72,8 @@ public class HoodKicker extends SubsystemBase {
       io.zero();
     }
 
+    checkHood(inputs, outputs);
+
     switch (robotState.getDesiredHoodState().getKickerState()) {
       case FEEDING -> {
         if (robotState.getShooterAssyReady())
@@ -95,6 +97,11 @@ public class HoodKicker extends SubsystemBase {
         () -> {
           io.setHoodMotorVoltage(0.0);
         });
+  }
+
+  public void checkHood(HoodKickerIO.HoodIOInputs inputs, HoodKickerIO.HoodIOOutputs outputs) {
+    var hoodFrac = inputs.hoodPosition / outputs.positionRotations;
+    robotState.getShooterState().setHoodIsReady(0.9 < hoodFrac && hoodFrac < 1.1);
   }
 
   public Command runKickerMotor() {
