@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.473255813953489,
-        "y": 7.385545617173523
+        "x": 4.477090909090909,
+        "y": 7.374409090909092
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.627619450317125,
-        "y": 7.40615925353716
+        "x": 4.816934982197448,
+        "y": 7.387575400081944
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "LHS Trench Move"
     },
     {
       "anchor": {
-        "x": 7.847420454545453,
-        "y": 7.230113636363637
+        "x": 4.0,
+        "y": 7.374
       },
       "prevControl": {
-        "x": 7.045385547387829,
-        "y": 7.340123378992892
+        "x": 3.7431568454583264,
+        "y": 7.3675337315605836
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Cheesy depart"
+      "linkedName": "backup 1/2"
     }
   ],
   "rotationTargets": [],
@@ -33,22 +33,22 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.4,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 5.4,
-    "rotation": -63.86899945506134
+    "velocity": 0.0,
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
-    "velocity": 5.4,
+    "velocity": 0,
     "rotation": 0.0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

@@ -16,7 +16,7 @@ public class HoodKicker extends SubsystemBase {
   private final RobotStateMachine robotState;
 
   private static final LoggedTunableNumber goalPosition =
-      new LoggedTunableNumber("Hood/Position", 0.02);
+      new LoggedTunableNumber("Hood/Position", 0.008);
   private static final LoggedTunableNumber kP =
       new LoggedTunableNumber("Hood/kP", HoodKickerConstants.kP);
   private static final LoggedTunableNumber kD =
@@ -101,7 +101,9 @@ public class HoodKicker extends SubsystemBase {
 
   public void checkHood(HoodKickerIO.HoodIOInputs inputs, HoodKickerIO.HoodIOOutputs outputs) {
     var hoodFrac = inputs.hoodPosition / outputs.positionRotations;
-    robotState.getShooterState().setHoodIsReady(0.9 < hoodFrac && hoodFrac < 1.1);
+    robotState
+        .getShooterState()
+        .setHoodIsReady(outputs.positionRotations < 0.01 || (0.9 < hoodFrac && hoodFrac < 1.1));
   }
 
   public Command runKickerMotor() {

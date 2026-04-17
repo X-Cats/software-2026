@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.158653396303663,
-        "y": 7.347921180555667
+        "x": 7.982387660086353,
+        "y": 7.6345193093274375
       },
       "isLocked": false,
       "linkedName": "Cheesy depart"
@@ -20,12 +20,12 @@
         "y": 4.148375000000001
       },
       "prevControl": {
-        "x": 8.699574453290152,
-        "y": 4.411418454171536
+        "x": 8.781837675757075,
+        "y": 4.472346598904876
       },
       "nextControl": {
-        "x": 6.847659090909091,
-        "y": 3.8597840909090912
+        "x": 6.719534492836098,
+        "y": 3.780228517971656
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +36,8 @@
         "y": 5.921147727272728
       },
       "prevControl": {
-        "x": 7.265816213080624,
-        "y": 6.164464634797725
+        "x": 7.247141959928889,
+        "y": 6.168127249573434
       },
       "nextControl": null,
       "isLocked": false,
@@ -72,7 +72,7 @@
   "reversed": false,
   "folder": null,
   "idealStartingState": {
-    "velocity": 0,
+    "velocity": 5.4,
     "rotation": -63.86899945506134
   },
   "useDefaultConstraints": false

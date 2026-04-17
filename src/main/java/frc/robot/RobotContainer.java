@@ -44,6 +44,7 @@ import frc.robot.subsystems.vision.Vision;
 import frc.robot.util.AllianceFlipUtil;
 import frc.robot.util.AutoManager;
 import frc.robot.util.FieldConstants;
+import frc.robot.util.LaunchCalculator;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -290,12 +291,18 @@ public class RobotContainer {
   }
 
   private Rotation2d getHubDriveAngle() {
-    Rotation2d hubAngle =
-        AllianceFlipUtil.apply(FieldConstants.Hub.innerCenterPoint.toTranslation2d())
-            .minus(RobotState.getInstance().getRobotPoseField().getTranslation())
-            .getAngle()
-            .rotateBy(Rotation2d.fromDegrees(180));
-    SmartDashboard.putNumber("Hub Drive Angle", hubAngle.getDegrees());
+    Rotation2d hubAngle;
+    if (!LaunchCalculator.getInstance().getParameters().passing()) {
+      hubAngle =
+          AllianceFlipUtil.apply(FieldConstants.Hub.innerCenterPoint.toTranslation2d())
+              .minus(RobotState.getInstance().getRobotPoseField().getTranslation())
+              .getAngle()
+              .rotateBy(Rotation2d.fromDegrees(180));
+    } else {
+      hubAngle = AllianceFlipUtil.apply(Rotation2d.fromDegrees(0));
+    }
+
+    SmartDashboard.putNumber("Auto Align Drive Angle", hubAngle.getDegrees());
     return hubAngle;
   }
 

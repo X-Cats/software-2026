@@ -3,51 +3,51 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.1589982110912342,
-        "y": 7.190840787119857
+        "x": 7.208397727272727,
+        "y": 5.921147727272728
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.573644800036029,
-        "y": 7.328503286418072
+        "x": 7.11226769852479,
+        "y": 6.201142698992256
       },
       "isLocked": false,
-      "linkedName": "LHS Shooting"
+      "linkedName": "Cheesy Pass 1st end"
     },
     {
       "anchor": {
-        "x": 4.477090909090909,
-        "y": 7.374409090909092
+        "x": 6.115875,
+        "y": 7.168272727272727
       },
       "prevControl": {
-        "x": 4.149366158864827,
-        "y": 7.301504078722006
+        "x": 6.480949163887916,
+        "y": 7.749509225041646
       },
       "nextControl": {
-        "x": 5.260662232611831,
-        "y": 7.548720847501583
+        "x": 5.332556818181818,
+        "y": 5.921147727272728
       },
       "isLocked": false,
-      "linkedName": "LHS Trench Move"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.899431818181817,
-        "y": 7.343488636363636
+        "x": 6.249863636363637,
+        "y": 2.385909090909091
       },
       "prevControl": {
-        "x": 5.548593088466662,
-        "y": 7.407020038973277
+        "x": 6.4812166752162215,
+        "y": 2.1027889766764414
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Cheesy trenc pass 2"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1,
-      "rotationDegrees": 90.0
+      "waypointRelativePos": 1.343532684283727,
+      "rotationDegrees": -90.0
     }
   ],
   "constraintZones": [],
@@ -62,14 +62,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 5.4,
-    "rotation": -37.4053566314087
+    "velocity": 0,
+    "rotation": -90.0
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 111.97450799147202
+    "rotation": 180.0
   },
   "useDefaultConstraints": false
 }

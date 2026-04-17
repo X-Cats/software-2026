@@ -3,51 +3,55 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.1589982110912342,
-        "y": 7.190840787119857
+        "x": 7.847420454545453,
+        "y": 7.230113636363637
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.573644800036029,
-        "y": 7.328503286418072
+        "x": 7.778216845902721,
+        "y": 7.47034448482158
       },
       "isLocked": false,
-      "linkedName": "LHS Shooting"
+      "linkedName": "Cheesy depart"
     },
     {
       "anchor": {
-        "x": 4.477090909090909,
-        "y": 7.374409090909092
+        "x": 7.8165,
+        "y": 4.148375000000001
       },
       "prevControl": {
-        "x": 4.149366158864827,
-        "y": 7.301504078722006
+        "x": 8.799785167317234,
+        "y": 4.522296816207051
       },
       "nextControl": {
-        "x": 5.260662232611831,
-        "y": 7.548720847501583
+        "x": 6.857774611122646,
+        "y": 3.7837927297000027
       },
       "isLocked": false,
-      "linkedName": "LHS Trench Move"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.899431818181817,
-        "y": 7.343488636363636
+        "x": 7.208397727272727,
+        "y": 5.921147727272728
       },
       "prevControl": {
-        "x": 5.548593088466662,
-        "y": 7.407020038973277
+        "x": 7.215281729422834,
+        "y": 6.171052930328601
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Cheesy trenc pass 2"
+      "linkedName": "Cheesy Pass 1st end"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1,
-      "rotationDegrees": 90.0
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": -91.6365770416168
+    },
+    {
+      "waypointRelativePos": 1.3324061196105694,
+      "rotationDegrees": 126.68145631718119
     }
   ],
   "constraintZones": [],
@@ -63,13 +67,13 @@
   },
   "goalEndState": {
     "velocity": 5.4,
-    "rotation": -37.4053566314087
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 111.97450799147202
+    "velocity": 5.4,
+    "rotation": -63.86899945506134
   },
   "useDefaultConstraints": false
 }
