@@ -19,9 +19,10 @@ public interface HoodKickerIO {
     public double kickerSupplyCurrent = 0.0;
   }
 
+  @AutoLog
   public static class HoodIOOutputs {
     public boolean hasBeenZeroed = false;
-    public double positionRad = 0.0;
+    public double positionRotations = 0.0;
     public double velocityRadPerSecond = 0.0;
     public double kP = 0.0;
     public double kD = 0.0;

@@ -1,6 +1,5 @@
 package frc.robot.subsystems.HoodKicker;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -13,7 +12,7 @@ import org.littletonrobotics.junction.Logger;
 public class HoodKicker extends SubsystemBase {
   private final HoodKickerIO io;
   private final HoodIOInputsAutoLogged inputs = new HoodIOInputsAutoLogged();
-  private final HoodKickerIO.HoodIOOutputs outputs = new HoodKickerIO.HoodIOOutputs();
+  private final HoodIOOutputsAutoLogged outputs = new HoodIOOutputsAutoLogged();
   private final RobotStateMachine robotState;
 
   private static final LoggedTunableNumber goalPosition =
@@ -40,13 +39,6 @@ public class HoodKicker extends SubsystemBase {
     robotState = rs;
   }
 
-  public void setHoodIsReady(HoodKickerIO.HoodIOInputs inputs, HoodKickerIO.HoodIOOutputs outputs) {
-    var pos = Rotation2d.fromRadians(outputs.positionRad).getRotations();
-    robotState
-        .getShooterState()
-        .setHoodIsReady(inputs.hoodPosition < pos + .001 && inputs.hoodPosition > pos - .001);
-  }
-
   @Override
   public void periodic() {
     io.updateInputs(inputs);
@@ -63,18 +55,18 @@ public class HoodKicker extends SubsystemBase {
 
     if (this.hasBeenZeroed) {
       switch (robotState.getDesiredHoodState().getHoodState()) {
-        case AIMING -> outputs.positionRad =
+        case AIMING -> outputs.positionRotations =
             Constants.tuningMode
                 ? goalPosition.getAsDouble()
-                : LaunchCalculator.getInstance().getParameters().hoodAngle();
-        case STOWED -> outputs.positionRad = 0;
+                : LaunchCalculator.getInstance().getParameters().hoodAngle().getRotations();
+        case STOWED -> outputs.positionRotations = 0;
         default -> {
           System.out.println(
               "Illegal Hood State : " + robotState.getDesiredHoodState().getHoodState());
           io.setHoodMotorVoltage(0);
         }
       }
-      setHoodIsReady(inputs, outputs);
+      Logger.recordOutput("HoodSetpoint", outputs.positionRotations);
       io.applyOutputs(outputs);
     } else {
       io.zero();

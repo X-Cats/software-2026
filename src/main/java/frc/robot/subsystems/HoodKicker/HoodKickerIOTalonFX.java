@@ -13,7 +13,6 @@ import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.CANdi;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.*;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
@@ -157,7 +156,7 @@ public class HoodKickerIOTalonFX implements HoodKickerIO {
   public void applyOutputs(HoodIOOutputs outputs) {
     hood.setControl(
         positionControl
-            .withPosition(Rotation2d.fromRadians(outputs.positionRad).getRotations())
+            .withPosition(outputs.positionRotations)
             .withSlot(0)
             .withFeedForward(outputs.kS));
   }
