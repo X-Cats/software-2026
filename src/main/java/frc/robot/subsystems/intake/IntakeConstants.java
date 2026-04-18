@@ -21,7 +21,7 @@ public class IntakeConstants {
   public static final double ROLLER_KS = 1.0;
   public static final double ROLLER_KV = 0.1;
   public static final double ROLLER_KA = 0.0;
-  public static final double ROLLER_KP = 10.0;
+  public static final double ROLLER_KP = 5.0;
   public static final double ROLLER_KI = 0.0;
   public static final double ROLLER_KD = 0.0;
 
@@ -37,7 +37,7 @@ public class IntakeConstants {
 
   public static final int ROLLER_MOTOR_ID = 4;
   public static final double ROLLER_MOTOR_TORQUE = 20.;
-  public static final double ROLLER_MOTOR_VELOCITY = 2000.;
+  public static final double ROLLER_MOTOR_VELOCITY = 3000;
   public static final double ROLLER_MOTOR_REDUCTION = 1;
   public static final double ROLLER_MOTOR_CURRENT_LIMIT = 40;
 }

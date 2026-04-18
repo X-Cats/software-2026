@@ -96,7 +96,7 @@ public class Intake extends SubsystemBase {
       case AGITATING -> {
         if (inputs.deployAtSetpoint
             == 1) { // Flip-flop; wait until deploy at setpoint before making another change
-          if (inputs.deploySetpoint <= IntakeConstants.DEPLOY_AGITATE_FAR)
+          if (inputs.deploySetpoint < IntakeConstants.DEPLOY_AGITATE_FAR)
             agitateSetpoint = IntakeConstants.DEPLOY_AGITATE_FAR;
           else agitateSetpoint = IntakeConstants.DEPLOY_AGITATE_CLOSE;
         }
