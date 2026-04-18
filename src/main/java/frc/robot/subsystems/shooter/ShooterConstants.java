@@ -4,7 +4,7 @@ public class ShooterConstants {
 
   public static final double SHOOTER_IDLE_RPM = 750;
   public static final double SHOOTER_MOTOR_REDUCTION = 1;
-  public static final double SHOOTER_MOTOR_CURRENT_LIMIT = 70;
+  public static final double SHOOTER_MOTOR_CURRENT_LIMIT = 50;
   public static final double kP = 0.4;
   public static final double kI = 0.0;
   public static final double kD = 0.0;

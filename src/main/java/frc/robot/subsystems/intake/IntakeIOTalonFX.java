@@ -31,6 +31,7 @@ public class IntakeIOTalonFX implements IntakeIO {
   private final Slot0Configs deploySlot0 = new Slot0Configs();
   private final MotionMagicConfigs deployMotionMagic = new MotionMagicConfigs();
 
+  private final Slot0Configs rollerSlot0 = new Slot0Configs();
   // Sensors
   private final CANdi deployLimits = new CANdi(IntakeConstants.DEPLOYMENT_LIMITS_CANDI_ID);
   private final DigitalInput limitIn = new DigitalInput(IntakeConstants.DEPLOYMENT_LIMIT_IN);
@@ -71,7 +72,15 @@ public class IntakeIOTalonFX implements IntakeIO {
     rollerConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     rollerConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
     rollerConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-    //    tryUntilOk(5, () -> roller.getConfigurator().apply(rollerConfig, 0.25));
+
+    rollerSlot0.kP = IntakeConstants.ROLLER_KP;
+    rollerSlot0.kI = IntakeConstants.ROLLER_KI;
+    rollerSlot0.kD = IntakeConstants.ROLLER_KD;
+    rollerSlot0.kS = IntakeConstants.ROLLER_KS;
+    rollerSlot0.kV = IntakeConstants.ROLLER_KV;
+    rollerSlot0.kA = IntakeConstants.ROLLER_KA;
+
+    tryUntilOk(5, () -> roller.getConfigurator().apply(rollerConfig.withSlot0(rollerSlot0), 0.25));
 
     var deployLimitsConfig = new CANdiConfiguration();
     deployLimitsConfig.DigitalInputs.S1CloseState = S1CloseStateValue.CloseWhenLow;
@@ -152,7 +161,7 @@ public class IntakeIOTalonFX implements IntakeIO {
 
   @Override
   public void updateInputs(IntakeIOInputs inputs) {
-    inputs.rollerVelocity = rollerVelocity.getValueAsDouble();
+    inputs.rollerVelocity = rollerVelocity.getValueAsDouble() * 60;
     inputs.rollerAppliedVolts = rollerAppliedVolts.getValueAsDouble();
     inputs.rollerTorqueCurrentAmps = rollerTorqueCurrent.getValueAsDouble();
     inputs.rollerSupplyCurrentAmps = rollerSupplyCurrent.getValueAsDouble();

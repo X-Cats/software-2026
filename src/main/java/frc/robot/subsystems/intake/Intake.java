@@ -112,7 +112,7 @@ public class Intake extends SubsystemBase {
       switch (robotState.getDesiredIntakeState().getDesiredIntakeRollerState()) {
         case INTAKING -> {
           if (inputs.deployPosition > 15) {
-            io.setRollerMotorTorque(IntakeConstants.ROLLER_MOTOR_TORQUE);
+            io.setRollerMotorSpeed(IntakeConstants.ROLLER_MOTOR_VELOCITY);
           } else {
             io.setRollerMotorVoltage(0);
           }
