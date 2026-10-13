@@ -33,7 +33,7 @@ public class IntakeConstants {
   public static final double DEPLOYMENT_STOWED_SETPOINT = 1.5;
 
   public static final double DEPLOY_AGITATE_FAR = 16.0; // TODO: Fill in tomorrow
-  public static final double DEPLOY_AGITATE_CLOSE = .75;
+  public static final double DEPLOY_AGITATE_CLOSE = 10;
 
   public static final int ROLLER_MOTOR_ID = 4;
   public static final double ROLLER_MOTOR_TORQUE = 20.;

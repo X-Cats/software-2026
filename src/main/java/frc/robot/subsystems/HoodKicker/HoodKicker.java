@@ -103,7 +103,7 @@ public class HoodKicker extends SubsystemBase {
     var hoodFrac = inputs.hoodPosition / outputs.positionRotations;
     robotState
         .getShooterState()
-        .setHoodIsReady(outputs.positionRotations < 0.01 || (0.9 < hoodFrac && hoodFrac < 1.1));
+        .setHoodIsReady(outputs.positionRotations < 0.01 || (0.5 < hoodFrac && hoodFrac < 1.5));
   }
 
   public Command runKickerMotor() {

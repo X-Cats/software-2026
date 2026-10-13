@@ -8,7 +8,6 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.NamedCommands;
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -176,17 +175,18 @@ public class RobotContainer {
     configureButtonBindings();
   }
 
-  private final SlewRateLimiter xRateLimiter = new SlewRateLimiter(Constants.DRIVE_SLEW_RATE);
-  private final SlewRateLimiter yRateLimiter = new SlewRateLimiter(Constants.DRIVE_SLEW_RATE);
-  private final SlewRateLimiter thetaRateLimiter = new SlewRateLimiter(Constants.DRIVE_SLEW_RATE);
+  // private final SlewRateLimiter xRateLimiter = new SlewRateLimiter(Constants.DRIVE_SLEW_RATE);
+  // private final SlewRateLimiter yRateLimiter = new SlewRateLimiter(Constants.DRIVE_SLEW_RATE);
+  // private final SlewRateLimiter thetaRateLimiter = new
+  // SlewRateLimiter(Constants.DRIVE_SLEW_RATE);
   /** */
   private void configureDefaultCommands() {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
-            () -> yRateLimiter.calculate(-controller.getLeftY()),
-            () -> xRateLimiter.calculate(-controller.getLeftX()),
-            () -> -thetaRateLimiter.calculate(controller.getRightX() * 2 / 3)));
+            () -> -controller.getLeftY(),
+            () -> -controller.getLeftX(),
+            () -> -controller.getRightX() * 2 / 3));
   }
 
   /**
@@ -203,8 +203,8 @@ public class RobotContainer {
         .whileTrue(
             DriveCommands.joystickDriveAtAngle(
                 drive,
-                () -> yRateLimiter.calculate(-controller.getLeftY()),
-                () -> xRateLimiter.calculate(-controller.getLeftX()),
+                () -> -controller.getLeftY(),
+                () -> -controller.getLeftX(),
                 this::getHubDriveAngle));
 
     // Switch to X pattern when X button is pressed
