@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.AutoLog;
 import org.littletonrobotics.junction.Logger;
@@ -19,6 +20,11 @@ public class RobotStateMachine extends SubsystemBase {
   private RobotStateConfig.SuperState lastState;
   // State the robot is currently configured for
   private RobotStateConfig.SuperState currentSuperState;
+
+  private double lastSpikeTime = Double.NEGATIVE_INFINITY;
+  private final double noSpikeTimeout = 2.0; // seconds
+  private boolean likelyOutOfAmmo = false;
+
 
   public RobotStateMachine() {
     currentSuperState = RobotStateConfig.SuperState.IDLE;
@@ -165,6 +171,28 @@ public class RobotStateMachine extends SubsystemBase {
     }
 
     return retval;
+  }
+
+  public void updateVoltageSpikeOnKicker(boolean spikeOccurred) {
+    double now = Timer.getFPGATimestamp();
+
+    if (spikeOccurred) {
+      lastSpikeTime = now;
+    }
+
+    // Only care when we expect shots
+    if (dShooterState.getShooterMode() == DesiredShooterState.ShooterModeState.ON) {
+      double timeSinceSpike = now - lastSpikeTime;
+
+      likelyOutOfAmmo = timeSinceSpike > noSpikeTimeout;
+
+      if(likelyOutOfAmmo){
+        System.out.println("If we are shooting, we are likely out of ammo");
+      }
+
+    } else {
+      likelyOutOfAmmo = false;
+    }
   }
 
   public DesiredIntakeState getDesiredIntakeState() {

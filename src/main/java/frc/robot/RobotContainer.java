@@ -21,26 +21,14 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.HoodKicker.HoodKicker;
-import frc.robot.subsystems.HoodKicker.HoodKickerIOSim;
-import frc.robot.subsystems.HoodKicker.HoodKickerIOTalonFX;
-import frc.robot.subsystems.conveyor.Conveyor;
-import frc.robot.subsystems.conveyor.ConveyorIOSim;
-import frc.robot.subsystems.conveyor.ConveyorIOTalonFX;
+
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
-import frc.robot.subsystems.intake.Intake;
-import frc.robot.subsystems.intake.IntakeIOSim;
-import frc.robot.subsystems.intake.IntakeIOTalonFX;
-import frc.robot.subsystems.shooter.Shooter;
-import frc.robot.subsystems.shooter.ShooterIOSim;
-import frc.robot.subsystems.shooter.ShooterIOTalonFX;
-import frc.robot.subsystems.vision.CameraConstants;
-import frc.robot.subsystems.vision.Vision;
+
 import frc.robot.util.AllianceFlipUtil;
 import frc.robot.util.AutoManager;
 import frc.robot.util.FieldConstants;
@@ -55,11 +43,6 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
-  private final Conveyor conveyor;
-  private final Intake intake;
-  private final Shooter shooter;
-  private final HoodKicker hood;
-  private final Vision vision;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -86,12 +69,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.FrontRight),
                 new ModuleIOTalonFX(TunerConstants.BackLeft),
                 new ModuleIOTalonFX(TunerConstants.BackRight));
-        conveyor = new Conveyor(new ConveyorIOTalonFX(), robotState);
-        intake = new Intake(new IntakeIOTalonFX(), robotState);
-        shooter = new Shooter(new ShooterIOTalonFX(), robotState);
-        hood = new HoodKicker(new HoodKickerIOTalonFX(), robotState);
 
-        vision = new Vision(CameraConstants.RobotCameras.CAMERAS);
 
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
@@ -121,12 +99,7 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.FrontRight),
                 new ModuleIOSim(TunerConstants.BackLeft),
                 new ModuleIOSim(TunerConstants.BackRight));
-        conveyor = new Conveyor(new ConveyorIOSim(), robotState);
-        intake = new Intake(new IntakeIOSim(), robotState);
-        shooter = new Shooter(new ShooterIOSim(), robotState);
-        hood = new HoodKicker(new HoodKickerIOSim(), robotState);
 
-        vision = new Vision();
         break;
 
       default:
@@ -138,11 +111,7 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {});
-        conveyor = new Conveyor(new ConveyorIOSim(), robotState);
-        intake = new Intake(new IntakeIOSim(), robotState);
-        shooter = new Shooter(new ShooterIOSim(), robotState);
-        hood = new HoodKicker(new HoodKickerIOSim(), robotState);
-        vision = new Vision();
+
         break;
     }
 
